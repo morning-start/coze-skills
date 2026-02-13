@@ -50,6 +50,93 @@
 
 ---
 
+## 数据库相关知识
+
+### 数据库分类
+
+#### 关系型数据库（RDBMS）
+- **SQLite**：
+  - 轻量级、文件型、零配置、嵌入式
+  - 适合本地开发、移动端、小型应用
+  - 不支持并发写入（写锁整个 DB）
+  - Python 集成：sqlalchemy
+
+- **PostgreSQL**：
+  - 功能强大的开源关系数据库
+  - 支持 JSON、全文搜索、地理空间（PostGIS）
+  - 支持向量搜索（pgvector 插件）
+  - 支持图查询（Apache AGE 插件）
+  - Python 集成：psycopg2 + sqlalchemy
+
+#### 文档型数据库（NoSQL）
+- **MongoDB**：
+  - 最流行的文档数据库，BSON 格式存储
+  - 支持复杂查询、索引、聚合管道
+  - Python 集成：pymongo
+
+#### 向量数据库
+- **pgvector**（PostgreSQL 插件）：
+  - 在 PostgreSQL 中直接支持向量存储和搜索
+  - 轻量、无需额外服务
+  - Python 集成：pgvector-python
+
+- **ChromaDB**：
+  - 轻量级开源向量数据库
+  - 专为 LLM 应用设计
+  - 可嵌入或持久化
+  - Python 集成：chromadb
+
+- **Faiss**：
+  - Meta 开发的高效向量搜索库
+  - 本身不是完整数据库，需配合其他存储
+  - Python 集成：faiss-cpu / faiss-gpu
+
+#### 图数据库
+- **Neo4j**：
+  - 最主流的图数据库，支持 Cypher 查询
+  - Python 集成：neo4j
+
+- **Apache AGE**（PostgreSQL 插件）：
+  - PostgreSQL 的官方图扩展
+  - 支持在 PG 中使用 Cypher 查询
+  - Python 集成：age
+
+### 数据库设计原则
+- **范式化**：减少数据冗余，提高一致性
+- **反范式化**：提高查询性能，减少关联
+- **索引策略**：为频繁查询的字段创建索引
+- **分区策略**：大表按时间或维度分区
+- **读写分离**：提高并发性能
+
+### ORM 框架选择
+- **SQLAlchemy**：
+  - Python 最流行的 ORM 框架
+  - 支持 Python 3.11+ 类型注解
+  - 异步支持（SQLAlchemy 2.0）
+  - 优势：成熟、灵活、支持多数据库
+
+- **ODM**（MongoDB）：
+  - MongoDB 官方 ODM
+  - 类似 Django ORM 的 API
+  - 类型注解支持
+
+### 数据访问层设计
+- **Repository 模式**：封装数据访问逻辑
+- **数据抽象层**：提供统一接口，屏蔽底层差异
+- **依赖注入**：便于测试和切换数据库
+
+### 数据库迁移
+- **Alembic**：SQLAlchemy 的数据库迁移工具
+- **MongoDB 迁移**：使用自定义脚本或 pymongo-migrate
+
+### 数据库性能优化
+- **查询优化**：使用索引、避免 N+1 查询
+- **连接池优化**：合理设置连接池大小
+- **缓存策略**：使用 Redis 缓存热点数据
+- **批量操作**：减少数据库往返次数
+
+---
+
 ## 最佳实践与设计模式
 
 ### 代码编写最佳实践
@@ -198,29 +285,25 @@ uv run python main.py
 - **功能强大**：支持日志轮转、压缩、异常捕获
 - **性能优秀**：异步日志，高性能
 - **现代化**：Python 3.11+ 类型注解支持
-- **可扩展**：支持自定义格式、处理器
 
 ### Loguru 基础用法
 ```python
 from loguru import logger
 
 # 基础日志
-logger.debug("调试信息")
-logger.info("普通信息")
-logger.warning("警告信息")
-logger.error("错误信息")
+logger.info("This is an info message")
+logger.debug("Debug message")
+logger.warning("Warning message")
+logger.error("Error message")
 
 # 异常捕获
 try:
     1 / 0
 except ZeroDivisionError:
-    logger.exception("除零错误")
-
-# 日志轮转
-logger.add("app.log", rotation="500 MB", retention="10 days")
+    logger.exception("Division by zero")
 ```
 
-### Loguru 高级配置
+### Loguru 配置
 ```python
 from loguru import logger
 import sys
@@ -228,178 +311,82 @@ import sys
 # 移除默认处理器
 logger.remove()
 
-# 添加控制台处理器（带颜色）
-logger.add(sys.stdout, format="<green>{time:YYYY-MM-DD HH:mm:ss}</green> | <level>{level: <8}</level> | <cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> - <level>{message}</level>", colorize=True)
+# 添加控制台输出
+logger.add(
+    sys.stdout,
+    format="<green>{time:YYYY-MM-DD HH:mm:ss}</green> | <level>{level: <8}</level> | <cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> - <level>{message}</level>",
+    level="INFO"
+)
 
-# 添加文件处理器（按大小轮转）
-logger.add("app.log", rotation="10 MB", retention="7 days", compression="zip")
-
-# 添加错误文件处理器（仅错误级别）
-logger.add("error.log", level="ERROR", rotation="1 day", retention="30 days")
+# 添加文件输出（带轮转）
+logger.add(
+    "logs/app_{time:YYYY-MM-DD}.log",
+    rotation="00:00",  # 每天轮转
+    retention="30 days",  # 保留30天
+    compression="zip",  # 压缩旧日志
+    level="DEBUG"
+)
 ```
 
 ### Loguru 最佳实践
-- 使用类型注解：`logger.info[T](data: T)` (Python 3.11+）
-- 配置日志轮转：按大小或时间轮转
-- 分离日志级别：普通日志和错误日志分开存储
-- 使用结构化日志：`logger.bind(key=value).info("message")`
-- 异常捕获：使用 `logger.exception()` 记录完整堆栈
-- 日志格式：包含时间、级别、模块、函数、行号
-
-### Loguru vs logging 对比
-| 维度 | Loguru | logging |
-|------|--------|---------|
-| 易用性 | 一行代码 | 需要配置 |
-| 功能 | 轮转、压缩、异常 | 基础功能 |
-| 性能 | 异步、高性能 | 同步 |
-| 现代化 | ✅ | 传统 |
-| 类型注解 | ✅ | ❌ |
+- 在应用初始化时配置日志
+- 使用不同的日志级别（DEBUG、INFO、WARNING、ERROR）
+- 记录异常时使用 `logger.exception()`
+- 生产环境使用文件日志，开发环境使用控制台日志
+- 使用日志轮转和压缩避免日志文件过大
 
 ---
 
 ## 常见问题与解决方案
 
 ### 问题1：<问题描述>
-- **现象**：<错误表现或症状>
+- **现象**：<具体的错误表现>
 - **原因**：<根本原因分析>
 - **解决方案**：<详细解决步骤>
 - **预防措施**：<如何避免再次发生>
-- **Python 3.11+ 改进**：<如果适用，说明新版本如何避免此问题>
 
 ### 问题2：<问题描述>
-- **现象**：<错误表现或症状>
+- **现象**：<具体的错误表现>
 - **原因**：<根本原因分析>
 - **解决方案**：<详细解决步骤>
 - **预防措施**：<如何避免再次发生>
-- **Python 3.11+ 改进**：<如果适用，说明新版本如何避免此问题>
 
-### 问题3：<问题描述>
-- **现象**：<错误表现或症状>
-- **原因**：<根本原因分析>
-- **解决方案**：<详细解决步骤>
-- **预防措施**：<如何避免再次发生>
-- **Python 3.11+ 改进**：<如果适用，说明新版本如何避免此问题>
+### 数据库常见问题
 
----
+#### 连接问题
+- **现象**：无法连接到数据库
+- **原因**：连接字符串错误、数据库未启动、防火墙阻止
+- **解决方案**：检查连接字符串、启动数据库、检查防火墙
 
-## 安全考虑
+#### 性能问题
+- **现象**：查询缓慢
+- **原因**：缺少索引、N+1 查询、数据量过大
+- **解决方案**：添加索引、使用 eager loading、优化查询
 
-### 安全风险
-#### 风险1：<风险类型>
-- **威胁场景**：<可能的攻击方式>
-- **影响**：<造成的损失>
-- **防护措施**：<如何防护>
-- **版本建议**：<推荐使用哪个版本>
-
-#### 风险2：<风险类型>
-- **威胁场景**：<可能的攻击方式>
-- **影响**：<造成的损失>
-- **防护措施**：<如何防护>
-- **版本建议**：<推荐使用哪个版本>
-
-### 安全最佳实践
-- **实践1**：<具体实践及理由>
-- **实践2**：<具体实践及理由>
-- **实践3**：<具体实践及理由>
+#### 并发问题
+- **现象**：SQLite 写入冲突
+- **原因**：SQLite 不支持并发写入
+- **解决方案**：使用 PostgreSQL、使用连接池、减少写操作
 
 ---
 
-## Python 3.11+ 特性指南
-
-### 类型注解增强
-- **PEP 585（内置泛型类型）**：
-  - 旧版：`from typing import List; items: List[int] = []`
-  - 新版：`items: list[int] = []`
-  - 优势：无需导入 typing 模块，性能更好
-
-- **PEP 646（类型参数）**：
-  ```python
-  from typing import TypeVar
-  T = TypeVar("T")
-
-  def first(items: list[T]) -> T:
-      return items[0]
-  ```
-
-- **PEP 673（Self 类型）**：
-  ```python
-  class Node:
-      def set_next(self: Self, next: Self) -> Self:
-          self.next = next
-          return self
-  ```
-
-### 现代语法特性
-- **match-case 语句**：
-  ```python
-  match status:
-      case 200:
-          return "OK"
-      case 404:
-          return "Not Found"
-      case _:
-          return "Unknown"
-  ```
-
-- **数据类改进**：
-  - 支持类型注解
-  - 支持 match-case
-  - 性能优化
-
-### 性能改进
-- 解释器性能提升（10-60%）
-- 异常处理优化
-- 类型检查优化
-
----
-
-## 参考资源
+## 学习资源
 
 ### 官方文档
-- <文档1名称>：<链接> - 最新版本：<版本号>
-- <文档2名称>：<链接> - 最新版本：<版本号>
-- **UV 官方文档**：https://docs.astral.sh/uv/
+- <官方文档链接1>
+- <官方文档链接2>
+- <官方文档链接3>
 
-### 优质教程
-- <教程1名称>：<链接> - 简介：<简要说明> - Python 版本：<版本>
-- <教程2名称>：<链接> - 简介：<简要说明> - Python 版本：<版本>
-- **UV 教程**：<链接> - 简介：UV 快速入门指南
+### 推荐教程
+- <教程链接1>
+- <教程链接2>
 
-### 示例代码
-- <示例1描述>：<链接> - 使用特性：<类型注解/异步等>
-- <示例2描述>：<链接> - 使用特性：<类型注解/异步等>
+### 社区资源
+- <社区论坛链接>
+- <GitHub 仓库链接>
+- <Stack Overflow 标签>
 
-### 社区讨论
-- <讨论主题>：<链接>
-
----
-
-## 总结与建议
-
-### 关键要点
-1. <要点1>
-2. <要点2>
-3. <要点3>
-
-### 实施建议
-- **优先级1（必须）**：<建议内容>
-- **优先级2（建议）**：<建议内容>
-- **优先级3（可选）**：<建议内容>
-
-### 避免的陷阱
-- ❌ <陷阱1及原因>
-- ❌ <陷阱2及原因>
-- ❌ <陷阱3及原因>
-
-### 版本建议
-- **Python 版本**：3.11+
-- **包管理工具**：UV
-- **主要依赖版本锁定**：<具体版本>
-- **长期支持策略**：<LTS选择>
-
----
-
-## 更新记录
-| 日期 | 版本 | 更新内容 | 更新人 |
-|------|------|----------|--------|
-| YYYY-MM-DD | v1.0.0 | 初始版本，增加 UV 包管理内容 | 自学习系统 |
+### 数据库相关资源
+- <数据库官方文档>
+- <Python 数据库驱动文档>
+- <数据库最佳实践指南>
