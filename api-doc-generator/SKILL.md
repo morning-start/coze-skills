@@ -1,5 +1,6 @@
 ---
 name: api-doc-generator
+version: 1.0.0
 description: 自动分析项目代码并生成符合标准格式的API文档；支持Flask/FastAPI/Express等框架；自动划分功能模块和层级结构；生成包含概述、认证、端点详情、错误处理等完整章节的文档
 dependency:
   python:

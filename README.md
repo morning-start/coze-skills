@@ -187,6 +187,43 @@ skill-name/
 
 ---
 
+## CI/CD 自动化
+
+项目使用 GitHub Actions 实现自动化构建和发布流程。
+
+### 快速发布
+
+```bash
+# 1. 更新版本号
+uv run bump-version 1.1.0 --commit --tag
+
+# 2. 推送到远程仓库
+git push origin master
+git push origin v1.1.0
+```
+
+推送 tag 后，GitHub Actions 会自动：
+- 构建所有技能为 `.skill` 格式
+- 生成发布说明
+- 创建 GitHub Release
+- 上传构建产物
+
+### 本地构建
+
+```bash
+# 构建所有技能
+uv run build-skills --version 1.0.0
+
+# 构建指定技能
+uv run build-skills --version 1.0.0 --skill recruitment-processor
+```
+
+### 详细文档
+
+查看 [CI/CD 使用指南](docs/CI_CD_GUIDE.md) 了解更多详情。
+
+---
+
 ## 技能分类
 
 ### 开发辅助

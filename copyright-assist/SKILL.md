@@ -1,5 +1,6 @@
 ---
 name: copyright-assist
+version: 1.0.0
 description: 辅助软件著作权申请，包括设计说明书、用户说明书、操作手册撰写指导及源代码提取格式化；支持多版本申请、智能资源检查、自动打包符合官方要求的材料
 dependency:
   python:

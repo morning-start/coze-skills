@@ -1,5 +1,6 @@
 ---
 name: project-wiki
+version: 1.0.0
 description: 智能项目知识库构建工具，自动分析代码提取隐性知识，生成结构化文档与架构图谱，支持 13+ 主流框架（React/Vue/Django/Spring Boot 等）
 ---
 

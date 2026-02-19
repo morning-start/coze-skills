@@ -1,5 +1,6 @@
 ---
 name: six-layer-architect
+version: 1.0.0
 description: 基于六层架构（前端UI/前端服务/前端API/后端API/后端服务/数据层）生成全栈实现方案，适用于功能需求开发、代码生成、架构校验、安全审查
 dependency:
   python:

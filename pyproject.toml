@@ -1,0 +1,14 @@
+[project]
+name = "coze-skills"
+version = "1.0.0"
+description = "Coze Skills 集合 - 为 AI 助手设计的专业技能库"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "pyyaml>=6.0",
+]
+
+[project.scripts]
+bump-version = "scripts/bump_version.py"
+build-skills = "scripts/build_skills.py"
+generate-notes = "scripts/generate_release_notes.py"

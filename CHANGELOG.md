@@ -13,6 +13,15 @@
 - 创建 Coze Skills 技能集合项目
 - 添加项目级 README.md 文档，包含所有技能的详细介绍
 - 添加 CHANGELOG.md 文档，用于记录项目变更历史
+- 添加 LICENSE 文件，使用 MIT 许可证
+
+#### CI/CD 自动化
+- 添加 GitHub Actions workflow，实现自动化构建和发布
+- 创建技能打包脚本 (build_skills.py)，支持打包所有技能为 .skill 格式
+- 创建发布说明生成脚本 (generate_release_notes.py)，从 CHANGELOG.md 自动生成发布说明
+- 创建版本管理脚本 (bump_version.py)，支持版本号更新和 Git 标签创建
+- 支持通过 Git tag 触发自动发布
+- 支持手动触发构建流程
 
 #### 技能列表 (8个核心技能)
 
