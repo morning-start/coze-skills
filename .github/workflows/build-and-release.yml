@@ -4,14 +4,37 @@ on:
   push:
     tags:
       - 'v*'
+      - '*-v*'  # 支持技能独立版本 tag，如 recruitment-processor-v1.1.0
   workflow_dispatch:
+    inputs:
+      release_type:
+        description: 'Release type'
+        required: true
+        default: 'changed'
+        type: choice
+        options:
+          - changed      # 仅发布有变更的技能
+          - all          # 发布所有技能
+          - specific     # 发布指定技能
+      skill_name:
+        description: 'Skill name (for specific release)'
+        required: false
+        type: string
+      version:
+        description: 'Override version (optional)'
+        required: false
+        type: string
 
 permissions:
   contents: write
 
 jobs:
-  build-and-release:
+  detect-changes:
     runs-on: ubuntu-latest
+    outputs:
+      changed_skills: ${{ steps.detect.outputs.changed_skills }}
+      has_changes: ${{ steps.detect.outputs.has_changes }}
+      release_type: ${{ steps.detect.outputs.release_type }}
     
     steps:
       - name: Checkout code
@@ -32,20 +55,79 @@ jobs:
         run: |
           uv venv
 
-      - name: Install dependencies
+      - name: Detect skill changes
+        id: detect
         run: |
-          uv pip install pyyaml
-
-      - name: Get version from tag
-        id: get_version
-        run: |
+          # 确定发布类型
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            VERSION="0.1.0"
+            RELEASE_TYPE="${{ github.event.inputs.release_type }}"
+            echo "release_type=$RELEASE_TYPE" >> $GITHUB_OUTPUT
+          elif [[ "${{ github.ref }}" =~ ^refs/tags/([^-]+)-v ]]; then
+            # 技能独立版本 tag，如 recruitment-processor-v1.1.0
+            RELEASE_TYPE="specific"
+            SKILL_NAME="${BASH_REMATCH[1]}"
+            echo "release_type=specific" >> $GITHUB_OUTPUT
+            echo "skill_name=$SKILL_NAME" >> $GITHUB_OUTPUT
           else
-            VERSION=${GITHUB_REF#refs/tags/v}
+            # 默认发布有变更的技能
+            RELEASE_TYPE="changed"
+            echo "release_type=changed" >> $GITHUB_OUTPUT
           fi
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
-          echo "Building version: $VERSION"
+          
+          # 检测变更
+          if [ "$RELEASE_TYPE" = "changed" ]; then
+            uv run python scripts/detect_skill_changes.py --all --json --output changes.json || true
+            
+            if [ -f changes.json ]; then
+              CHANGED_SKILLS=$(cat changes.json | jq -r '.all_changed_skills | join(",")')
+              echo "changed_skills=$CHANGED_SKILLS" >> $GITHUB_OUTPUT
+              
+              if [ -n "$CHANGED_SKILLS" ]; then
+                echo "has_changes=true" >> $GITHUB_OUTPUT
+              else
+                echo "has_changes=false" >> $GITHUB_OUTPUT
+              fi
+            else
+              echo "has_changes=false" >> $GITHUB_OUTPUT
+            fi
+          elif [ "$RELEASE_TYPE" = "specific" ]; then
+            if [ -n "$SKILL_NAME" ]; then
+              echo "changed_skills=$SKILL_NAME" >> $GITHUB_OUTPUT
+              echo "has_changes=true" >> $GITHUB_OUTPUT
+            elif [ -n "${{ github.event.inputs.skill_name }}" ]; then
+              echo "changed_skills=${{ github.event.inputs.skill_name }}" >> $GITHUB_OUTPUT
+              echo "has_changes=true" >> $GITHUB_OUTPUT
+            else
+              echo "has_changes=false" >> $GITHUB_OUTPUT
+            fi
+          elif [ "$RELEASE_TYPE" = "all" ]; then
+            echo "changed_skills=ALL" >> $GITHUB_OUTPUT
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+
+  build-and-release:
+    runs-on: ubuntu-latest
+    needs: detect-changes
+    if: needs.detect-changes.outputs.has_changes == 'true'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install uv
+        run: |
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+      - name: Set up Python
+        run: |
+          uv python install 3.12
+
+      - name: Create virtual environment
+        run: |
+          uv venv
 
       - name: Create build directory
         run: |
@@ -53,12 +135,53 @@ jobs:
 
       - name: Build skill packages
         run: |
-          uv run python scripts/build_skills.py --version ${{ steps.get_version.outputs.version }} --output-dir dist
+          CHANGED_SKILLS="${{ needs.detect-changes.outputs.changed_skills }}"
+          RELEASE_TYPE="${{ needs.detect-changes.outputs.release_type }}"
+          OVERRIDE_VERSION="${{ github.event.inputs.version }}"
+          
+          if [ "$RELEASE_TYPE" = "all" ] || [ "$CHANGED_SKILLS" = "ALL" ]; then
+            # 构建所有技能（使用各自版本号）
+            echo "Building all skills with independent versions..."
+            uv run python scripts/build_skills.py --all --output-dir dist
+          elif [ -n "$CHANGED_SKILLS" ]; then
+            # 构建指定的技能
+            echo "Building changed skills: $CHANGED_SKILLS"
+            IFS=',' read -ra SKILLS <<< "$CHANGED_SKILLS"
+            for skill in "${SKILLS[@]}"; do
+              skill=$(echo "$skill" | xargs)  # trim whitespace
+              if [ -n "$OVERRIDE_VERSION" ]; then
+                uv run python scripts/build_skills.py --skill "$skill" --version "$OVERRIDE_VERSION" --output-dir dist
+              else
+                uv run python scripts/build_skills.py --skill "$skill" --output-dir dist
+              fi
+            done
+          fi
+
+      - name: List built packages
+        run: |
+          echo "Built packages:"
+          ls -lh dist/*.skill 2>/dev/null || echo "No packages built"
 
       - name: Generate release notes
-        id: release_notes
         run: |
-          uv run python scripts/generate_release_notes.py --version ${{ steps.get_version.outputs.version }} --output dist/release_notes.md
+          # 生成简单的发布说明
+          echo "## Skill Packages" > dist/release_notes.md
+          echo "" >> dist/release_notes.md
+          echo "Built packages:" >> dist/release_notes.md
+          echo "" >> dist/release_notes.md
+          
+          for pkg in dist/*.skill; do
+            if [ -f "$pkg" ]; then
+              pkg_name=$(basename "$pkg")
+              pkg_size=$(du -h "$pkg" | cut -f1)
+              echo "- $pkg_name ($pkg_size)" >> dist/release_notes.md
+            fi
+          done
+          
+          echo "" >> dist/release_notes.md
+          echo "## Changes" >> dist/release_notes.md
+          echo "" >> dist/release_notes.md
+          echo "See [CHANGELOG.md](CHANGELOG.md) for detailed changes." >> dist/release_notes.md
 
       - name: Create Release
         if: startsWith(github.ref, 'refs/tags/')
@@ -77,3 +200,14 @@ jobs:
           name: skill-packages
           path: dist/*.skill
           retention-days: 30
+
+  no-changes:
+    runs-on: ubuntu-latest
+    needs: detect-changes
+    if: needs.detect-changes.outputs.has_changes == 'false'
+    
+    steps:
+      - name: No changes detected
+        run: |
+          echo "No skill changes detected. Skipping build."
+          echo "Release type: ${{ needs.detect-changes.outputs.release_type }}"

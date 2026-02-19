@@ -12,3 +12,4 @@ dependencies = [
 bump-version = "scripts/bump_version.py"
 build-skills = "scripts/build_skills.py"
 generate-notes = "scripts/generate_release_notes.py"
+detect-changes = "scripts/detect_skill_changes.py"
