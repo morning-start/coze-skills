@@ -76,7 +76,16 @@ jobs:
           
           # 检测变更
           if [ "$RELEASE_TYPE" = "changed" ]; then
-            uv run python scripts/detect_skill_changes.py --all --json --output changes.json || true
+            # 获取前一个 tag（排除当前 tag）
+            PREVIOUS_TAG=$(git describe --tags --abbrev=0 HEAD~1 2>/dev/null || echo "")
+            
+            if [ -n "$PREVIOUS_TAG" ]; then
+              echo "Detecting changes since: $PREVIOUS_TAG"
+              uv run python scripts/detect_skill_changes.py --all --json --output changes.json --since "$PREVIOUS_TAG" || true
+            else
+              echo "No previous tag found, detecting all skills as new"
+              uv run python scripts/detect_skill_changes.py --all --json --output changes.json || true
+            fi
             
             if [ -f changes.json ]; then
               # 使用 Python 解析 JSON，避免依赖 jq
