@@ -5,6 +5,24 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [1.2.1] - 2026-02-19
+
+### 变更 (Changed)
+
+#### 技能升级
+- **project-wiki** 升级到 2.2.3 版本
+  - 更新 FEATURE_INDEX.md，完善功能索引
+  - 更新 scripts/README.md，更新脚本说明
+  - 新增 6 个脚本工具：
+    - adaptive_structure.py - 自适应结构生成
+    - complexity_analyzer.py - 复杂度分析器
+    - consistency_checker.py - 一致性检查器
+    - context_aware.py - 上下文感知处理
+    - multi_hop_qa.py - 多跳问答系统
+    - structure_optimizer.py - 结构优化器
+
+---
+
 ## [1.2.0] - 2026-02-19
 
 ### 新增 (Added)
