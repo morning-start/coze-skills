@@ -3,6 +3,7 @@
 ## 目录
 
 - [核心脚本](#核心脚本)
+- [智能工具](#智能工具)
 - [文档生成脚本](#文档生成脚本)
 - [使用示例](#使用示例)
 
@@ -201,231 +202,338 @@ python3 scripts/role_view.py mapping
 
 ---
 
+## 智能工具
+
+### 9. complexity_analyzer.py
+
+**功能**：项目复杂度分析器 - 自主识别项目结构的复杂度
+
+**用法**：
+```bash
+python3 scripts/complexity_analyzer.py --path ./your-project --output complexity-report.json
+```
+
+**输出**：
+- `complexity-report.json` - 复杂度分析报告
+
+**分析维度**：
+- **基础指标**：文件数量、代码行数、模块数量
+- **依赖指标**：依赖数量、循环依赖、依赖深度
+- **技术栈指标**：语言数量、框架数量
+- **架构指标**：分层数量、服务数量、API 数量
+- **代码质量指标**：平均文件行数、最大文件行数
+
+**复杂度等级**：
+- `simple` - 简单项目（≤5 模块，≤20 文件，≤5000 行）
+- `medium` - 中等项目（≤20 模块，≤100 文件，≤20000 行）
+- `complex` - 复杂项目（≤50 模块，≤500 文件，≤100000 行）
+- `ultra-complex` - 超复杂项目（>50 模块，>500 文件，>100000 行）
+
+**功能特点**：
+- 自主识别项目规模和复杂度
+- 推荐合适的目录结构类型
+- 提供优化建议
+- 计算综合复杂度分数（0-100）
+
+---
+
+### 10. adaptive_structure.py
+
+**功能**：自适应结构生成器 - 根据项目复杂度自动生成合适的目录结构
+
+**用法**：
+```bash
+# 根据复杂度自动生成结构
+python3 scripts/adaptive_structure.py --path ./your-project
+
+# 指定结构类型
+python3 scripts/adaptive_structure.py --path ./your-project --structure-type domain
+
+# 指定复杂度等级
+python3 scripts/adaptive_structure.py --path ./your-project --complexity complex
+
+# 指定输出路径
+python3 scripts/adaptive_structure.py --path ./your-project --output wiki
+
+# 导出配置文件
+python3 scripts/adaptive_structure.py --path ./your-project --export structure-config.json
+```
+
+**输出**：
+- `wiki/` - 自动生成的目录结构
+- `structure-config.json` - 结构配置文件（可选）
+
+**支持结构类型**：
+- `flat` - 扁平结构（简单项目）
+- `typed` - 按类型分组（中等项目）
+- `domain` - 按领域分组（复杂项目）
+- `layered` - 分层结构（多层架构）
+- `microservice` - 微服务结构（微服务架构）
+- `nested` - 多层嵌套（超复杂项目）
+
+**功能特点**：
+- 根据项目复杂度自动选择最合适的结构类型
+- 自动识别业务领域和服务
+- 支持多种结构类型和嵌套规则
+- 生成目录索引文件
+
+---
+
+### 11. structure_optimizer.py
+
+**功能**：结构优化器 - 分析和优化现有项目结构
+
+**用法**：
+```bash
+python3 scripts/structure_optimizer.py --path ./your-project --recommended domain --output optimization-report.json
+```
+
+**输出**：
+- `optimization-report.json` - 优化报告
+
+**检测问题**：
+- Wiki 目录缺失
+- 目录嵌套过深
+- 缺少索引文件（README.md/index.md）
+- 空目录检测
+- 命名不一致
+- 文档完整性检查
+
+**优化建议**：
+- 结构重组
+- 目录扁平化
+- 添加索引文件
+- 添加搜索功能
+- 改进导航
+
+**功能特点**：
+- 分析当前结构类型
+- 检测结构问题
+- 提供优化建议
+- 计算结构得分（0-100）
+
+---
+
+### 12. context_aware.py
+
+**功能**：上下文感知增强器 - 自动注入环境上下文，使回答更精准
+
+**用法**：
+```bash
+# 基本查询
+python3 scripts/context_aware.py --path ./your-project --query "如何设计 API？"
+
+# 指定当前文件
+python3 scripts/context_aware.py --path ./your-project --query "这个函数的作用？" --file src/services/user.py
+
+# 指定用户角色
+python3 scripts/context_aware.py --path ./your-project --query "如何部署服务？" --role ops
+
+# 组合使用
+python3 scripts/context_aware.py --path ./your-project --query "如何测试这个类？" --file src/models/user.py --role tester --output context-result.json
+```
+
+**输出**：
+- 增强查询
+- 上下文信息
+- 建议知识列表
+- 建议资源列表
+- 置信度评分
+
+**上下文信息**：
+- 项目路径
+- 当前文件
+- 当前函数/类
+- Git 分支/提交
+- 环境（开发/Docker/CI/CD）
+- 用户角色
+
+**功能特点**：
+- 自动收集环境上下文
+- 增强用户查询
+- 推荐相关知识和资源
+- 计算回答置信度
+
+---
+
+### 13. multi_hop_qa.py
+
+**功能**：多跳问答引擎 - 串联多个文档回答复杂问题
+
+**用法**：
+```bash
+python3 scripts/multi_hop_qa.py --path ./your-project --query "如何设计并实现用户认证系统？然后如何测试？" --output qa-result.json
+```
+
+**输出**：
+- `qa-result.json` - 问答结果
+
+**核心能力**：
+- **查询分解**：将复杂查询分解为多个子查询
+- **知识图谱构建**：自动构建文档知识图谱
+- **多步推理**：串联多个文档回答问题
+- **执行路径追踪**：记录查询执行路径
+
+**查询分解策略**：
+- 连接词分解（然后、之后、接着）
+- 关键词分解
+- 问题类型分解（如何、为什么、什么）
+
+**功能特点**：
+- 支持复杂问题的多跳查询
+- 自动构建知识图谱
+- 提取文档元数据和链接关系
+- 计算总体置信度
+
+---
+
+### 14. consistency_checker.py
+
+**功能**：一致性检查器 - 检查文档与代码的一致性，防止脱节
+
+**用法**：
+```bash
+python3 scripts/consistency_checker.py --path ./your-project --output consistency-report.json
+```
+
+**输出**：
+- `consistency-report.json` - 一致性报告
+
+**检查项**：
+- **API 文档一致性**：文档中定义的 API 在代码中是否存在
+- **模块文档一致性**：文档中提到的模块在代码中是否存在
+- **数据模型一致性**：文档中定义的模型和字段与代码是否一致
+- **文档时效性**：检查文档是否过期（代码已更新但文档未更新）
+- **链接有效性**：检查文档中的链接是否有效
+
+**问题类型**：
+- `api_not_implemented` - API 未实现
+- `module_not_found` - 模块未找到
+- `model_not_found` - 模型未找到
+- `field_missing_in_code` - 字段在代码中缺失
+- `field_missing_in_doc` - 字段在文档中缺失
+- `document_outdated` - 文档过期
+- `broken_link` - 链接失效
+
+**功能特点**：
+- 全面检查文档与代码的一致性
+- 支持多种编程语言
+- 检测文档时效性
+- 计算一致性得分（0-100）
+
+---
+
 ## 文档生成脚本
 
-### 1. generate_changelog.py
+### generate_doc.py
 
-**功能**：生成 CHANGELOG
-
-**用法**：
-```bash
-# 初始化 CHANGELOG
-python3 scripts/generate_changelog.py init
-
-# 添加新版本
-python3 scripts/generate_changelog.py add --version "1.0.0" --date "2024-02-19"
-
-# 添加变更内容
-python3 scripts/generate_changelog.py add --version "1.0.0" --type "Added" --content "添加用户注册功能"
-```
-
-**输出**：
-- `CHANGELOG.md` - 变更日志
-
----
-
-### 2. generate_roadmap.py
-
-**功能**：生成 ROADMAP
-
-**用法**：
-```bash
-python3 scripts/generate_roadmap.py --path ./your-project
-```
-
-**输出**：
-- `ROADMAP.md` - 路线图
-
-**包含内容**：
-- 已完成功能
-- 进行中功能
-- 计划中功能
-- 未来规划
-
----
-
-### 3. generate_cicd.py
-
-**功能**：生成 CI/CD 配置
-
-**用法**：
-```bash
-# GitHub Actions
-python3 scripts/generate_cicd.py --type github-actions
-
-# GitLab CI
-python3 scripts/generate_cicd.py --type gitlab-ci
-
-# Jenkins Pipeline
-python3 scripts/generate_cicd.py --type jenkins
-```
-
-**输出**：
-- `.github/workflows/ci.yml` - GitHub Actions 配置
-- `.gitlab-ci.yml` - GitLab CI 配置
-- `Jenkinsfile` - Jenkins Pipeline 配置
+详见[核心脚本 - 6. generate_doc.py](#6-generate_docpy)
 
 ---
 
 ## 使用示例
 
-### 示例 1：完整的项目分析流程
+### 示例 1：完整的项目文档工作流
 
 ```bash
-# 1. 分析项目
-python3 scripts/analyze_project.py --path ./your-project
+# 1. 分析项目复杂度
+python3 scripts/complexity_analyzer.py --path ./your-project --output complexity-report.json
 
-# 2. 构建知识图谱
-python3 scripts/knowledge_graph.py --path ./your-project --format mermaid
+# 2. 根据复杂度生成自适应结构
+python3 scripts/adaptive_structure.py --path ./your-project
 
-# 3. 提取隐性知识
-python3 scripts/knowledge_extractor.py --path ./your-project --language python
+# 3. 生成 API 文档
+python3 scripts/generate_doc.py --type api --name "用户登录" --output wiki/03-API文档/用户登录.md
 
-# 4. 评估复杂度
-python3 scripts/evaluate_complexity.py --path ./your-project
+# 4. 生成模块文档
+python3 scripts/generate_doc.py --type module --name "认证模块" --output wiki/04-模块文档/认证模块/模块介绍.md
 
-# 5. 创建 Wiki 结构
-python3 scripts/create_wiki_structure.py --path ./your-project
+# 5. 检查一致性
+python3 scripts/consistency_checker.py --path ./your-project --output consistency-report.json
 ```
 
----
-
-### 示例 2：生成文档
+### 示例 2：智能问答工作流
 
 ```bash
-# 1. 生成 API 文档
-python3 scripts/generate_doc.py --type api --name "用户登录接口"
+# 1. 上下文感知查询
+python3 scripts/context_aware.py --path ./your-project --query "如何设计 API？" --role architect
 
-# 2. 生成模块设计文档
-python3 scripts/generate_doc.py --type module --name "认证模块"
+# 2. 多跳复杂查询
+python3 scripts/multi_hop_qa.py --path ./your-project --query "如何设计用户系统？然后如何实现？最后如何测试？"
 
-# 3. 生成服务文档
-python3 scripts/generate_doc.py --type service --name "用户服务"
-
-# 4. 生成设计文档
-python3 scripts/generate_doc.py --type design --name "手机号注册功能"
+# 3. 知识查询
+python3 scripts/query_knowledge.py --query "API 文档规范"
 ```
 
----
-
-### 示例 3：角色视图使用
+### 示例 3：角色视图工作流
 
 ```bash
 # 1. 列出所有角色
 python3 scripts/role_view.py list-roles
 
-# 2. 生成架构师文档
-python3 scripts/role_view.py generate --role architect --type architecture --name "用户系统"
+# 2. 查看架构师文档
+python3 scripts/role_view.py docs --role architect
 
-# 3. 生成开发者文档
-python3 scripts/role_view.py generate --role developer --type module --name "认证模块"
-
-# 4. 生成测试计划
-python3 scripts/role_view.py generate --role tester --type test-plan --name "用户注册功能"
-
-# 5. 生成运维手册
-python3 scripts/role_view.py generate --role ops --type ops-runbook --name "生产环境"
-
-# 6. 生成用户旅程图
-python3 scripts/role_view.py generate --role product --type user-flow --name "用户注册流程"
+# 3. 生成架构师专属文档
+python3 scripts/role_view.py generate --role architect --type architecture --name "用户系统架构"
 ```
 
----
-
-### 示例 4：知识查询
+### 示例 4：结构优化工作流
 
 ```bash
-# 1. 查询 API 文档规范
-python3 scripts/query_knowledge.py --query "如何编写 API 文档？"
+# 1. 分析当前结构
+python3 scripts/structure_optimizer.py --path ./your-project
 
-# 2. 查询设计文档规范
-python3 scripts/query_knowledge.py --query "如何编写设计文档？"
+# 2. 查看复杂度报告
+cat complexity-report.json
 
-# 3. 查询架构师指南
-python3 scripts/query_knowledge.py --query "架构师需要关注什么？"
+# 3. 根据建议重新生成结构
+python3 scripts/adaptive_structure.py --path ./your-project --structure-type domain
 
-# 4. 列出所有知识
-python3 scripts/query_knowledge.py --list
+# 4. 验证一致性
+python3 scripts/consistency_checker.py --path ./your-project
 ```
 
 ---
 
-### 示例 5：生成项目文档
+## 工具集成示例
 
-```bash
-# 1. 初始化 CHANGELOG
-python3 scripts/generate_changelog.py init
+### 与 AI 智能体集成
 
-# 2. 生成 ROADMAP
-python3 scripts/generate_roadmap.py --path ./your-project
+```python
+from scripts.context_aware import ContextAwareness
+from scripts.multi_hop_qa import MultiHopQA
 
-# 3. 生成 CI/CD 配置
-python3 scripts/generate_cicd.py --type github-actions
+# 初始化
+awareness = ContextAwareness('./your-project')
+qa = MultiHopQA('./your-project')
 
-# 4. 生成 README
-python3 scripts/generate_doc.py --type readme --name "README"
+# 处理用户查询
+query = "如何设计并实现用户认证系统？"
+enhanced = awareness.process_query(query, user_role='developer')
+result = qa.execute_multi_hop(enhanced.enhanced_query)
+
+# 返回增强后的回答
+print(f"置信度: {enhanced.confidence:.2%}")
+print(f"建议知识: {enhanced.suggested_knowledge}")
+print(f"答案: {result.final_answer}")
 ```
-
----
-
-## 脚本对比
-
-| 脚本 | 用途 | 输入 | 输出 | 适用场景 |
-|------|------|------|------|----------|
-| analyze_project.py | 项目分析 | 项目路径 | JSON | 项目初始化 |
-| knowledge_graph.py | 知识图谱 | 项目路径 | JSON/MD | 可视化关系 |
-| knowledge_extractor.py | 隐性知识 | 项目路径 | JSON | 知识挖掘 |
-| evaluate_complexity.py | 复杂度评估 | 项目路径 | JSON | 代码审查 |
-| create_wiki_structure.py | Wiki 结构 | 项目路径 | 目录 | 文档初始化 |
-| generate_doc.py | 文档生成 | 文档类型 | MD | 文档创建 |
-| query_knowledge.py | 知识查询 | 查询文本 | 文本 | 知识检索 |
-| role_view.py | 角色视图 | 角色/类型 | MD | 角色文档 |
-| generate_changelog.py | CHANGELOG | 版本/内容 | MD | 版本管理 |
-| generate_roadmap.py | ROADMAP | 项目路径 | MD | 规划管理 |
-| generate_cicd.py | CI/CD | CI/CD 类型 | 配置文件 | 自动化 |
 
 ---
 
 ## 最佳实践
 
-### 1. 项目初始化
-
-```bash
-# 分析项目
-python3 scripts/analyze_project.py --path ./your-project
-
-# 创建 Wiki 结构
-python3 scripts/create_wiki_structure.py --path ./your-project
-
-# 生成基础文档
-python3 scripts/generate_changelog.py init
-python3 scripts/generate_roadmap.py --path ./your-project
-python3 scripts/generate_cicd.py --type github-actions
-```
+1. **使用自适应结构**：根据项目复杂度选择最合适的目录结构
+2. **定期检查一致性**：使用 `consistency_checker.py` 定期检查文档与代码的一致性
+3. **利用上下文感知**：在特定文件或角色下查询时，使用 `context_aware.py` 提升准确性
+4. **多跳问答**：对于复杂问题，使用 `multi_hop_qa.py` 进行深度分析
+5. **角色视图**：根据用户角色提供定制化的文档和回答
 
 ---
 
-### 2. 文档生成
+## 技术支持
 
-```bash
-# 根据角色生成文档
-python3 scripts/role_view.py generate --role architect --type architecture --name "用户系统"
-python3 scripts/role_view.py generate --role developer --type module --name "认证模块"
-python3 scripts/role_view.py generate --role tester --type test-plan --name "用户注册功能"
-```
-
----
-
-### 3. 知识查询
-
-```bash
-# 交互式查询
-python3 scripts/query_knowledge.py
-
-# 单次查询
-python3 scripts/query_knowledge.py --query "如何编写 API 文档？"
-```
-
----
-
-**最后更新**：2024-02-19
+如有问题或建议，请参考：
+- [SKILL.md](../SKILL.md) - 主文档
+- [references/core/](../references/core/) - 核心指南
+- [references/roles/](../references/roles/) - 角色指南

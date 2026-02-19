@@ -21,10 +21,18 @@
 - 自然语言查询：询问文档规范、结构、示例
 - 上下文感知：结合项目信息提供精准答案
 - 意图识别：自动识别用户意图并路由到相应处理
+- **多跳推理**：串联多个文档回答复杂问题
 
 **使用方式**：
 ```bash
+# 基础查询
 python3 scripts/query_knowledge.py --query "如何编写 API 文档？"
+
+# 上下文感知查询
+python3 scripts/context_aware.py --path ./your-project --query "如何设计 API？" --role architect
+
+# 多跳复杂查询
+python3 scripts/multi_hop_qa.py --path ./your-project --query "如何设计用户系统？然后如何实现？最后如何测试？"
 ```
 
 **相关文档**：
@@ -140,6 +148,138 @@ python3 scripts/role_view.py generate --role architect --type architecture --nam
 
 ---
 
+### 6. 自适应结构管理 🏗️
+
+**功能描述**：根据项目复杂度自动识别并生成合理的层级结构
+
+**能力**：
+- **复杂度分析**：自主识别项目规模和复杂度（4 个等级）
+- **结构推荐**：根据复杂度推荐最合适的目录结构类型
+- **自适应生成**：自动生成符合项目特征的目录结构
+- **结构优化**：分析现有结构，提供优化建议和改进方案
+
+**复杂度等级**：
+- `simple` - 简单项目（≤5 模块，≤20 文件，≤5000 行）
+- `medium` - 中等项目（≤20 模块，≤100 文件，≤20000 行）
+- `complex` - 复杂项目（≤50 模块，≤500 文件，≤100000 行）
+- `ultra-complex` - 超复杂项目（>50 模块，>500 文件，>100000 行）
+
+**支持结构类型**：
+- `flat` - 扁平结构（简单项目）
+- `typed` - 按类型分组（中等项目）
+- `domain` - 按领域分组（复杂项目）
+- `layered` - 分层结构（多层架构）
+- `microservice` - 微服务结构（微服务架构）
+- `nested` - 多层嵌套（超复杂项目）
+
+**使用方式**：
+```bash
+# 分析项目复杂度
+python3 scripts/complexity_analyzer.py --path ./your-project --output complexity-report.json
+
+# 生成自适应结构
+python3 scripts/adaptive_structure.py --path ./your-project
+
+# 优化现有结构
+python3 scripts/structure_optimizer.py --path ./your-project --recommended domain --output optimization-report.json
+```
+
+**相关文档**：
+- [scripts/complexity_analyzer.py](scripts/complexity_analyzer.py) - 复杂度分析器
+- [scripts/adaptive_structure.py](scripts/adaptive_structure.py) - 自适应结构生成器
+- [scripts/structure_optimizer.py](scripts/structure_optimizer.py) - 结构优化器
+
+---
+
+### 7. 上下文感知增强 🎯
+
+**功能描述**：自动注入环境上下文，使回答更精准
+
+**能力**：
+- **环境上下文**：收集项目路径、当前文件、Git 分支等环境信息
+- **角色上下文**：根据用户角色推荐相关的知识和资源
+- **查询增强**：自动增强用户查询，补充上下文信息
+- **置信度评分**：计算回答的置信度，辅助决策
+
+**上下文信息**：
+- 项目路径
+- 当前文件/函数/类
+- Git 分支和提交
+- 环境（开发/Docker/CI/CD）
+- 用户角色
+
+**使用方式**：
+```bash
+# 基本查询
+python3 scripts/context_aware.py --path ./your-project --query "如何设计 API？"
+
+# 指定当前文件
+python3 scripts/context_aware.py --path ./your-project --query "这个函数的作用？" --file src/services/user.py
+
+# 指定用户角色
+python3 scripts/context_aware.py --path ./your-project --query "如何部署服务？" --role ops
+```
+
+**相关文档**：
+- [scripts/context_aware.py](scripts/context_aware.py) - 上下文感知增强器
+
+---
+
+### 8. 一致性检查 ✅
+
+**功能描述**：检查文档与代码的一致性，防止脱节
+
+**能力**：
+- **API 一致性**：检查文档中定义的 API 在代码中是否存在
+- **模块一致性**：检查文档中提到的模块在代码中是否存在
+- **模型一致性**：检查文档中定义的数据模型和字段与代码是否一致
+- **文档时效性**：检查文档是否过期（代码已更新但文档未更新）
+- **链接有效性**：检查文档中的链接是否有效
+
+**问题类型**：
+- `api_not_implemented` - API 未实现
+- `module_not_found` - 模块未找到
+- `model_not_found` - 模型未找到
+- `field_missing_in_code` - 字段在代码中缺失
+- `field_missing_in_doc` - 字段在文档中缺失
+- `document_outdated` - 文档过期
+- `broken_link` - 链接失效
+
+**使用方式**：
+```bash
+python3 scripts/consistency_checker.py --path ./your-project --output consistency-report.json
+```
+
+**相关文档**：
+- [scripts/consistency_checker.py](scripts/consistency_checker.py) - 一致性检查器
+
+---
+
+### 9. 多跳问答引擎 🔍
+
+**功能描述**：串联多个文档回答复杂问题
+
+**能力**：
+- **查询分解**：将复杂查询分解为多个子查询
+- **知识图谱构建**：自动构建文档知识图谱
+- **多步推理**：串联多个文档回答问题
+- **执行路径追踪**：记录查询执行路径
+
+**查询分解策略**：
+- 连接词分解（然后、之后、接着）
+- 关键词分解
+- 问题类型分解（如何、为什么、什么）
+
+**使用方式**：
+```bash
+python3 scripts/multi_hop_qa.py --path ./your-project --query "如何设计并实现用户认证系统？然后如何测试？" --output qa-result.json
+```
+
+**相关文档**：
+- [scripts/multi_hop_qa.py](scripts/multi_hop_qa.py) - 多跳问答引擎
+
+---
+
 ## 文档体系
 
 ### 核心指南（core/）
@@ -198,24 +338,6 @@ python3 scripts/role_view.py generate --role architect --type architecture --nam
 | [spring-boot-guide.md](references/frameworks/spring-boot-guide.md) | Spring Boot 框架指引 |
 | [gin-guide.md](references/frameworks/gin-guide.md) | Gin 框架指引 |
 | [react-guide.md](references/frameworks/react-guide.md) | React 框架指引 |
-| [vue-guide.md](references/frameworks/vue-guide.md) | Vue 框架指引 |
-| [svelte-guide.md](references/frameworks/svelte-guide.md) | Svelte 框架指引 |
-| [solidjs-guide.md](references/frameworks/solidjs-guide.md) | SolidJS 框架指引 |
-| [flutter-guide.md](references/frameworks/flutter-guide.md) | Flutter 框架指引 |
-| [electron-guide.md](references/frameworks/electron-guide.md) | Electron 框架指引 |
-| [tauri-guide.md](references/frameworks/tauri-guide.md) | Tauri 框架指引 |
-| [wails-guide.md](references/frameworks/wails-guide.md) | Wails 框架指引 |
-
----
-
-### 文档模板（templates/）
-
-| 模板 | 说明 |
-|------|------|
-| [api-template.md](references/templates/api-template.md) | API 文档模板 |
-| [module-template.md](references/templates/module-template.md) | 模块文档模板 |
-| [service-template.md](references/templates/service-template.md) | 服务文档模板 |
-| [design-doc-template.md](references/templates/design-doc-template.md) | 设计文档模板 |
 
 ---
 
@@ -223,16 +345,13 @@ python3 scripts/role_view.py generate --role architect --type architecture --nam
 
 ### 核心脚本
 
-| 脚本 | 功能 | 输出 |
-|------|------|------|
-| [analyze_project.py](scripts/analyze_project.py) | 项目分析 | `project-analysis.json` |
-| [knowledge_graph.py](scripts/knowledge_graph.py) | 知识图谱 | `knowledge-graph.json/.mmd` |
-| [knowledge_extractor.py](scripts/knowledge_extractor.py) | 隐性知识提取 | `implicit-knowledge.json` |
-| [evaluate_complexity.py](scripts/evaluate_complexity.py) | 复杂度评估 | `complexity-report.json` |
-| [create_wiki_structure.py](scripts/create_wiki_structure.py) | Wiki 结构创建 | Wiki 目录结构 |
-| [generate_doc.py](scripts/generate_doc.py) | 智能文档生成 | 完整文档 |
-| [query_knowledge.py](scripts/query_knowledge.py) | 知识查询 | 查询结果 |
-| [role_view.py](scripts/role_view.py) | 角色视图查询 | 角色文档 |
+| 脚本 | 功能 |
+|------|------|
+| [analyze_project.py](scripts/analyze_project.py) | 分析项目结构，提取项目信息 |
+| [knowledge_graph.py](scripts/knowledge_graph.py) | 构建知识图谱，可视化模块关系 |
+| [knowledge_extractor.py](scripts/knowledge_extractor.py) | 提取隐性知识（设计决策、最佳实践） |
+| [evaluate_complexity.py](scripts/evaluate_complexity.py) | 评估项目复杂度 |
+| [create_wiki_structure.py](scripts/create_wiki_structure.py) | 创建 Wiki 目录结构 |
 
 ---
 
@@ -240,146 +359,132 @@ python3 scripts/role_view.py generate --role architect --type architecture --nam
 
 | 脚本 | 功能 |
 |------|------|
-| [generate_changelog.py](scripts/generate_changelog.py) | CHANGELOG 生成 |
-| [generate_roadmap.py](scripts/generate_roadmap.py) | ROADMAP 生成 |
-| [generate_cicd.py](scripts/generate_cicd.py) | CI/CD 生成 |
+| [generate_doc.py](scripts/generate_doc.py) | 智能文档生成 |
+| [query_knowledge.py](scripts/query_knowledge.py) | 知识查询 |
+| [role_view.py](scripts/role_view.py) | 角色视图查询 |
+
+---
+
+### 智能工具（新增）
+
+| 脚本 | 功能 | 复杂度支持 |
+|------|------|-----------|
+| [complexity_analyzer.py](scripts/complexity_analyzer.py) | 项目复杂度分析器 | ✅ 4 个等级 |
+| [adaptive_structure.py](scripts/adaptive_structure.py) | 自适应结构生成器 | ✅ 6 种类型 |
+| [structure_optimizer.py](scripts/structure_optimizer.py) | 结构优化器 | ✅ 结构评分 |
+| [context_aware.py](scripts/context_aware.py) | 上下文感知增强器 | ✅ 环境上下文 |
+| [multi_hop_qa.py](scripts/multi_hop_qa.py) | 多跳问答引擎 | ✅ 多步推理 |
+| [consistency_checker.py](scripts/consistency_checker.py) | 一致性检查器 | ✅ 7 种检查 |
+
+**详细文档**：[scripts/README.md](scripts/README.md)
 
 ---
 
 ## 角色视图
 
-### 5 种角色
+### 支持的角色
 
-| 角色 | 英文名 | 关注重点 | 核心文档 |
-|------|--------|----------|----------|
-| 架构师 | Architect | 整体架构、技术选型、可扩展性 | 架构设计文档、ADR |
-| 开发工程师 | Developer | 模块接口、数据结构、状态流转 | 模块设计文档、API 文档 |
-| 测试工程师 | Tester | 边界条件、异常场景、数据一致性 | 测试计划 |
-| 运维/SRE | Ops/SRE | 部署拓扑、资源需求、监控告警 | 运维手册 |
-| 产品经理 | Product Manager | 功能覆盖、用户路径、体验风险 | 用户旅程图、业务规则 |
-
----
-
-### 角色协作流程
-
-```mermaid
-flowchart LR
-    PM[产品经理] -->|需求| AD[架构师]
-    AD -->|技术方案| DEV[开发工程师]
-    DEV -->|代码实现| TEST[测试工程师]
-    TEST -->|上线| OPS[运维/SRE]
-    OPS -->|反馈| AD
-```
+| 角色 | 关键文档 | 核心关注点 |
+|------|---------|-----------|
+| 架构师 | 架构设计文档、ADR、技术选型文档 | 系统架构、技术决策、非功能性需求 |
+| 开发工程师 | 模块文档、API 文档、代码规范 | 功能实现、接口定义、代码质量 |
+| 测试工程师 | 测试计划、测试用例、测试报告 | 功能验证、边界条件、异常场景 |
+| 运维/SRE | 运维手册、部署指南、监控配置 | 部署运维、监控告警、故障处理 |
+| 产品经理 | 用户旅程图、业务规则文档、产品需求 | 用户体验、业务流程、功能规划 |
 
 ---
 
 ## 框架支持
 
-### 支持的框架
+### 后端框架
 
-| 分类 | 框架 | 文档 |
-|------|------|------|
-| 后端 | Django | [django-guide.md](references/frameworks/django-guide.md) |
-| 后端 | Flask | [flask-guide.md](references/frameworks/flask-guide.md) |
-| 后端 | FastAPI | [fastapi-guide.md](references/frameworks/fastapi-guide.md) |
-| 后端 | Spring Boot | [spring-boot-guide.md](references/frameworks/spring-boot-guide.md) |
-| 后端 | Gin | [gin-guide.md](references/frameworks/gin-guide.md) |
-| 前端 | React | [react-guide.md](references/frameworks/react-guide.md) |
-| 前端 | Vue | [vue-guide.md](references/frameworks/vue-guide.md) |
-| 前端 | Svelte | [svelte-guide.md](references/frameworks/svelte-guide.md) |
-| 前端 | SolidJS | [solidjs-guide.md](references/frameworks/solidjs-guide.md) |
-| 跨平台 | Flutter | [flutter-guide.md](references/frameworks/flutter-guide.md) |
-| 桌面 | Electron | [electron-guide.md](references/frameworks/electron-guide.md) |
-| 桌面 | Tauri | [tauri-guide.md](references/frameworks/tauri-guide.md) |
-| 桌面 | Wails | [wails-guide.md](references/frameworks/wails-guide.md) |
+- **Python**: Django, Flask, FastAPI
+- **Java**: Spring Boot
+- **Go**: Gin
+- **JavaScript/TypeScript**: Express, NestJS
 
-**总计**：13+ 主流框架
+### 前端框架
+
+- **React**: react-guide.md
+- **Vue**: vue-guide.md
+- **Angular**: angular-guide.md
 
 ---
 
 ## 快速开始
 
-### 最简使用（1 分钟）
+### 场景 1：分析并生成文档
 
 ```bash
-# 1. 分析项目
-python3 scripts/analyze_project.py --path ./your-project
+# 1. 分析项目复杂度
+python3 scripts/complexity_analyzer.py --path ./your-project
 
-# 2. 查询知识
-python3 scripts/query_knowledge.py --query "如何编写 API 文档？"
+# 2. 生成自适应结构
+python3 scripts/adaptive_structure.py --path ./your-project
+
+# 3. 生成 API 文档
+python3 scripts/generate_doc.py --type api --name "用户登录" --output wiki/03-API文档/用户登录.md
+
+# 4. 检查一致性
+python3 scripts/consistency_checker.py --path ./your-project
 ```
 
----
-
-### 完整流程（5 分钟）
+### 场景 2：智能问答
 
 ```bash
-# 1. 项目分析
-python3 scripts/analyze_project.py --path ./your-project
+# 上下文感知查询
+python3 scripts/context_aware.py --path ./your-project --query "如何设计 API？" --role architect
 
-# 2. 构建知识图谱
-python3 scripts/knowledge_graph.py --path ./your-project --format mermaid
-
-# 3. 提取隐性知识
-python3 scripts/knowledge_extractor.py --path ./your-project --language python
-
-# 4. 评估复杂度
-python3 scripts/evaluate_complexity.py --path ./your-project
-
-# 5. 创建 Wiki 结构
-python3 scripts/create_wiki_structure.py --path ./your-project
-
-# 6. 生成文档
-python3 scripts/generate_changelog.py init
-python3 scripts/generate_roadmap.py --path ./your-project
-python3 scripts/generate_cicd.py --type github-actions
+# 多跳复杂查询
+python3 scripts/multi_hop_qa.py --path ./your-project --query "如何设计用户系统？然后如何实现？最后如何测试？"
 ```
 
----
-
-### 角色视图使用
+### 场景 3：角色视图
 
 ```bash
 # 列出所有角色
 python3 scripts/role_view.py list-roles
 
-# 查看特定角色的文档
+# 查看架构师文档
 python3 scripts/role_view.py docs --role architect
 
-# 生成角色专属文档
-python3 scripts/role_view.py generate --role architect --type architecture --name "用户系统"
+# 生成架构师专属文档
+python3 scripts/role_view.py generate --role architect --type architecture --name "用户系统架构"
 ```
 
 ---
 
-## 完整功能总结
+## 功能亮点
 
-### 5 大核心能力
-1. 🧠 智能问答
-2. 📚 自动文档生成
-3. 🔗 知识图谱
-4. 📋 文档管理
-5. 👥 角色视图
+✨ **智能化升级**
+- 从静态文档管理升级为动态智能交互系统
+- 支持自然语言问答和意图识别
+- 上下文感知，提供精准答案
 
-### 45+ 参考文档
-- 核心：5 个
-- 文档规范：7 个
-- 角色视图：11 个
-- 可视化：1 个
-- 框架指引：13 个
-- 模板：4 个
+✨ **数据流动与模型**
+- API 文档中强制要求使用 Mermaid 时序图展示数据流转
+- 完整的数据模型定义（表格/类图/Schema 三种形式）
+- 规范的类型系统（基础类型/复杂类型/类型组合）
 
-### 11 个脚本工具
-- 核心脚本：8 个
-- 文档生成脚本：3 个
+✨ **自适应结构**
+- 根据项目复杂度自动识别并生成合理的层级结构
+- 支持 4 个复杂度等级和 6 种结构类型
+- 智能推荐最优结构
 
-### 13+ 框架支持
-- 后端：5 个
-- 前端：4 个
-- 跨平台：1 个
-- 桌面：3 个
+✨ **角色视图**
+- 为 5 种角色提供专门的文档和模板
+- 支持角色视图查询和文档生成
+- 根据角色推荐相关知识
+
+✨ **一致性保障**
+- 自动检查文档与代码的一致性
+- 检测文档时效性
+- 防止文档与代码脱节
 
 ---
 
-**最后更新**：2024-02-19
-**版本**：v2.0
+## 更多信息
+
+- [SKILL.md](SKILL.md) - ProjectWiki 主文档
+- [scripts/README.md](scripts/README.md) - 脚本工具详细说明
+- [FEATURE_INDEX.md](FEATURE_INDEX.md) - 功能索引（本文档）

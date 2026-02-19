@@ -1,6 +1,6 @@
 ---
 name: project-wiki
-version: 2.0.0
+version: 2.2.3
 description: 智能项目知识库构建工具，支持自然语言问答、自动文档生成、知识图谱构建，覆盖 13+ 主流框架
 ---
 
