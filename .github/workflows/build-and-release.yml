@@ -79,7 +79,8 @@ jobs:
             uv run python scripts/detect_skill_changes.py --all --json --output changes.json || true
             
             if [ -f changes.json ]; then
-              CHANGED_SKILLS=$(cat changes.json | jq -r '.all_changed_skills | join(",")')
+              # 使用 Python 解析 JSON，避免依赖 jq
+              CHANGED_SKILLS=$(uv run python -c "import json; data=json.load(open('changes.json')); print(','.join(data.get('all_changed_skills', [])))")
               echo "changed_skills=$CHANGED_SKILLS" >> $GITHUB_OUTPUT
               
               if [ -n "$CHANGED_SKILLS" ]; then
