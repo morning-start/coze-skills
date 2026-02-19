@@ -10,7 +10,16 @@
 ### 新增 (Added)
 
 #### 新技能
-- **flutter-skills** - Flutter 开发完整指南 (v1.0.0)
+- **flutter-skills** - Flutter 开发完整指南 (v1.0.0) ⭐ NEW
+  - 完整提交 38 个文件，包含 26+ 文档、4 个脚本工具
+  - Clean Architecture 架构规范
+  - TDD 测试工作流（Red/Green/Refactor）
+  - BLoC 状态管理最佳实践
+  - 故障排除指南（构建错误、运行时错误、状态调试、性能分析）
+  - 4 个代码生成脚本（generate_feature, generate_model, generate_bloc, generate_test）
+  - 4 个智能助手 Agent（TDD Coach, Code Reviewer, Test Writer, Architecture Reviewer）
+  - 40+ Flutter 库的选型指南
+  - 11 个详细技能文档 + 9 个命令文档
   - Clean Architecture 架构规范
   - TDD 测试工作流
   - BLoC 状态管理
