@@ -28,6 +28,10 @@ jobs:
         run: |
           uv python install 3.12
 
+      - name: Create virtual environment
+        run: |
+          uv venv
+
       - name: Install dependencies
         run: |
           uv pip install pyyaml
@@ -49,12 +53,12 @@ jobs:
 
       - name: Build skill packages
         run: |
-          python scripts/build_skills.py --version ${{ steps.get_version.outputs.version }} --output-dir dist
+          uv run python scripts/build_skills.py --version ${{ steps.get_version.outputs.version }} --output-dir dist
 
       - name: Generate release notes
         id: release_notes
         run: |
-          python scripts/generate_release_notes.py --version ${{ steps.get_version.outputs.version }} --output dist/release_notes.md
+          uv run python scripts/generate_release_notes.py --version ${{ steps.get_version.outputs.version }} --output dist/release_notes.md
 
       - name: Create Release
         if: startsWith(github.ref, 'refs/tags/')
