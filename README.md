@@ -159,6 +159,43 @@ Python代码风格优化与Pythonic惯用法指导。
 
 ---
 
+### 9. 智能技术架构方案生成器 (architecture-design) ⭐ NEW
+
+根据业务需求和技术栈生成可实施的架构方案，通过四步流程提供结构化建议和技术选型优化。
+
+**核心功能：**
+- 需求收集与分析：主动询问关键信息，避免假设
+- 技术选型评估：基于场景推荐技术栈，对比优缺点
+- 架构设计：生成系统架构图、模块划分、数据流设计
+- 方案输出：架构文档、技术决策记录、实施路线图
+
+**适用场景：**
+- 新项目技术架构设计
+- 现有系统架构重构
+- 技术栈迁移评估
+- 架构评审和决策
+
+**技术栈：** 架构设计、技术选型、Mermaid 可视化
+
+---
+
+### 10. 文档技能生成器 (doc-skill-generator) ⭐ NEW
+
+母技能，根据技术官网自动生成 Skill 子技能包。
+
+**核心功能：**
+- 智能抓取官网文档内容
+- 自动提取版本号和元数据
+- LLM 内容摘要与核心能力图谱生成
+- 模板化子技能生成（语言类/框架类/工具类）
+- 自动验证技能完整性
+
+**适用场景：**
+- 快速生成技术文档技能
+- 支持 Vue、React、Go 等多种技术栈
+
+---
+
 ## 快速开始
 
 ### 使用技能
@@ -228,16 +265,20 @@ uv run build-skills --version 1.0.0 --skill recruitment-processor
 
 ### 开发辅助
 - **api-doc-generator** - API 文档生成
-- **project-wiki** - 项目知识库
+- **project-wiki** (v2.0.0) - 项目知识库
 - **python-team** - Python 项目开发
 - **pythonic-style** - Python 代码风格
 
 ### 全栈开发
 - **six-layer-architect** - 六层架构生成
 
+### 架构设计
+- **architecture-design** ⭐ NEW - 智能技术架构方案生成器
+
 ### 文档处理
 - **copyright-assist** - 软著申请
 - **recruitment-processor** - 招聘信息处理
+- **doc-skill-generator** ⭐ NEW - 文档技能生成器（母技能）
 
 ### 技术决策
 - **tech-comparison** - 技术选型对比

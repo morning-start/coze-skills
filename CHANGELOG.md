@@ -5,6 +5,60 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [1.2.0] - 2026-02-19
+
+### 新增 (Added)
+
+#### 新技能
+- **architecture-design** - 智能技术架构方案生成器
+  - 根据业务需求和技术栈生成可实施的架构方案
+  - 四步流程：收集信息、梳理需求、迭代完善、输出方案
+  - 支持需求分析、技术选型评估、架构设计
+  - 提供替代方案建议和方案输出
+  - 包含技术选型参考指南
+
+#### 技能升级
+- **project-wiki** 升级到 2.0.0 版本
+  - 新增 FEATURE_INDEX.md 功能索引
+  - 重构 references 目录结构（core/document-guides/roles/templates/visualization）
+  - 新增 assets/ 资源目录（changelog 模板、wiki 模板）
+  - 新增 8 个脚本工具（create_wiki_structure、evaluate_complexity、generate_changelog、generate_cicd、generate_doc、generate_roadmap、query_knowledge、role_view）
+  - 新增角色视图指南（架构师/开发者/测试/运维/产品）
+
+### 变更 (Changed)
+
+#### CI/CD 流程优化
+- 简化 CI/CD workflow，删除复杂的多 job 结构
+- 每次发布构建所有技能，简化管理流程
+- 删除独立版本 tag 支持，统一使用 v* 格式
+- 删除变更检测逻辑，避免检测失败问题
+
+---
+
+## [1.1.0] - 2026-02-19
+
+### 新增 (Added)
+
+#### 新技能
+- **doc-skill-generator** - 文档技能生成器（母技能）
+  - 根据技术官网自动生成 Skill 子技能包
+  - 支持 Vue、React、Go 等多种技术栈
+  - 智能抓取官网文档内容
+  - 自动提取版本号和元数据
+  - LLM 内容摘要与核心能力图谱生成
+  - 模板化子技能生成（语言类/框架类/工具类）
+  - 自动验证技能完整性
+
+### 变更 (Changed)
+
+#### CI/CD 改进
+- 实现技能独立版本管理
+- 添加智能变更检测脚本
+- 支持多种发布场景（新技能/单个更新/多个更新/全部重建）
+- 重构 GitHub Actions workflow
+
+---
+
 ## [1.0.0] - 2026-02-18
 
 ### 新增 (Added)
