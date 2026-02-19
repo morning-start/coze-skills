@@ -67,7 +67,11 @@ class ProjectAnalyzer:
             'build_tools': [],
             'project_structure': {},
             'directories': [],
-            'configuration_files': []
+            'configuration_files': [],
+            'documents': {
+                'existing': [],
+                'recommended': []
+            }
         }
     
     def analyze(self) -> Dict:
@@ -95,6 +99,9 @@ class ProjectAnalyzer:
         
         # 收集配置文件
         self._collect_config_files(all_files)
+        
+        # 识别文档
+        self._detect_documents()
         
         return self.result
     
@@ -232,6 +239,84 @@ class ProjectAnalyzer:
             'name': current_path.name,
             'children': children
         }
+    
+    def _detect_documents(self):
+        """检测现有文档和推荐文档"""
+        wiki_path = self.project_path / 'wiki'
+        
+        # 检查现有文档
+        existing_docs = []
+        doc_patterns = ['README.md', 'CHANGELOG.md', 'ROADMAP.md', '架构.md', 'API.md']
+        
+        for pattern in doc_patterns:
+            # 检查 wiki 根目录
+            if (wiki_path / pattern).exists():
+                existing_docs.append({
+                    'name': pattern,
+                    'path': str(wiki_path / pattern),
+                    'location': 'wiki_root'
+                })
+            # 检查 01-概览 目录
+            elif (wiki_path / '01-概览' / pattern).exists():
+                existing_docs.append({
+                    'name': pattern,
+                    'path': str(wiki_path / '01-概览' / pattern),
+                    'location': 'wiki_overview'
+                })
+            # 检查项目根目录
+            elif (self.project_path / pattern).exists():
+                existing_docs.append({
+                    'name': pattern,
+                    'path': str(self.project_path / pattern),
+                    'location': 'project_root'
+                })
+        
+        self.result['documents']['existing'] = existing_docs
+        
+        # 推荐文档
+        recommended_docs = []
+        
+        # 检查是否需要 CHANGELOG
+        if 'CHANGELOG.md' not in [doc['name'] for doc in existing_docs]:
+            recommended_docs.append({
+                'name': 'CHANGELOG.md',
+                'reason': '记录版本变更历史',
+                'priority': 'high',
+                'generator': 'scripts/generate_changelog.py'
+            })
+        
+        # 检查是否需要 ROADMAP
+        if 'ROADMAP.md' not in [doc['name'] for doc in existing_docs]:
+            # 判断是否需要 ROADMAP（排除极小项目）
+            file_count = sum(1 for f in self.project_path.rglob('*') if f.is_file())
+            if file_count > 20:
+                recommended_docs.append({
+                    'name': 'ROADMAP.md',
+                    'reason': '记录项目发展规划',
+                    'priority': 'medium',
+                    'generator': 'scripts/generate_roadmap.py'
+                })
+        
+        # 检查是否需要 CI/CD 文档
+        cicd_signals = [
+            'Dockerfile', 'docker-compose.yml', '.github', '.gitlab-ci.yml',
+            'Jenkinsfile', 'k8s', 'kubernetes', 'deploy'
+        ]
+        has_cicd_signal = any(
+            (self.project_path / signal).exists() or
+            signal in str(self.project_path)
+            for signal in cicd_signals
+        )
+        
+        if has_cicd_signal:
+            recommended_docs.append({
+                'name': 'CI-CD.md',
+                'reason': '持续集成和持续部署文档',
+                'priority': 'medium',
+                'generator': 'scripts/generate_cicd.py'
+            })
+        
+        self.result['documents']['recommended'] = recommended_docs
     
     def _collect_config_files(self, files: List[Path]):
         """收集配置文件"""
