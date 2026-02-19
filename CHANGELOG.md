@@ -5,6 +5,23 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [1.3.0] - 2026-02-19
+
+### 新增 (Added)
+
+#### 新技能
+- **flutter-skills** - Flutter 开发完整指南 (v1.0.0)
+  - Clean Architecture 架构规范
+  - TDD 测试工作流
+  - BLoC 状态管理
+  - 故障排除指南（构建错误、运行时错误、状态调试、性能分析）
+  - 4 个代码生成脚本（generate_feature, generate_model, generate_bloc, generate_test）
+  - 4 个智能助手 Agent（TDD Coach, Code Reviewer, Test Writer, Architecture Reviewer）
+  - 40+ Flutter 库的选型指南
+  - 11 个详细技能文档 + 9 个命令文档
+
+---
+
 ## [1.2.1] - 2026-02-19
 
 ### 变更 (Changed)
