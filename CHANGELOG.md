@@ -31,6 +31,29 @@
 
 ---
 
+## [1.3.1] - 2026-02-20
+
+### 变更 (Changed)
+
+#### 技能升级
+- **project-wiki** 升级到 2.5.0 版本
+  - 重构文档指南体系，重命名 architecture-guide.md 为 architecture-doc-guide.md
+  - 新增 5 个文档指南：
+    - data-flow-guide.md - 数据流动设计指南
+    - state-management-guide.md - 状态管理指南
+    - functional-doc-guide.md - 功能文档编写指南
+    - requirement-doc-guide.md - 需求文档编写指南
+    - architecture-doc-guide.md - 架构文档编写指南
+  - 新增 4 个文档模板：
+    - architecture-doc-template.md - 架构文档模板
+    - functional-doc-template.md - 功能文档模板
+    - requirement-doc-template.md - 需求文档模板
+    - state-machine-template.md - 状态机设计模板
+  - 新增渐进式文档生成脚本 generate_progressive_doc.py
+    - 支持功能文档 → 需求文档 → 架构文档的自动转换
+
+---
+
 ## [1.2.1] - 2026-02-19
 
 ### 变更 (Changed)
