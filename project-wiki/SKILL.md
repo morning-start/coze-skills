@@ -1,12 +1,12 @@
 ---
 name: project-wiki
-version: 2.5.0
-description: 智能项目知识助手，支持自然语言问答、自动文档生成、渐进式文档体系，强调数据流动与状态管理，提供5种角色视图
+version: 3.0.0
+description: 智能项目知识助手，支持渐进式知识搜索、自然语言问答、自动文档生成，强调数据流动与状态管理，提供5种角色视图
 ---
 
 # ProjectWiki - 智能项目知识助手
 
-ProjectWiki 是一个智能项目知识助手，从静态文档管理升级为动态智能交互系统。通过自然语言问答、意图识别、上下文感知，结合项目信息提供精准答案。支持基于模板的自动文档生成，强调数据流动和状态管理。支持5种角色视图，提供专门的指南和模板。
+ProjectWiki 是一个智能项目知识助手，从静态文档管理升级为动态智能交互系统。通过自然语言问答、意图识别、上下文感知，结合项目信息提供精准答案。支持基于模板的自动文档生成，强调数据流动和状态管理。支持5种角色视图，提供专门的指南和模板。**新增渐进式知识搜索能力**，自动搜索并积累不熟悉的技术栈知识。
 
 ## 核心能力
 
@@ -27,6 +27,7 @@ ProjectWiki 是一个智能项目知识助手，从静态文档管理升级为�
 - **数据流动设计**：强调 API 文档中的数据流转，使用时序图展示
 - **状态管理**：提供完整的状态机设计模板和实现指南
 - **角色视图**：为5种角色提供专门的文档和模板
+- **渐进式知识搜索** ⭐ 新增：自动搜索不熟悉的技术栈并补充知识
 
 ### 3. 智能交互
 
@@ -37,6 +38,16 @@ ProjectWiki 是一个智能项目知识助手，从静态文档管理升级为�
 - **上下文感知**：结合项目上下文提供个性化建议
 - **智能推荐**：根据查询内容推荐相关文档
 
+### 4. 渐进式知识搜索 ⭐ 新增
+
+项目级能力，自动搜索并积累不熟悉的技术栈知识。
+
+- **自动搜索**：在文档生成过程中自动搜索不熟悉的技术栈
+- **知识积累**：保存到 `wiki/references/` 目录，渐进式积累
+- **多类型支持**：库、架构、设计模式、原理、数学公式等
+- **智能填充**：使用知识模板自动填充搜索结果
+- **知识索引**：维护知识索引，快速检索和管理
+
 ---
 
 ## 快速开始
@@ -45,28 +56,56 @@ ProjectWiki 是一个智能项目知识助手，从静态文档管理升级为�
 
 ```bash
 # 1. 分析项目
-python3 scripts/analyze_project.py --path ./your-project
+python3 scripts/analysis/analyze_project.py --path ./your-project
 
 # 2. 查询知识
-python3 scripts/query_knowledge.py --query "如何编写 API 文档？"
+python3 scripts/query/query_knowledge.py --query "如何编写 API 文档？"
 ```
 
 ### 完整流程（5分钟）
 
 ```bash
 # 1. 项目分析
-python3 scripts/analyze_project.py --path ./your-project
+python3 scripts/analysis/analyze_project.py --path ./your-project
 
 # 2. 创建 Wiki 结构
-python3 scripts/create_wiki_structure.py --path ./your-project
+python3 scripts/generation/create_wiki_structure.py --path ./your-project
 
-# 3. 生成文档
-python3 scripts/generate_doc.py --type api --name "用户登录接口"
+# 3. 生成文档（自动触发知识搜索）
+python3 scripts/generation/generate_doc.py --type api --name "用户登录接口"
 python3 scripts/generate_doc.py --type requirement --name "订单系统"
 python3 scripts/generate_doc.py --type architecture --name "支付系统"
 
 # 4. 查询知识
-python3 scripts/query_knowledge.py --query "数据流动设计"
+python3 scripts/query/query_knowledge.py --query "数据流动设计"
+
+# 5. 搜索技术栈知识 ⭐ 新增
+python3 scripts/knowledge/search_knowledge.py Redis
+python3 scripts/knowledge/knowledge_manager.py list
+```
+
+### 渐进式知识搜索（新增）
+
+```bash
+# 搜索特定技术栈
+python3 scripts/knowledge/search_knowledge.py Redis --type library
+
+# 管理知识库
+python3 scripts/knowledge/knowledge_manager.py list
+python3 scripts/knowledge/knowledge_manager.py get Redis
+python3 scripts/knowledge/knowledge_manager.py stats
+
+# 检查知识是否存在
+python3 scripts/knowledge/search_knowledge.py Redis --check
+```
+
+# 3. 生成文档
+python3 scripts/generation/generate_doc.py --type api --name "用户登录接口"
+python3 scripts/generate_doc.py --type requirement --name "订单系统"
+python3 scripts/generate_doc.py --type architecture --name "支付系统"
+
+# 4. 查询知识
+python3 scripts/query/query_knowledge.py --query "数据流动设计"
 ```
 
 ---
@@ -94,11 +133,60 @@ python3 scripts/query_knowledge.py --query "数据流动设计"
 - 从功能文档自动推断需求文档
 - 从需求文档自动推断架构文档
 - 支持文档链生成和完整性检查
+- **自动搜索补充知识** ⭐ 新增
+
+---
+
+### 渐进式知识搜索 ⭐ 新增
+
+项目级能力，自动搜索并积累不熟悉的技术栈知识。
+
+**核心机制**：
+```
+文档生成过程中检测未知技术栈
+    ↓
+自动触发 Web Search
+    ↓
+填充知识模板
+    ↓
+保存到 wiki/references/
+    ↓
+知识索引和管理
+```
+
+**知识类型支持**：
+- **库**：Python/JavaScript/Go 等语言库
+- **架构**：微服务、事件驱动、CQRS 等
+- **设计模式**：单例、工厂、观察者等
+- **原理**：CAP 定理、ACID、BASE 等
+- **数学公式**：算法、统计公式等
+
+**自动搜索触发条件**：
+- 文档生成过程中遇到未知技术栈
+- 检测到不熟悉的库或框架
+- 需要补充技术背景知识
+
+**知识管理**：
+- 保存位置：`wiki/references/[tech-stack]-knowledge.md`
+- 知识索引：`.knowledge-index.json`
+- 缓存机制：避免重复搜索
+- 版本追踪：记录创建和更新时间
+
+**使用脚本**：
+```bash
+# 搜索特定技术栈
+python3 scripts/knowledge/search_knowledge.py Redis --type library
+
+# 管理知识库
+python3 scripts/knowledge/knowledge_manager.py list
+python3 scripts/knowledge/knowledge_manager.py get Redis
+python3 scripts/knowledge/knowledge_manager.py stats
+```
 
 **相关文档**：
-- [功能文档指南](references/document-guides/functional-doc-guide.md)
-- [需求文档指南](references/document-guides/requirement-doc-guide.md)
-- [架构文档指南](references/document-guides/architecture-doc-guide.md)
+- [知识模板](assets/templates/knowledge-template.md)
+- [搜索脚本](scripts/knowledge/search_knowledge.py)
+- [知识管理器](scripts/knowledge/knowledge_manager.py)
 
 ---
 
@@ -205,10 +293,10 @@ stateDiagram-v2
 **使用脚本**：
 ```bash
 # 查看特定角色的文档
-python3 scripts/role_view.py docs --role architect
+python3 scripts/query/role_view.py docs --role architect
 
 # 生成角色专属文档
-python3 scripts/role_view.py generate --role architect --type architecture
+python3 scripts/query/role_view.py generate --role architect --type architecture
 ```
 
 **相关文档**：
@@ -239,6 +327,11 @@ project-wiki/
 │   │   ├── functional-doc-guide.md    # 功能文档指南
 │   │   ├── requirement-doc-guide.md    # 需求文档指南
 │   │   └── architecture-doc-guide.md   # 架构文档指南
+│   ├── design-patterns/          # 设计模式 ⭐ 新增
+│   │   ├── README.md             # 总览
+│   │   ├── creational/           # 创建型模式（5种）
+│   │   ├── structural/           # 结构型模式（7种）
+│   │   └── behavioral/           # 行为型模式（11种）
 │   ├── roles/                    # 角色视图
 │   │   ├── README.md             # 角色视图总览
 │   │   ├── role-mapping.md       # 角色与文档映射
@@ -249,27 +342,62 @@ project-wiki/
 │   │   └── product/              # 产品经理
 │   ├── visualization/            # 可视化
 │   │   └── mermaid-syntax.md
-│   ├── frameworks/               # 框架指引（13+框架）
-│   └── templates/                # 文档模板
-│       ├── api-template.md
-│       ├── module-template.md
-│       ├── service-template.md
-│       ├── design-doc-template.md
-│       ├── functional-doc-template.md
-│       ├── requirement-doc-template.md
-│       ├── architecture-doc-template.md
-│       └── state-machine-template.md
-├── scripts/                      # 执行脚本
-│   ├── analyze_project.py        # 项目分析
-│   ├── knowledge_graph.py        # 知识图谱
-│   ├── knowledge_extractor.py    # 隐性知识提取
-│   ├── evaluate_complexity.py    # 复杂度评估
-│   ├── create_wiki_structure.py  # Wiki 结构创建
-│   ├── generate_doc.py           # 智能文档生成
-│   ├── query_knowledge.py        # 知识查询
-│   └── role_view.py              # 角色视图查询
+│   └── frameworks/               # 框架指引（13+框架）⭐ 已优化
+│       ├── TEMPLATE.md           # 框架文档模板
+│       ├── index.md              # 框架索引
+│       ├── backend/              # 后端框架
+│       │   ├── django-guide.md
+│       │   ├── flask-guide.md
+│       │   ├── fastapi-guide.md
+│       │   ├── spring-boot-guide.md
+│       │   └── gin-guide.md
+│       ├── frontend/             # 前端框架
+│       │   ├── react-guide.md
+│       │   ├── vue-guide.md
+│       │   ├── svelte-guide.md
+│       │   └── solidjs-guide.md
+│       └── cross-platform/       # 跨平台框架
+│           ├── flutter-guide.md
+│           ├── electron-guide.md
+│           ├── tauri-guide.md
+│           └── wails-guide.md
+├── scripts/                      # 执行脚本（按功能分类）
+│   ├── analysis/                 # 分析类脚本
+│   │   ├── analyze_project.py    # 项目分析
+│   │   ├── complexity_analyzer.py # 复杂度分析
+│   │   ├── extract_docs.py       # 文档提取
+│   │   └── structure_optimizer.py # 结构优化
+│   ├── knowledge/                # 知识类脚本
+│   │   ├── knowledge_graph.py    # 知识图谱
+│   │   ├── knowledge_extractor.py # 隐性知识提取
+│   │   ├── knowledge_manager.py  # 知识管理器
+│   │   └── search_knowledge.py   # 知识搜索
+│   ├── generation/               # 生成类脚本
+│   │   ├── create_wiki_structure.py # Wiki 结构创建
+│   │   ├── generate_doc.py       # 智能文档生成
+│   │   ├── generate_changelog.py  # 变更日志生成
+│   │   ├── generate_cicd.py      # CI/CD 配置生成
+│   │   └── generate_roadmap.py   # 路线图生成
+│   ├── query/                    # 查询类脚本
+│   │   ├── query_knowledge.py    # 知识查询
+│   │   ├── role_view.py          # 角色视图查询
+│   │   └── multi_hop_qa.py       # 多跳问答
+│   ├── structure/                # 结构类脚本
+│   │   ├── adaptive_structure.py # 自适应结构
+│   │   └── context_aware.py      # 上下文感知
+│   └── utils/                    # 工具类脚本
+│       └── consistency_checker.py # 一致性检查
 └── assets/                       # 资产文件
-    └── wiki-templates/
+    └── templates/                # 文档模板
+        ├── api-template.md
+        ├── architecture-doc-template.md
+        ├── design-doc-template.md
+        ├── functional-doc-template.md
+        ├── module-template.md
+        ├── requirement-doc-template.md
+        ├── service-template.md
+        ├── state-machine-template.md
+        └── knowledge-template.md  # ⭐ 新增：知识模板
 ```
 
 ---
@@ -280,11 +408,13 @@ project-wiki/
 
 | 脚本 | 功能 | 输出 |
 |------|------|------|
-| [analyze_project.py](scripts/analyze_project.py) | 项目分析 | project-analysis.json |
-| [knowledge_graph.py](scripts/knowledge_graph.py) | 知识图谱 | knowledge-graph.json/.mmd |
-| [generate_doc.py](scripts/generate_doc.py) | 智能文档生成 | 完整文档 |
-| [query_knowledge.py](scripts/query_knowledge.py) | 知识查询 | 查询结果 |
-| [role_view.py](scripts/role_view.py) | 角色视图查询 | 按角色查询/生成文档 |
+| [analysis/analyze_project.py](scripts/analysis/analyze_project.py) | 项目分析 | project-analysis.json |
+| [knowledge/knowledge_graph.py](scripts/knowledge/knowledge_graph.py) | 知识图谱 | knowledge-graph.json/.mmd |
+| [generation/generate_doc.py](scripts/generation/generate_doc.py) | 智能文档生成 | 完整文档 |
+| [query/query_knowledge.py](scripts/query/query_knowledge.py) | 知识查询 | 查询结果 |
+| [query/role_view.py](scripts/query/role_view.py) | 角色视图查询 | 按角色查询/生成文档 |
+| [knowledge/search_knowledge.py](scripts/knowledge/search_knowledge.py) | ⭐ 知识搜索 | 知识文件 |
+| [knowledge/knowledge_manager.py](scripts/knowledge/knowledge_manager.py) | ⭐ 知识管理器 | 知识索引/统计 |
 
 ### 参考文档
 
@@ -292,10 +422,11 @@ project-wiki/
 |------|------|------|
 | [core/](references/core/) | 核心指南 | Agent 使用规范 |
 | [document-guides/](references/document-guides/) | 文档规范 | 数据流动、数据模型、状态管理 |
+| [design-patterns/](references/design-patterns/) | 设计模式 ⭐ 新增 | 23种设计模式（创建型、结构型、行为型） |
 | [roles/](references/roles/) | 角色视图 | 按角色提供专门的文档和模板 |
 | [visualization/](references/visualization/) | 可视化指南 | Mermaid 语法 |
-| [frameworks/](references/frameworks/) | 框架指引 | 13+ 主流框架特定规范 |
-| [templates/](references/templates/) | 文档模板 | 完整的文档模板 |
+| [frameworks/](references/frameworks/) | 框架指引 | 13+ 主流框架（后端/前端/跨平台） |
+| [templates/](assets/templates/) | 文档模板 ⭐ 已移动 | 完整的文档模板（位于 assets/） |
 
 ---
 
@@ -374,20 +505,93 @@ project-wiki/
 文档链已自动推断并保持一致性。
 ```
 
+### 示例 4：搜索技术栈知识 ⭐ 新增
+
+**用户**：
+```
+"我不熟悉 Redis，能帮我搜索一下相关知识吗？"
+```
+
+**Agent 响应**：
+```
+正在搜索 Redis 的知识...
+
+🔍 搜索关键词:
+1. Redis 官方文档
+2. Redis 教程
+3. Redis 最佳实践
+4. Redis API 文档
+5. Redis 使用示例
+6. Redis 最新版本
+
+✅ 知识文件已生成: wiki/references/redis-knowledge.md
+
+知识库已更新:
+- 知识类型: library
+- 搜索结果数: 6
+- 创建时间: 2024-02-20 10:00:00
+
+现在可以在文档生成过程中自动引用 Redis 的知识。
+```
+
+**用户**：
+```
+"查看我的知识库有哪些技术栈？"
+```
+
+**Agent 响应**：
+```
+📚 知识库列表 (3 项):
+
+  • Redis (library)
+    创建时间: 2024-02-20 10:00:00
+    元数据: {'search_keywords': [...], 'search_results_count': 6}
+
+  • Django (library)
+    创建时间: 2024-02-19 15:30:00
+    元数据: {'search_keywords': [...], 'search_results_count': 5}
+
+  • Microservices (architecture)
+    创建时间: 2024-02-18 09:15:00
+    元数据: {'search_keywords': [...], 'search_results_count': 4}
+
+📊 知识库统计:
+  总知识数: 3
+  缓存大小: 3
+  类型分布:
+    library: 2
+    architecture: 1
+```
+
 ---
 
 ## 技术支持
 
 ### 常见问题
 
+**Q: 如何搜索技术栈知识？**
+A: 使用 `python3 scripts/search_knowledge.py <tech-stack>` 搜索，或在文档生成过程中自动触发。
+
+**Q: 知识文件保存在哪里？**
+A: 保存在 `wiki/references/[tech-stack]-knowledge.md`，知识索引保存在 `.knowledge-index.json`。
+
+**Q: 如何管理知识库？**
+A: 使用 `knowledge_manager.py` 进行管理：
+  - `list`: 列出所有知识
+  - `get <tech-stack>`: 获取特定知识
+  - `stats`: 查看统计信息
+
 **Q: 如何添加新的文档模板？**
-A: 在 `references/templates/` 目录下创建新的模板文件，并在 SKILL.md 中更新引用。
+A: 在 `assets/templates/` 目录下创建新的模板文件。
+
+**Q: 如何查询设计模式？**
+A: 使用 `query_knowledge.py` 查询，或直接查看 `references/design-patterns/README.md`。
 
 **Q: 如何自定义角色视图？**
 A: 在 `references/roles/` 目录下创建新的角色文件夹，添加指南和模板，并在 `role-mapping.md` 中更新映射。
 
 **Q: 如何添加新的框架支持？**
-A: 在 `references/frameworks/` 目录下创建新的框架指南，参考 TEMPLATE.md 的格式。
+A: 在 `references/frameworks/` 的对应分类（backend/frontend/cross-platform）下创建新的框架指南。
 
 **Q: 数据流动和状态管理有什么关系？**
 A: 数据流动关注数据在系统中的流动路径，状态管理关注系统状态的转换。两者共同确保系统的正确性和一致性。
@@ -396,7 +600,27 @@ A: 数据流动关注数据在系统中的流动路径，状态管理关注系�
 
 ## 更新日志
 
-### v2.0.0（当前版本）
+### v4.0.0（当前版本）⭐
+- ✨ **新增渐进式知识搜索能力**
+  - 自动搜索不熟悉的技术栈
+  - 支持多种知识类型（库、架构、设计模式、原理、数学公式）
+  - 知识模板自动填充
+  - 知识索引和管理
+  - 缓存机制避免重复搜索
+- 📝 新增知识模板（knowledge-template.md）
+- 🔍 新增知识搜索脚本（search_knowledge.py）
+- 🗄️ 新增知识管理器（knowledge_manager.py）
+- 🔄 集成到文档生成流程，自动触发搜索
+
+### v3.0.0
+- ✨ 新增设计模式知识库（23种设计模式）
+- ✨ 优化 frameworks 结构（按后端/前端/跨平台分类）
+- ✨ 移动模板文件到 assets/templates/
+- 📚 新增创建型模式（Singleton、Factory Method、Abstract Factory、Builder、Prototype）
+- 📚 新增结构型模式（Adapter、Bridge、Composite、Decorator、Facade、Flyweight、Proxy）
+- 📚 新墧行为型模式（Chain of Responsibility、Command、Interpreter、Iterator、Mediator、Memento、Observer、State、Strategy、Template Method、Visitor）
+
+### v2.0.0
 - ✨ 新增渐进式文档系统（功能文档 → 需求文档 → 架构文档）
 - ✨ 新增数据流动设计指南和模板
 - ✨ 新增状态管理指南和状态机模板
