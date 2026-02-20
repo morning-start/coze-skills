@@ -5,6 +5,31 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [1.4.0] - 2026-02-20
+
+### 变更 (Changed)
+
+#### 技能升级
+- **project-wiki** 升级到 3.3.3 版本 ⭐ MAJOR UPDATE
+  - 版本号从 3.0.0 升级到 3.3.3
+  - 重大目录结构重构，统一 references 目录组织
+  - 新增智能分析器 smart_analyzer.py
+    - 自动检测项目类型和技术栈
+    - 自动推荐文档类型和模板
+    - 自动补充缺失的知识
+    - 自动生成优化建议
+  - 目录重构：
+    - references/guides/document/ - 10个文档指南
+    - references/guides/framework/ - 13个框架指南（按backend/frontend/cross-platform分类）
+    - references/guides/role/ - 5个角色指南
+    - references/knowledge/patterns/ - 23个设计模式
+    - references/knowledge/principles/ - 设计原则（新增）
+    - references/templates/ - 15个模板（统一从assets迁移）
+    - references/utils/ - 工具文档
+  - 删除 assets/ 目录，内容全部整合到 references/
+
+---
+
 ## [1.3.1] - 2026-02-20
 
 ### 变更 (Changed)
