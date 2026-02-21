@@ -3,11 +3,12 @@
 ## 目录
 
 1. [概述](#概述)
-2. [格式规范](#格式规范)
-3. [版本号规范](#版本号规范)
-4. [变更类型](#变更类型)
-5. [Changelog 模板](#changelog-模板)
-6. [最佳实践](#最佳实践)
+2. [标准命名](#标准命名)
+3. [格式规范](#格式规范)
+4. [版本号规范](#版本号规范)
+5. [变更类型](#变更类型)
+6. [Changelog 模板](#changelog-模板)
+7. [最佳实践](#最佳实践)
 
 ---
 
@@ -25,6 +26,23 @@ Changelog（变更日志）是记录项目所有重要变更的文件。它帮�
 ### 标准
 
 本规范基于 [Keep a Changelog](https://keepachangelog.com/) 标准，并遵循 [Semantic Versioning](https://semver.org/spec/v2.0.0.html) 版本号规范。
+
+---
+
+## 标准命名
+
+⚠️ **重要**：变更日志文件必须命名为 `CHANGELOG.md`（全大写），位于项目根目录。
+
+**标准路径**：`/CHANGELOG.md`
+
+**错误示例**：
+- `changelog.md`（小写）
+- `CHANGELOG.markdown`（扩展名错误）
+- `docs/changelog.md`（位置错误）
+- `CHANGELOG.txt`（格式错误）
+
+**正确示例**：
+- `CHANGELOG.md`（标准）
 
 ---
 
