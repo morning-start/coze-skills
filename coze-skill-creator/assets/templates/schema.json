@@ -1,0 +1,257 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "title": "Skill Configuration Schema",
+  "description": "技能配置文件的 JSON Schema 定义",
+  "required": ["name", "description"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Skill 名称，必须使用小写字母和连字符",
+      "pattern": "^[a-z0-9-]+$",
+      "minLength": 1,
+      "maxLength": 50,
+      "not": {
+        "pattern": "-skill$"
+      }
+    },
+    "description": {
+      "type": "string",
+      "description": "Skill 描述，包含核心能力和触发场景",
+      "minLength": 100,
+      "maxLength": 150
+    },
+    "version": {
+      "type": "string",
+      "description": "版本号",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "author": {
+      "type": "string",
+      "description": "作者信息"
+    },
+    "dependency": {
+      "type": "object",
+      "description": "依赖配置",
+      "properties": {
+        "python": {
+          "type": "array",
+          "description": "Python 依赖包",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9_-]+([><=!~]+[\\d.]+)?$"
+          }
+        },
+        "system": {
+          "type": "array",
+          "description": "系统级命令",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "tools": {
+      "type": "array",
+      "description": "工具列表",
+      "items": {
+        "type": "object",
+        "required": ["name", "type"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "pattern": "^[a-z0-9_-]+$"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["python", "bash", "api"]
+          },
+          "description": {
+            "type": "string"
+          },
+          "parameters": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["name", "type"],
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string",
+                  "enum": ["string", "integer", "number", "boolean", "object", "array"]
+                },
+                "required": {
+                  "type": "boolean"
+                },
+                "default": {},
+                "description": {
+                  "type": "string"
+                },
+                "validation": {
+                  "type": "object",
+                  "properties": {
+                    "pattern": {
+                      "type": "string"
+                    },
+                    "minLength": {
+                      "type": "integer"
+                    },
+                    "maxLength": {
+                      "type": "integer"
+                    },
+                    "minimum": {
+                      "type": "number"
+                    },
+                    "maximum": {
+                      "type": "number"
+                    },
+                    "enum": {
+                      "type": "array",
+                      "items": {}
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "returns": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "properties": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
+    },
+    "scripts": {
+      "type": "array",
+      "description": "脚本定义",
+      "items": {
+        "type": "object",
+        "required": ["name"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9_.-]+\\.py$"
+          },
+          "description": {
+            "type": "string"
+          },
+          "functions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "pattern": "^[a-zA-Z_][a-zA-Z0-9_]*$"
+                },
+                "parameters": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "description": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "references": {
+      "type": "array",
+      "description": "参考文档定义",
+      "items": {
+        "type": "object",
+        "required": ["name", "content"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9_.-]+\\.md$"
+          },
+          "content": {
+            "type": "string"
+          },
+          "usage": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "assets": {
+      "type": "array",
+      "description": "资产文件定义",
+      "items": {
+        "type": "object",
+        "required": ["path", "content"],
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "usage": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "triggers": {
+      "type": "array",
+      "description": "触发场景",
+      "items": {
+        "type": "string"
+      }
+    },
+    "inputs": {
+      "type": "array",
+      "description": "输入参数定义",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "required": {
+            "type": "boolean"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "branches": {
+      "type": "array",
+      "description": "分支定义",
+      "items": {
+        "type": "object",
+        "properties": {
+          "condition": {
+            "type": "string"
+          },
+          "action": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
