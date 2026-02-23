@@ -238,29 +238,6 @@ Python代码风格优化与Pythonic惯用法指导。
 
 ---
 
-### 13. Flutter 开发完整指南 (flutter-skills) ⭐ NEW
-
-现代 Flutter 开发的完整指南，涵盖架构设计、测试流程、故障排除和代码生成。
-
-**核心功能：**
-- Clean Architecture 架构规范
-- TDD 测试工作流（Red/Green/Refactor）
-- BLoC 状态管理
-- 故障诊断（构建错误、运行时错误、状态调试、性能分析）
-- 代码生成脚本（Feature、Model、BLoC、Test）
-- 4 个智能助手 Agent（TDD Coach, Code Reviewer, Test Writer, Architecture Reviewer）
-- 40+ Flutter 库的选型指南
-
-**适用场景：**
-- Flutter 项目架构设计
-- TDD 开发流程指导
-- 代码审查和架构审计
-- 故障排除和性能优化
-
-**技术栈：** Flutter SDK 3.x、Dart SDK 3.x
-
----
-
 ## 快速开始
 
 ### 使用技能
@@ -333,7 +310,6 @@ uv run build-skills --version 1.0.0 --skill recruitment-processor
 - **project-wiki** (v3.3.3) - 项目知识库
 - **python-team** - Python 项目开发
 - **pythonic-style** - Python 代码风格
-- **flutter-skills** (v1.0.0) - Flutter 开发完整指南
 
 ### 全栈开发
 - **six-layer-architect** - 六层架构生成
@@ -342,7 +318,7 @@ uv run build-skills --version 1.0.0 --skill recruitment-processor
 - **architecture-design** ⭐ NEW - 智能技术架构方案生成器
 
 ### 技能创建
-- **book-skill-creator** (v1.0.0) ⭐ NEW - 技能工厂核心母技能
+- **book-skill-creator** (v1.1.0) ⭐ NEW - 技能工厂核心母技能
 - **coze-skill-creator** (v1.0.0) ⭐ NEW - Coze 技能创建器
 - **meta-skill-creator** (v1.0.0) ⭐ NEW - 高阶技能创建系统
 

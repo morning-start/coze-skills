@@ -5,6 +5,27 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [2.0.0] - 2026-02-23
+
+### 变更 (Changed)
+
+#### 技能升级
+- **book-skill-creator** 升级到 v1.1.0 版本
+  - 新增官方文档100%覆盖解析功能（docs_parser.py）
+  - 新增网络搜索最佳实践提取功能（web_searcher.py）
+  - 新增模板管理与知识沉淀功能（template_manager.py）
+  - 新增文档解析指南和模板库索引
+
+### 移除 (Removed)
+
+- **flutter-skills** - 移除 Flutter 开发完整指南
+  - 删除 39 个文件，共 14,794 行代码
+
+- **wxt-skills** - 移除 WXT 浏览器扩展开发技能
+  - 删除 34 个文件，共 17,071 行代码
+
+---
+
 ## [1.6.0] - 2026-02-23
 
 ### 新增 (Added)
