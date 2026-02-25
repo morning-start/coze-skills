@@ -1,6 +1,6 @@
 ---
 name: project-wiki
-version: 3.5.0
+version: 3.5.1
 description: 智能项目知识助手，自动分析项目、智能推荐文档，支持基础文档生成（README/ROADMAP/CHANGELOG/ARCHITECTURE）、文档流程管理（生成/更新/修改/完善）、全面文档撰写
 ---
 
