@@ -1,6 +1,6 @@
 ---
 name: project-wiki
-version: 3.5.1
+version: 4.0.0
 description: 智能项目知识助手，自动分析项目、智能推荐文档，支持基础文档生成（README/ROADMAP/CHANGELOG/ARCHITECTURE）、文档流程管理（生成/更新/修改/完善）、全面文档撰写
 ---
 
@@ -19,35 +19,30 @@ ProjectWiki 是一个智能项目知识助手，从静态文档管理升级为�
 - **一致性保障**：数据一致性、术语一致性、功能名称一致性
 - **版本控制**：完整的 CHANGELOG 管理
 - **按需扩展**：根据项目类型和复杂度按需生成其他文档
+- **知识积累**：自动搜索并积累技术知识到知识库
 
 ---
 
 ## 智能工作流程
 
-```mermaid
-flowchart LR
-    A[项目分析] --> B[智能推荐]
-    B --> C[文档生成]
-    C --> D[知识补全]
-    D --> E[优化迭代]
-```
+Agent 通过自然语言与用户交互，结合模板和指南完成文档工作。
 
-### 三种工作模式
+### 核心能力
 
-**1. 分析模式**
-```bash
-python3 scripts/analysis/smart_analyzer.py --path ./your-project
-```
+**1. 知识搜索**
+- 使用 web_search 搜索不熟悉的技术栈知识
+- 整理知识内容并保存到 `wiki/references/` 目录
+- 参考: [知识搜索指南](references/guides/document/knowledge-search-guide.md)
 
-**2. 生成模式**
-```bash
-python3 scripts/generation/generate_doc.py --auto
-```
+**2. 一致性检查**
+- 检查文档与代码的一致性（版本、API、配置等）
+- 确保术语、功能、状态在各文档间保持一致
+- 参考: [一致性检查指南](references/guides/document/consistency-check-guide.md)
 
-**3. 优化模式**
-```bash
-python3 scripts/utils/consistency_checker.py --fix
-```
+**3. 生命周期管理**
+- 管理文档从创建到归档的完整生命周期
+- 6 种状态：Draft → Review → Published → Maintenance → Archived → Deprecated
+- 参考: [生命周期管理指南](references/guides/document/lifecycle-guide.md)
 
 ---
 
@@ -110,18 +105,23 @@ python3 scripts/utils/consistency_checker.py --fix
 
 ## 快速开始
 
-### 一键启动
+### 一、创建基础文档
 
-```bash
-# 1. 智能分析
-python3 scripts/analysis/smart_analyzer.py --path ./your-project
+1. 根据项目类型选择模板：`references/templates/core/`
+2. 生成 README.md、ROADMAP.md、CHANGELOG.md、ARCHITECTURE.md
+3. 设置文档元信息（作者、版本、状态）
 
-# 2. 自动生成
-python3 scripts/generation/generate_doc.py --auto
+### 二、搜索知识
 
-# 3. 查询知识
-python3 scripts/query/query_knowledge.py --query "数据流动设计"
-```
+遇到不熟悉的技术时，使用 web_search 搜索并保存到 `wiki/references/`
+
+参考：[知识搜索指南](references/guides/document/knowledge-search-guide.md)
+
+### 三、一致性检查
+
+发布前检查文档与代码的一致性
+
+参考：[一致性检查指南](references/guides/document/consistency-check-guide.md)
 
 ---
 
@@ -153,69 +153,81 @@ project-wiki/
 ├── references/
 │   ├── core/                     # 核心指南
 │   ├── templates/                # ⭐ 文档模板（按类型分类）
-│   │   ├── core/                 # 核心文档（README、ROADMAP、CHANGELOG、ARCHITECTURE）
+│   │   ├── core/                 # 核心文档
 │   │   ├── api/                  # API 文档
 │   │   ├── architecture/         # 架构文档
-│   │   ├── design/               # 设计文档
-│   │   ├── functional/           # 功能文档
-│   │   ├── requirement/          # 需求文档
-│   │   ├── module/               # 模块文档
-│   │   ├── service/              # 服务文档
-│   │   ├── state/                # 状态文档
-│   │   ├── knowledge/            # 知识文档
-│   │   ├── wiki/                 # Wiki 文档
-│   │   └── changelog/            # 变更日志
-│   ├── guides/                   # 指南文档
+│   │   ├── database/             # 数据库文档
+│   │   ├── usecase/              # 用例文档
+│   │   ├── lifecycle/            # 生命周期文档
+│   │   └── ...
+│   ├── guides/                    # 指南文档
+│   │   ├── document/             # 文档指南（⭐ 知识搜索、一致性检查、生命周期管理）
+│   │   ├── architecture/         # 架构指南
+│   │   ├── database/             # 数据库指南
+│   │   └── usecase/              # 用例指南
 │   ├── knowledge/                # 知识库
-│   └── utils/                    # 工具和可视化
-├── scripts/                      # 执行脚本
-│   ├── analysis/
-│   ├── generation/
-│   ├── query/
-│   ├── knowledge/
-│   ├── structure/
-│   └── utils/
-└── FEATURE_INDEX.md
+│   │   ├── patterns/             # 设计模式
+│   │   ├── principles/           # 设计原则
+│   │   ├── framework/            # 框架知识
+│   │   ├── extraction.md        # 知识提取
+│   │   ├── knowledge-graph.md   # 知识图谱
+│   │   └── management.md         # 知识管理
+│   └── tools/                    # 工具指南
+│       ├── smart-analysis.md     # 智能分析
+│       └── structure-optimization.md  # 结构优化
 ```
 
 ---
 
 ## 资源索引
 
-### 核心脚本
+### 核心指南
 
-| 脚本 | 功能 |
+| 指南 | 功能 |
 |------|------|
-| [analysis/smart_analyzer.py](scripts/analysis/smart_analyzer.py) | ⭐ 智能分析 |
-| [generation/generate_doc.py](scripts/generation/generate_doc.py) | 智能文档生成 |
-| [query/query_knowledge.py](scripts/query/query_knowledge.py) | 知识查询 |
-| [knowledge/search_knowledge.py](scripts/knowledge/search_knowledge.py) | ⭐ 知识搜索 |
-| [knowledge/knowledge_manager.py](scripts/knowledge/knowledge_manager.py) | ⭐ 知识管理器 |
-| [utils/lifecycle_manager.py](scripts/utils/lifecycle_manager.py) | ⭐ 文档生命周期管理 |
+| [knowledge-search-guide.md](references/guides/document/knowledge-search-guide.md) | 知识搜索：通过 web_search 搜索技术知识并保存到 wiki/references/ |
+| [consistency-check-guide.md](references/guides/document/consistency-check-guide.md) | 一致性检查：检查文档与代码的一致性 |
+| [lifecycle-guide.md](references/guides/document/lifecycle-guide.md) | 生命周期管理：管理文档从创建到归档的完整生命周期 |
+| [generation-flow-guide.md](references/guides/document/generation-flow-guide.md) | 文档生成流程：生成/更新/修改/完善的完整流程 |
+
+### 工具指南
+
+| 指南 | 功能 |
+|------|------|
+| [smart-analysis.md](references/tools/smart-analysis.md) | 智能分析：检测项目类型、技术栈、推荐文档模板 |
+| [structure-optimization.md](references/tools/structure-optimization.md) | 结构优化：分析并优化项目目录结构 |
+
+### 知识管理
+
+| 指南 | 功能 |
+|------|------|
+| [extraction.md](references/knowledge/extraction.md) | 知识提取：从代码中提取结构化知识 |
+| [knowledge-graph.md](references/knowledge/knowledge-graph.md) | 知识图谱：知识关联和图结构管理 |
+| [management.md](references/knowledge/management.md) | 知识管理：知识库生命周期管理 |
 
 ### 参考文档
 
 | 目录 | 内容 |
 |------|------|
 | [templates/](references/templates/) | ⭐ 所有模板（按类型分类） |
-| [templates/core/](references/templates/core/) | ⭐ 基础文档模板（README/ROADMAP/CHANGELOG/ARCHITECTURE） |
+| [templates/core/](references/templates/core/) | ⭐ 基础文档模板 |
 | [guides/document/](references/guides/document/) | ⭐ 文档生成流程指南、基础文档清单 |
-| [guides/document/](references/guides/document/) | 文档命名规范、生命周期管理 |
 | [guides/database/](references/guides/database/) | ER 图设计指南 |
 | [guides/usecase/](references/guides/usecase/) | 用例图设计指南 |
-| [guides/architecture/](references/guides/architecture/) | 架构设计指南、技术选型决策指南 |
-| [knowledge/patterns/](references/knowledge/patterns/) | 23 种设计模式 |
-| [knowledge/principles/](references/knowledge/principles/) | SOLID 六大原则 |
+| [guides/architecture/](references/guides/architecture/) | 架构设计指南、技术选型 |
+| [knowledge/patterns/](references/knowledge/patterns/) | 设计模式 |
 
 ---
 
 ## 使用技巧
 
-### 1. 从智能分析开始
+### 1. 使用模板生成文档
 
-使用 `smart_analyzer.py` 获取项目分析报告和推荐建议。
+参考 `references/templates/` 下的模板，根据项目类型选择合适的模板。
 
-### 2. 遵循文档命名规范
+### 2. 遵循文档生成流程
+
+使用 `references/guides/document/generation-flow-guide.md` 了解完整的文档生成流程，包括：
 
 使用标准命名确保项目文档的一致性：
 - `README.md` - 项目概述
@@ -263,15 +275,6 @@ project-wiki/
 
 ## 常见问题
 
-**Q: 如何开始使用？**
-A: 运行 `python3 scripts/analysis/smart_analyzer.py --path ./your-project`
-
-**Q: 如何生成文档？**
-A: 使用 `python3 scripts/generation/generate_doc.py --auto`
-
-**Q: 如何管理文档生命周期？**
-A: 使用 `python3 scripts/utils/lifecycle_manager.py init <文档路径> --name <文档名称> --author <作者>`
-
 **Q: 核心文档如何命名？**
 A: 必须使用全大写：`README.md`、`ROADMAP.md`、`CHANGELOG.md`、`ARCHITECTURE.md`
 
@@ -281,8 +284,14 @@ A: 基础文档包括：README.md（项目概述）、ROADMAP.md（路线图）�
 **Q: 如何生成文档？**
 A: 参考 [文档生成流程指南](references/guides/document/generation-flow-guide.md)，了解生成/更新/修改/完善的完整流程
 
+**Q: 如何搜索技术知识？**
+A: 使用 web_search 搜索技术栈知识，整理后保存到 `wiki/references/` 目录。详见 [知识搜索指南](references/guides/document/knowledge-search-guide.md)
+
+**Q: 如何管理文档生命周期？**
+A: 通过设置文档状态（Draft/Review/Published/Maintenance/Archived/Deprecated）管理文档。详见 [生命周期管理指南](references/guides/document/lifecycle-guide.md)
+
 **Q: 如何保证文档一致性？**
-A: 在生成/更新文档时检查：数据一致性（版本号、日期）、术语一致性、功能名称一致性。详见流程指南的注意事项章节
+A: 在生成/更新文档时检查：数据一致性（版本号、日期）、术语一致性、功能名称一致性。详见 [一致性检查指南](references/guides/document/consistency-check-guide.md)
 
 **Q: 模板在哪里？**
 A: 所有模板在 `references/templates/`，按类型分类
