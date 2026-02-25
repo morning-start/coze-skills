@@ -1,24 +1,24 @@
 ---
 name: project-wiki
 version: 3.4.0
-description: 智能项目知识助手，自动分析项目、智能推荐文档、渐进式知识搜索，强调数据流动与状态管理
+description: 智能项目知识助手，自动分析项目、智能推荐文档，支持基础文档生成（README/TODO/CHANGELOG/ROADMAP/ARCHITECTURE）、文档流程管理（生成/更新/修改/完善）、全面文档撰写
 ---
 
 # ProjectWiki - 智能项目知识助手
 
-ProjectWiki 是一个智能项目知识助手，从静态文档管理升级为动态智能交互系统。通过自然语言问答、意图识别、上下文感知，结合项目信息提供精准答案。**支持智能自动分析、渐进式文档生成、角色视图推荐、知识自动补充**。
+ProjectWiki 是一个智能项目知识助手，从静态文档管理升级为动态智能交互系统。**支持基础文档生成（README/TODO/CHANGELOG/ROADMAP/ARCHITECTURE）、文档流程管理（生成/更新/修改/完善）、文档一致性保障、版本控制**。
 
 ---
 
 ## 核心价值
 
-> **让文档生成自动化、智能化、个性化**
+> **让文档生成自动化、规范化、一致性**
 
-- **自动分析**：智能识别项目类型、技术栈和复杂度
-- **智能推荐**：自动推荐文档类型、模板和角色视图
-- **渐进生成**：从功能到架构的完整文档链
-- **知识补全**：自动搜索并补充技术栈知识
-- **角色适配**：为不同角色提供专门的文档和视图
+- **基础文档**：每个项目必备的核心文档清单
+- **流程管理**：完整的文档生成/更新/修改/完善流程
+- **一致性保障**：数据一致性、术语一致性、功能名称一致性
+- **版本控制**：完整的 CHANGELOG 管理
+- **按需扩展**：根据项目类型和复杂度按需生成其他文档
 
 ---
 
@@ -87,6 +87,24 @@ python3 scripts/utils/consistency_checker.py --fix
 ### 5. 状态管理
 
 提供完整的状态机设计框架，强调状态一致性和状态持久化。
+
+### 6. 文档生命周期 ⭐ 新增
+
+管理文档从创建到归档的完整生命周期。
+
+**生命周期阶段**：
+- 🟡 Draft（草稿）
+- 🟠 Review（审核）
+- 🟢 Published（发布）
+- 🔵 Maintenance（维护）
+- 🟣 Archived（归档）
+- 🔴 Deprecated（废弃）
+
+**核心功能**：
+- 状态转换管理
+- 审查流程跟踪
+- 版本历史记录
+- 过期文档检查
 
 ---
 
@@ -173,13 +191,19 @@ project-wiki/
 | [query/query_knowledge.py](scripts/query/query_knowledge.py) | 知识查询 |
 | [knowledge/search_knowledge.py](scripts/knowledge/search_knowledge.py) | ⭐ 知识搜索 |
 | [knowledge/knowledge_manager.py](scripts/knowledge/knowledge_manager.py) | ⭐ 知识管理器 |
+| [utils/lifecycle_manager.py](scripts/utils/lifecycle_manager.py) | ⭐ 文档生命周期管理 |
 
 ### 参考文档
 
 | 目录 | 内容 |
 |------|------|
 | [templates/](references/templates/) | ⭐ 所有模板（按类型分类） |
-| [guides/document/](references/guides/document/) | 文档指南、命名规范 |
+| [templates/core/](references/templates/core/) | ⭐ 基础文档模板（README/TODO/CHANGELOG/ROADMAP/ARCHITECTURE） |
+| [guides/document/](references/guides/document/) | ⭐ 文档生成流程指南、基础文档清单 |
+| [guides/document/](references/guides/document/) | 文档命名规范、生命周期管理 |
+| [guides/database/](references/guides/database/) | ER 图设计指南 |
+| [guides/usecase/](references/guides/usecase/) | 用例图设计指南 |
+| [guides/architecture/](references/guides/architecture/) | 架构设计指南、技术选型决策指南 |
 | [knowledge/patterns/](references/knowledge/patterns/) | 23 种设计模式 |
 | [knowledge/principles/](references/knowledge/principles/) | SOLID 六大原则 |
 
@@ -194,22 +218,47 @@ project-wiki/
 ### 2. 遵循文档命名规范
 
 使用标准命名确保项目文档的一致性：
+- `README.md` - 项目概述
 - `TODO.md` - 待办事项
 - `CHANGELOG.md` - 变更日志
 - `ROADMAP.md` - 路线图
 - `ARCHITECTURE.md` - 架构文档
 
-### 3. 利用自动生成功能
+### 3. 参考文档生成流程
+
+使用 `references/guides/document/generation-flow-guide.md` 了解完整的文档生成流程，包括：
+- 场景：整体新项目Wiki、部分功能文档
+- 操作：生成、更新、修改、完善
+- 注意事项：一致性、版本控制、图文结合
+
+### 4. 按需生成扩展文档
+
+根据项目类型和复杂度，按需生成：
+- API 文档（API 接口定义）
+- 数据库 ER 图（数据模型）
+- 用例图（功能用例）
+- 软件生命周期（开发流程）
 
 使用 `--auto` 参数让系统自动选择模板和内容。
 
-### 4. 关注数据流动和状态管理
+### 5. 遵循文档生成流程
 
-在架构文档和 API 文档中重点展示数据流动和状态管理。
+使用 `references/guides/document/generation-flow-guide.md` 确保文档生成流程完整。
 
-### 5. 积累知识库
+### 6. 保障文档一致性
 
-使用知识搜索功能补充技术栈知识，建立项目专属知识库。
+在生成/更新文档时，确保：
+- 数据一致性（版本号、日期）
+- 术语一致性（专业术语、缩写）
+- 功能名称一致性（代码与文档一致）
+
+### 7. 记录版本变更
+
+每次文档变更必须更新 `CHANGELOG.md`，记录：
+- 版本号
+- 变更日期
+- 变更类型（新增/修改/删除/修复）
+- 变更描述
 
 ---
 
@@ -221,15 +270,69 @@ A: 运行 `python3 scripts/analysis/smart_analyzer.py --path ./your-project`
 **Q: 如何生成文档？**
 A: 使用 `python3 scripts/generation/generate_doc.py --auto`
 
+**Q: 如何管理文档生命周期？**
+A: 使用 `python3 scripts/utils/lifecycle_manager.py init <文档路径> --name <文档名称> --author <作者>`
+
 **Q: 核心文档如何命名？**
-A: 必须使用全大写：`TODO.md`、`CHANGELOG.md`、`ROADMAP.md`、`ARCHITECTURE.md`
+A: 必须使用全大写：`README.md`、`TODO.md`、`CHANGELOG.md`、`ROADMAP.md`、`ARCHITECTURE.md`
+
+**Q: 哪些是基础文档？**
+A: 基础文档包括：README.md（项目概述）、TODO.md（待办事项）、CHANGELOG.md（变更日志）、ROADMAP.md（路线图）、ARCHITECTURE.md（架构文档）。详见 [基础文档清单](references/guides/document/basic-docs-checklist.md)
+
+**Q: 如何生成文档？**
+A: 参考 [文档生成流程指南](references/guides/document/generation-flow-guide.md)，了解生成/更新/修改/完善的完整流程
+
+**Q: 如何保证文档一致性？**
+A: 在生成/更新文档时检查：数据一致性（版本号、日期）、术语一致性、功能名称一致性。详见流程指南的注意事项章节
 
 **Q: 模板在哪里？**
 A: 所有模板在 `references/templates/`，按类型分类
 
+**Q: 如何创建 ER 图？**
+A: 使用 `references/templates/database/er-diagram.md` 模板，参考 `references/guides/database/er-diagram-guide.md`
+
+**Q: 如何创建用例图？**
+A: 使用 `references/templates/usecase/usecase-diagram.md` 模板，参考 `references/guides/usecase/usecase-guide.md`
+
+**Q: 如何设计软件生命周期？**
+A: 使用 `references/templates/lifecycle/software-lifecycle.md` 模板
+
+**Q: 如何进行技术选型？**
+A: 参考 `references/templates/architecture/tech-selection-reference.md` 技术选型参考手册
+
+**Q: 如何设计系统架构？**
+A: 参考 `references/guides/architecture/architecture-design-guide.md` 架构设计指南
+
+**Q: 如何做出技术决策？**
+A: 参考 `references/guides/architecture/tech-selection-guide.md` 技术选型决策指南
+
 ---
 
 ## 更新日志
+
+**v2.5 - 基础文档与流程指南 ⭐ 新增**
+- 新增文档生成流程指南
+- 新增基础文档清单
+- 明确基础文档定义（README/TODO/CHANGELOG/ROADMAP/ARCHITECTURE）
+- 定义文档操作情景（生成/更新/修改/完善）
+- 添加一致性保障指南
+- 添加版本控制规范
+
+**v2.4 - 架构设计能力 ⭐ 新增**
+- 新增技术选型参考手册
+- 新增架构设计指南
+- 新增技术选型决策指南
+- 新增用例图模板和指南
+- 新增软件生命周期模板
+- 支持全面项目文档撰写能力
+- 支持根据项目目标、内容和复杂度智能选择文档实现程度
+
+**v2.2 - 文档生命周期管理 ⭐ 新增**
+- 新增文档生命周期管理能力
+- 新增 6 个文档状态（Draft、Review、Published、Maintenance、Archived、Deprecated）
+- 新增生命周期管理脚本（lifecycle_manager.py）
+- 新增文档生命周期指南和模板
+- 支持状态转换、审查流程、版本管理
 
 **v2.1 - 模板库优化**
 - 重组 templates 目录，按文档类型分类
