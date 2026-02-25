@@ -159,27 +159,7 @@ Python代码风格优化与Pythonic惯用法指导。
 
 ---
 
-### 9. 智能技术架构方案生成器 (architecture-design) ⭐ NEW
-
-根据业务需求和技术栈生成可实施的架构方案，通过四步流程提供结构化建议和技术选型优化。
-
-**核心功能：**
-- 需求收集与分析：主动询问关键信息，避免假设
-- 技术选型评估：基于场景推荐技术栈，对比优缺点
-- 架构设计：生成系统架构图、模块划分、数据流设计
-- 方案输出：架构文档、技术决策记录、实施路线图
-
-**适用场景：**
-- 新项目技术架构设计
-- 现有系统架构重构
-- 技术栈迁移评估
-- 架构评审和决策
-
-**技术栈：** 架构设计、技术选型、Mermaid 可视化
-
----
-
-### 10. 技能工厂核心母技能 (book-skill-creator) ⭐ NEW
+### 9. 技能工厂核心母技能 (book-skill-creator) ⭐ NEW
 
 工厂化批量创建和管理技能包，提供从需求分析到自动化生成的完整流程。
 
@@ -307,15 +287,12 @@ uv run build-skills --version 1.0.0 --skill recruitment-processor
 
 ### 开发辅助
 - **api-doc-generator** - API 文档生成
-- **project-wiki** (v3.3.3) - 项目知识库
+- **project-wiki** (v3.4.0) - 项目知识库
 - **python-team** - Python 项目开发
 - **pythonic-style** - Python 代码风格
 
 ### 全栈开发
 - **six-layer-architect** - 六层架构生成
-
-### 架构设计
-- **architecture-design** ⭐ NEW - 智能技术架构方案生成器
 
 ### 技能创建
 - **book-skill-creator** (v1.1.0) ⭐ NEW - 技能工厂核心母技能

@@ -5,6 +5,31 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [2.1.0] - 2026-02-23
+
+### 变更 (Changed)
+
+#### 技能升级
+- **project-wiki** 升级到 v3.4.0 版本 ⭐ MAJOR UPDATE
+  - 新增架构设计指南和技术选型指南
+  - 新增数据库 ER 图指南
+  - 新增基础文档检查清单和文档生成流程指南
+  - 新增文档生命周期指南和用例指南
+  - 新增架构模板（事件驱动、微服务、单体、系统架构）
+  - 新增基础文档模板（CODE_OF_CONDUCT、CONTRIBUTING、LICENSE）
+  - 新增数据库 ER 图模板和生命周期模板
+  - 新增用例图模板
+  - 新增生命周期管理器脚本（lifecycle_manager.py）
+  - 共新增 22 个文件，7,843 行代码
+
+### 移除 (Removed)
+
+- **architecture-design** - 移除智能技术架构方案生成器
+  - 删除 2 个文件，共 492 行代码
+  - 功能被 project-wiki 的架构指南替代
+
+---
+
 ## [2.0.0] - 2026-02-23
 
 ### 变更 (Changed)
