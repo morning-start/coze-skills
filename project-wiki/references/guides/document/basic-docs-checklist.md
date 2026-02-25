@@ -13,14 +13,13 @@
 | 文档 | 文件名 | 说明 | 模板位置 |
 |------|--------|------|----------|
 | 项目概述 | `README.md` | 项目介绍、快速开始、功能说明 | [core/README.md](../templates/core/README.md) |
-| 待办事项 | `TODO.md` | 待完成的功能和任务 | [core/TODO.md](../templates/core/TODO.md) |
+| 路线图 | `ROADMAP.md` | 未来规划、里程碑、功能计划 | [core/ROADMAP.md](../templates/core/ROADMAP.md) |
 | 变更日志 | `CHANGELOG.md` | 版本变更记录 | [core/CHANGELOG.md](../templates/core/CHANGELOG.md) |
 
 ### P1 - 强烈推荐
 
 | 文档 | 文件名 | 说明 | 模板位置 |
 |------|--------|------|----------|
-| 路线图 | `ROADMAP.md` | 未来规划和里程碑 | [core/ROADMAP.md](../templates/core/ROADMAP.md) |
 | 架构文档 | `ARCHITECTURE.md` | 系统架构和技术选型 | [core/ARCHITECTURE.md](../templates/core/ARCHITECTURE.md) |
 
 ---
@@ -82,43 +81,6 @@ project/
 
 - [API 文档](docs/api/)
 - [架构文档](ARCHITECTURE.md)
-```
-
----
-
-### TODO.md
-
-**位置**：项目根目录
-
-**内容要求**：
-- 当前版本待完成事项
-- 下个版本计划
-- 已完成事项（标记）
-
-**示例结构**：
-```markdown
-# TODO
-
-## v1.0.0 待完成
-
-### 功能
-- [ ] 用户认证模块
-- [ ] 商品列表展示
-- [ ] 购物车功能
-
-### 文档
-- [ ] API 文档
-- [ ] 部署文档
-
-## v1.1.0 计划
-
-- 订单模块
-- 支付集成
-
-## 已完成
-
-- [x] 项目初始化
-- [x] 基础架构搭建
 ```
 
 ---
@@ -235,7 +197,7 @@ graph TB
 
 ## 部署架构
 
-详见 [部署文档](docs/deployment/)
+详见 [部署文档](wiki/deployment/)
 ```
 
 ---
@@ -248,31 +210,31 @@ graph TB
 
 | 文档 | 文件名 | 说明 |
 |------|--------|------|
-| API 文档 | `docs/api/README.md` | 接口定义 |
-| 部署文档 | `docs/deployment.md` | 部署指南 |
-| 环境配置 | `docs/env.md` | 环境变量说明 |
+| API 文档 | `wiki/api/README.md` | 接口定义 |
+| 部署文档 | `wiki/deployment.md` | 部署指南 |
+| 环境配置 | `wiki/env.md` | 环境变量说明 |
 
 ### API 服务
 
 | 文档 | 文件名 | 说明 |
 |------|--------|------|
-| API 文档 | `API.md` 或 `docs/api.md` | 接口详细说明 |
-| 鉴权文档 | `docs/auth.md` | 认证授权说明 |
+| API 文档 | `wiki/api.md` | 接口详细说明 |
+| 鉴权文档 | `wiki/auth.md` | 认证授权说明 |
 
 ### 移动应用
 
 | 文档 | 文件名 | 说明 |
 |------|--------|------|
-| 设计稿 | `docs/design.md` | UI/UX 设计 |
-| 集成指南 | `docs/integration.md` | 第三方集成 |
+| 设计稿 | `wiki/design.md` | UI/UX 设计 |
+| 集成指南 | `wiki/integration.md` | 第三方集成 |
 
 ### 复杂项目
 
 | 文档 | 文件名 | 说明 |
 |------|--------|------|
-| 数据库 ER 图 | `docs/database/er-diagram.md` | 数据库设计 |
-| 用例图 | `docs/usecase/usecase.md` | 功能用例 |
-| 软件生命周期 | `docs/lifecycle/software-lifecycle.md` | 开发流程 |
+| 数据库 ER 图 | `wiki/database/er-diagram.md` | 数据库设计 |
+| 用例图 | `wiki/usecase/usecase.md` | 功能用例 |
+| 软件生命周期 | `wiki/lifecycle/software-lifecycle.md` | 开发流程 |
 
 ---
 
@@ -282,9 +244,8 @@ graph TB
 ```
 project/
 ├── README.md
-├── TODO.md
-├── CHANGELOG.md
 ├── ROADMAP.md
+├── CHANGELOG.md
 ├── ARCHITECTURE.md
 └── src/
 ```
@@ -293,11 +254,10 @@ project/
 ```
 project/
 ├── README.md
-├── TODO.md
-├── CHANGELOG.md
 ├── ROADMAP.md
+├── CHANGELOG.md
 ├── ARCHITECTURE.md
-├── docs/
+├── wiki/
 │   ├── api/
 │   ├── deployment.md
 │   └── env.md
@@ -308,11 +268,10 @@ project/
 ```
 project/
 ├── README.md
-├── TODO.md
-├── CHANGELOG.md
 ├── ROADMAP.md
+├── CHANGELOG.md
 ├── ARCHITECTURE.md
-├── docs/
+├── wiki/
 │   ├── api/
 │   ├── database/
 │   │   └── er-diagram.md

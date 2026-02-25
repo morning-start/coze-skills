@@ -34,13 +34,13 @@ templates/
 
 | 模板 | 命名 | 用途 | 优先级 |
 |------|------|------|--------|
-| TODO.md | `TODO.md` | 待办事项 | ⭐⭐⭐ |
+| README.md | `README.md` | 项目概述 | ⭐⭐⭐ |
+| ROADMAP.md | `ROADMAP.md` | 路线图 | ⭐⭐⭐ |
 | CHANGELOG.md | `CHANGELOG.md` | 变更日志 | ⭐⭐⭐ |
-| ROADMAP.md | `ROADMAP.md` | 路线图 | ⭐⭐ |
 | ARCHITECTURE.md | `ARCHITECTURE.md` | 架构文档 | ⭐⭐⭐ |
 
 **命名规范**：
-- ✅ 必须使用全大写（TODO、CHANGELOG、ROADMAP、ARCHITECTURE）
+- ✅ 必须使用全大写（README、ROADMAP、CHANGELOG、ARCHITECTURE）
 - ✅ 必须位于项目根目录
 - ✅ 必须使用 `.md` 扩展名
 
@@ -200,13 +200,10 @@ Wiki 页面模板。
 
 ```bash
 # 1. 复制模板
-cp references/templates/core/TODO.md ./TODO.md
+cp references/templates/core/ROADMAP.md ./ROADMAP.md
 
 # 2. 编辑模板
-vim ./TODO.md
-
-# 3. 使用智能生成
-python3 scripts/generation/generate_doc.py --type core --name TODO
+vim ./ROADMAP.md
 ```
 
 ### 智能生成
@@ -215,7 +212,7 @@ python3 scripts/generation/generate_doc.py --type core --name TODO
 
 ```bash
 # 生成核心文档
-python3 scripts/generation/generate_doc.py --type core --name TODO
+python3 scripts/generation/generate_doc.py --type core --name ROADMAP
 
 # 生成 API 文档
 python3 scripts/generation/generate_doc.py --type api --name "用户登录接口"
@@ -256,7 +253,7 @@ python3 scripts/generation/generate_doc.py --type architecture --name "支付系
 
 ## 最佳实践
 
-1. **从核心文档开始**：先创建 TODO.md、CHANGELOG.md、ROADMAP.md、ARCHITECTURE.md
+1. **从核心文档开始**：先创建 README.md、ROADMAP.md、CHANGELOG.md、ARCHITECTURE.md
 2. **遵循命名规范**：核心文档必须使用全大写命名
 3. **使用图表可视化**：在 API 文档和架构文档中使用 Mermaid 图表
 4. **保持更新**：定期更新文档，确保与代码同步

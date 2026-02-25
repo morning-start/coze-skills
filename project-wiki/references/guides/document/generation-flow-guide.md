@@ -32,25 +32,22 @@
 | 文档 | 文件名 | 说明 | 优先级 |
 |------|--------|------|--------|
 | 项目概述 | `README.md` | 项目介绍、快速开始、功能说明 | P0 |
-| 待办事项 | `TODO.md` | 待完成的功能和任务 | P0 |
+| 路线图 | `ROADMAP.md` | 未来规划、里程碑、功能计划 | P0 |
 | 变更日志 | `CHANGELOG.md` | 版本变更记录 | P0 |
-| 路线图 | `ROADMAP.md` | 未来规划和里程碑 | P0 |
 | 架构文档 | `ARCHITECTURE.md` | 系统架构和技术选型 | P1 |
 
 ### 基础文档生成顺序
 
 ```mermaid
 flowchart TD
-    A[README.md] --> B[TODO.md]
+    A[README.md] --> B[ROADMAP.md]
     B --> C[ARCHITECTURE.md]
-    C --> D[ROADMAP.md]
-    D --> E[CHANGELOG.md]
+    C --> D[CHANGELOG.md]
     
     style A fill:#ff6b6b
     style B fill:#ff6b6b
     style C fill:#ff6b6b
     style D fill:#ff6b6b
-    style E fill:#ff6b6b
 ```
 
 ---
@@ -101,9 +98,8 @@ flowchart TD
 
 **步骤 3：生成基础文档**
 - README.md（项目概述）
-- TODO.md（待办事项）
-- CHANGELOG.md（变更日志）
 - ROADMAP.md（路线图）
+- CHANGELOG.md（变更日志）
 - ARCHITECTURE.md（架构文档）
 
 **步骤 4：评估复杂度**

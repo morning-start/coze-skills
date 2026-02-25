@@ -1,12 +1,12 @@
 ---
 name: project-wiki
-version: 3.4.0
-description: 智能项目知识助手，自动分析项目、智能推荐文档，支持基础文档生成（README/TODO/CHANGELOG/ROADMAP/ARCHITECTURE）、文档流程管理（生成/更新/修改/完善）、全面文档撰写
+version: 3.5.0
+description: 智能项目知识助手，自动分析项目、智能推荐文档，支持基础文档生成（README/ROADMAP/CHANGELOG/ARCHITECTURE）、文档流程管理（生成/更新/修改/完善）、全面文档撰写
 ---
 
 # ProjectWiki - 智能项目知识助手
 
-ProjectWiki 是一个智能项目知识助手，从静态文档管理升级为动态智能交互系统。**支持基础文档生成（README/TODO/CHANGELOG/ROADMAP/ARCHITECTURE）、文档流程管理（生成/更新/修改/完善）、文档一致性保障、版本控制**。
+ProjectWiki 是一个智能项目知识助手，从静态文档管理升级为动态智能交互系统。**支持基础文档生成（README/ROADMAP/CHANGELOG/ARCHITECTURE）、文档流程管理（生成/更新/修改/完善）、文档一致性保障、版本控制**。
 
 ---
 
@@ -131,9 +131,9 @@ python3 scripts/query/query_knowledge.py --query "数据流动设计"
 
 | 文档名 | 用途 | 位置 |
 |--------|------|------|
-| `TODO.md` | 待办事项 | 项目根目录 |
-| `CHANGELOG.md` | 变更日志 | 项目根目录 |
+| `README.md` | 项目概述 | 项目根目录 |
 | `ROADMAP.md` | 路线图 | 项目根目录 |
+| `CHANGELOG.md` | 变更日志 | 项目根目录 |
 | `ARCHITECTURE.md` | 架构文档 | 项目根目录 |
 
 **命名规范**：
@@ -153,7 +153,7 @@ project-wiki/
 ├── references/
 │   ├── core/                     # 核心指南
 │   ├── templates/                # ⭐ 文档模板（按类型分类）
-│   │   ├── core/                 # 核心文档（TODO、CHANGELOG、ROADMAP、ARCHITECTURE）
+│   │   ├── core/                 # 核心文档（README、ROADMAP、CHANGELOG、ARCHITECTURE）
 │   │   ├── api/                  # API 文档
 │   │   ├── architecture/         # 架构文档
 │   │   ├── design/               # 设计文档
@@ -198,7 +198,7 @@ project-wiki/
 | 目录 | 内容 |
 |------|------|
 | [templates/](references/templates/) | ⭐ 所有模板（按类型分类） |
-| [templates/core/](references/templates/core/) | ⭐ 基础文档模板（README/TODO/CHANGELOG/ROADMAP/ARCHITECTURE） |
+| [templates/core/](references/templates/core/) | ⭐ 基础文档模板（README/ROADMAP/CHANGELOG/ARCHITECTURE） |
 | [guides/document/](references/guides/document/) | ⭐ 文档生成流程指南、基础文档清单 |
 | [guides/document/](references/guides/document/) | 文档命名规范、生命周期管理 |
 | [guides/database/](references/guides/database/) | ER 图设计指南 |
@@ -219,9 +219,8 @@ project-wiki/
 
 使用标准命名确保项目文档的一致性：
 - `README.md` - 项目概述
-- `TODO.md` - 待办事项
-- `CHANGELOG.md` - 变更日志
 - `ROADMAP.md` - 路线图
+- `CHANGELOG.md` - 变更日志
 - `ARCHITECTURE.md` - 架构文档
 
 ### 3. 参考文档生成流程
@@ -274,10 +273,10 @@ A: 使用 `python3 scripts/generation/generate_doc.py --auto`
 A: 使用 `python3 scripts/utils/lifecycle_manager.py init <文档路径> --name <文档名称> --author <作者>`
 
 **Q: 核心文档如何命名？**
-A: 必须使用全大写：`README.md`、`TODO.md`、`CHANGELOG.md`、`ROADMAP.md`、`ARCHITECTURE.md`
+A: 必须使用全大写：`README.md`、`ROADMAP.md`、`CHANGELOG.md`、`ARCHITECTURE.md`
 
 **Q: 哪些是基础文档？**
-A: 基础文档包括：README.md（项目概述）、TODO.md（待办事项）、CHANGELOG.md（变更日志）、ROADMAP.md（路线图）、ARCHITECTURE.md（架构文档）。详见 [基础文档清单](references/guides/document/basic-docs-checklist.md)
+A: 基础文档包括：README.md（项目概述）、ROADMAP.md（路线图）、CHANGELOG.md（变更日志）、ARCHITECTURE.md（架构文档）。详见 [基础文档清单](references/guides/document/basic-docs-checklist.md)
 
 **Q: 如何生成文档？**
 A: 参考 [文档生成流程指南](references/guides/document/generation-flow-guide.md)，了解生成/更新/修改/完善的完整流程
@@ -310,10 +309,16 @@ A: 参考 `references/guides/architecture/tech-selection-guide.md` 技术选型�
 
 ## 更新日志
 
+**v2.6 - 文档目录规范 ⭐ 优化**
+- 不再使用 TODO.md，统一使用 ROADMAP.md 作为规划文档
+- 所有扩展文档放在 wiki/ 目录下
+- 更新基础文档清单和流程指南
+- 移除 templates/core/TODO.md 模板
+
 **v2.5 - 基础文档与流程指南 ⭐ 新增**
 - 新增文档生成流程指南
 - 新增基础文档清单
-- 明确基础文档定义（README/TODO/CHANGELOG/ROADMAP/ARCHITECTURE）
+- 明确基础文档定义（README/ROADMAP/CHANGELOG/ARCHITECTURE）
 - 定义文档操作情景（生成/更新/修改/完善）
 - 添加一致性保障指南
 - 添加版本控制规范
