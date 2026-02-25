@@ -5,6 +5,25 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [3.0.0] - 2026-02-23
+
+### 变更 (Changed)
+
+#### 技能升级
+- **project-wiki** 升级到 v4.0.0 版本 ⭐ MAJOR UPDATE
+  - 重大架构重构：从脚本驱动转变为知识驱动架构
+  - 移除所有 scripts/ 目录下的脚本（analysis、generation、knowledge、query、structure、utils）
+  - 移除 FEATURE_INDEX.md，功能索引合并到 SKILL.md
+  - 新增 references/knowledge/ 知识管理目录
+    - 知识提取、知识图谱、知识管理指南
+    - 框架知识库从 guides/framework/ 迁移至此
+  - 新增 references/tools/ 工具文档目录
+    - 智能分析工具、结构优化工具
+  - 新增一致性检查指南和知识搜索指南
+  - 共 51 个文件变更，1,217 行新增，8,674 行删除
+
+---
+
 ## [2.1.0] - 2026-02-23
 
 ### 变更 (Changed)

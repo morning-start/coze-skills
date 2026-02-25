@@ -287,7 +287,7 @@ uv run build-skills --version 1.0.0 --skill recruitment-processor
 
 ### 开发辅助
 - **api-doc-generator** - API 文档生成
-- **project-wiki** (v3.4.0) - 项目知识库
+- **project-wiki** (v4.0.0) - 项目知识库
 - **python-team** - Python 项目开发
 - **pythonic-style** - Python 代码风格
 
