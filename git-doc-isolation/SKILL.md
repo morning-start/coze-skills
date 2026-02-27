@@ -2,14 +2,15 @@
 name: git-doc-isolation
 description: Git 文档隔离管理技能，使用孤立分支策略确保 docs/ 目录绝不进入 main 分支历史，支持本地开发文档的安全管理和临时使用
 metadata:
-  capabilities: [Git分支管理, 文档隔离, 孤立分支创建, 文档安全策略, 分支合并防护]
-  version: "1.0.0"
-  tags: [git, 文档管理, 分支策略, 开发工作流]
+  capabilities: [Git分支管理, 文档隔离, 孤立分支创建, 文档安全策略, 分支合并防护, 任务处理工作流]
+  version: "1.1.0"
+  tags: [git, 文档管理, 分支策略, 开发工作流, 任务处理]
   use_cases:
     - 本地开发文档管理
     - 防止文档污染主干分支
     - 多分支文档共享
     - 安全文档工作流
+    - 基于文档的任务处理
   preconditions:
     - Git 仓库已初始化
     - 具有分支管理权限
@@ -17,7 +18,8 @@ metadata:
   posteffects:
     - 创建独立的 docs 孤立分支
     - main 分支历史保持干净（无 docs/）
-    - 功能分支可临时获取文档用于开发
+    - task 分支可获取指定文档执行任务
+    - 任务文档更新与代码提交分离
   cost_estimate:
     time: "5-10分钟"
     complexity: "中等"
@@ -76,23 +78,53 @@ git add docs/ && git commit -m "chore(docs): init"
 git checkout main
 ```
 
-### 日常使用（每次开发）
-```bash
-# 获取文档进行开发
-git checkout -b feat-xxx
-git archive docs docs/ | tar -x -C .
-echo "docs/" >> .git/info/exclude
+### 日常使用（任务处理流程）
 
-# 开发完成后
-git add src/ && git commit -m "feat: xxx"
-git checkout main && git merge feat-xxx
-rm -rf docs/
+#### 标准任务处理流程（8步法）
+
+```bash
+# 步骤 1: 切换到 main 分支
+git checkout main
+
+# 步骤 2: 基于 main 创建 task- 分支
+git checkout -b task-feature-name
+
+# 步骤 3: 从 docs 分支 show 指定文档
+git show docs:docs/task-instruction.md > task-instruction.md
+
+# 步骤 4: 根据文档内容和指令执行任务
+# ... 执行任务 ...
+
+# 步骤 5: 对修改的任务逐步提交 git（除了步骤 3 指定的文档）
+git add src/ tests/  # 添加修改的文件
+git commit -m "feat: 完成任务 xxx"
+
+# 步骤 6: 删除指定文档
+rm task-instruction.md
+
+# 步骤 7: 切换到 docs 分支，更新文档，并提交 git
+git checkout docs
+vim docs/task-instruction.md  # 更新文档
+git add docs/
+git commit -m "docs: 更新任务文档"
+
+# 步骤 8: 切换 main 分支，合并 task
+git checkout main
+git merge task-feature-name
+git branch -d task-feature-name
 ```
 
 ## 任务目标
 - 本 Skill 用于: 管理本地开发文档，确保 docs/ 目录绝不进入 main 分支的 Git 历史
-- 能力包含: 创建孤立文档分支、安全提取文档、分支合并防护、文档隔离验证
-- 触发条件: 当用户需要在本地维护开发文档但不想将其提交到主干分支时使用
+- 能力包含: 
+  - 创建孤立文档分支
+  - 安全提取文档
+  - 分支合并防护
+  - 文档隔离验证
+  - **任务处理工作流（8步法）**: 基于 docs 分支中的指定文档执行任务的完整流程
+- 触发条件: 
+  - 当用户需要在本地维护开发文档但不想将其提交到主干分支时使用
+  - 当用户需要基于 docs 分支中的任务文档执行开发任务时使用
 
 ## 核心原则
 
@@ -139,49 +171,67 @@ git checkout main
 ls -la  # 应看不到 docs/
 ```
 
-### 步骤 2: 在功能分支中安全使用文档
+### 步骤 2: 任务处理流程（8步法）
 
-**创建功能分支并提取文档**:
+**完整任务处理工作流**:
+
 ```bash
-# 1. 从 main 创建功能分支
+# ========== 阶段 1: 准备 ==========
+
+# 1. 切换到 main 分支
 git checkout main
-git checkout -b feat-user-login
 
-# 2. 从 docs 分支提取文档（只读，不跟踪）
-git archive docs docs/ | tar -x -C .
+# 2. 基于 main 创建 task- 分支
+git checkout -b task-feature-name
 
-# 现在 ./docs/ 存在，但 Git 视为 untracked 文件
-```
 
-**配置防护（关键步骤）**:
-```bash
-# 3. 将 docs/ 加入本地排除列表，防止误提交
-echo "docs/" >> .git/info/exclude
+# ========== 阶段 2: 执行 ==========
 
-# 验证：docs/ 不应出现在 git status 的待提交列表中
-git status
-```
+# 3. 从 docs 分支 show 指定文档
+git show docs:docs/task-instruction.md > task-instruction.md
 
-**开发完成后提交**:
-```bash
-# 4. 明确添加代码目录（避免 git add . 风险）
-git add src/ tests/ scripts/  # 根据项目结构调整
+# 4. 根据指定内容和指令执行任务
+# ... 读取 task-instruction.md，按照指令执行任务 ...
 
-# 或：如果用了 git add .，则移除 docs/
-git add .
-git reset docs/ 2>/dev/null || true
 
-# 5. 提交代码（docs/ 不会被包含）
-git commit -m "feat: implement user login"
+# ========== 阶段 3: 提交代码 ==========
 
-# 6. 合并回 main
+# 5. 对修改的任务逐步提交 git（除了步骤 3 指定的文档）
+git add src/ tests/ scripts/  # 添加实际修改的文件
+git commit -m "feat: 完成任务 xxx"
+
+
+# ========== 阶段 4: 清理 ==========
+
+# 6. 删除指定文档
+rm task-instruction.md
+
+
+# ========== 阶段 5: 更新文档 ==========
+
+# 7. 切换到 docs 分支，更新文档，并提交 git
+git checkout docs
+vim docs/task-instruction.md  # 根据执行情况更新文档
+git add docs/
+git commit -m "docs: 更新任务文档"
+
+
+# ========== 阶段 6: 合并 ==========
+
+# 8. 切换 main 分支，合并 task
 git checkout main
-git merge feat-user-login
-
-# 7. 清理
-git branch -d feat-user-login
-rm -rf docs/   # 删除临时拷贝
+git merge task-feature-name
+git branch -d task-feature-name
 ```
+
+**流程说明**:
+- **步骤 1-2**: 准备工作，确保从干净的 main 分支创建 task 分支
+- **步骤 3**: 精准获取单个文档，避免提取整个 docs 目录
+- **步骤 4**: 根据文档指令执行任务
+- **步骤 5**: 只提交代码修改，任务文档不进入代码历史
+- **步骤 6**: 清理临时文档
+- **步骤 7**: 在 docs 分支更新任务文档，记录执行结果
+- **步骤 8**: 合并代码到 main，完成整个流程
 
 ### 步骤 3: 验证隔离状态
 
@@ -253,27 +303,57 @@ git commit -m "chore(docs): add API documentation"
 git checkout main
 ```
 
-### 示例 2: 日常开发流程
+### 示例 2: 任务处理流程（8步法）
 ```bash
-# 开始新功能
-git checkout -b feat-payment-module
+# ========== 阶段 1: 准备 ==========
 
-# 获取最新文档
-git archive docs docs/ | tar -x -C .
-echo "docs/" >> .git/info/exclude
-
-# 开发...
-# 参考 docs/api.md 进行开发
-
-# 提交（docs/ 自动被排除）
-git add src/
-git commit -m "feat: implement payment module"
-
-# 清理
+# 1. 切换到 main 分支
 git checkout main
-git merge feat-payment-module
-git branch -d feat-payment-module
-rm -rf docs/
+
+# 2. 基于 main 创建 task- 分支
+git checkout -b task-user-auth
+
+
+# ========== 阶段 2: 执行 ==========
+
+# 3. 从 docs 分支 show 指定文档
+git show docs:docs/auth-requirements.md > auth-requirements.md
+
+# 4. 根据指定内容和指令执行任务
+# ... 读取 auth-requirements.md，实现用户认证功能 ...
+
+
+# ========== 阶段 3: 提交代码 ==========
+
+# 5. 对修改的任务逐步提交 git（除了步骤 3 指定的文档）
+git add src/auth/
+git commit -m "feat: 实现用户登录功能"
+
+git add src/middleware/
+git commit -m "feat: 添加认证中间件"
+
+
+# ========== 阶段 4: 清理 ==========
+
+# 6. 删除指定文档
+rm auth-requirements.md
+
+
+# ========== 阶段 5: 更新文档 ==========
+
+# 7. 切换到 docs 分支，更新文档，并提交 git
+git checkout docs
+vim docs/auth-requirements.md  # 标记已完成的需求
+git add docs/
+git commit -m "docs: 更新认证需求文档，标记已完成项"
+
+
+# ========== 阶段 6: 合并 ==========
+
+# 8. 切换 main 分支，合并 task
+git checkout main
+git merge task-user-auth
+git branch -d task-user-auth
 ```
 
 ### 示例 3: 更新文档
