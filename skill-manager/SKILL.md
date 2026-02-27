@@ -1,5 +1,5 @@
 ---
-name: meta-skill-manager
+name: skill-manager
 description: 高阶技能管理系统，支持技能生命周期管理、整合拆分、工作流编排与技能优化；当用户需要创建、修改、更新技能，整合多个技能，拆分技能能力，生成工作流，或优化技能设计时使用
 ---
 
