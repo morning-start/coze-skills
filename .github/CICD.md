@@ -97,3 +97,7 @@ cat skill-name/SKILL.md | head -20
 1. 创建技能目录和 `SKILL.md`
 2. 提交代码
 3. 创建 Tag 触发发布
+
+## 工作流配置
+
+工作流文件位于：[`.github/workflows/build-and-release.yml`](./workflows/build-and-release.yml)
