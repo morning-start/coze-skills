@@ -4,7 +4,6 @@
 - [命名规范](#命名规范)
 - [目录结构](#目录结构)
 - [SKILL.md 格式](#skillmd-格式)
-- [脚本规范](#脚本规范)
 - [参考文档规范](#参考文档规范)
 - [资产管理](#资产管理)
 
@@ -31,16 +30,15 @@
 ```
 <skill-name>/
 ├── SKILL.md           # 必需：入口与指南
-├── scripts/           # 可选：可执行代码
 ├── references/        # 可选：参考文档
 └── assets/            # 可选：静态资源
 ```
 
 ### 结构规则
 1. **必需文件**: SKILL.md 必须存在
-2. **可选目录**: scripts/、references/、assets/ 按需创建，不创建空目录
+2. **可选目录**: references/、assets/ 按需创建，不创建空目录
 3. **禁止内容**: 不包含 README.md、tmp/、.cache/、__pycache__/ 等临时文件
-4. **层级限制**: 最多两层（固定结构的四个位置）
+4. **层级限制**: 最多两层（固定结构的位置）
 
 ## SKILL.md 格式
 
@@ -89,7 +87,7 @@ metadata:
 - 触发条件: <典型用户表达或上下文信号>
 
 ## 前置准备
-- 依赖说明: scripts 脚本所需的依赖包及版本
+- 依赖说明: 所需的依赖包及版本
   ```
   dependency1==1.0.0
   dependency2==2.0.0
@@ -109,7 +107,6 @@ metadata:
   - 当 <条件 B>: 执行 <分支 B>
 
 ## 资源索引
-- 必要脚本: 见 [scripts/<script-name>.py](scripts/<script-name>.py)(用途与参数: <一句话>)
 - 领域参考: 见 [references/<topic>.md](references/<topic>.md)(何时读取: <触发/场景>)
 - 输出资产: 见 [assets/<template-dir>/](assets/<template-dir>/)(直接用于生成/修饰输出)
 
@@ -127,50 +124,6 @@ metadata:
 2. **链接层级**: 参考文档为一层链接，禁止嵌套引用
 3. **语气**: 使用祈使/不定式表达（如"执行..."、"创建..."）
 4. **章节顺序**: 任务目标 → 前置准备 → 操作步骤 → 资源索引 → 注意事项
-
-## 脚本规范
-
-### 设计原则
-- **纯函数式**: 接收参数 → 处理数据 → 返回结果
-- **无交互**: 不包含交互式循环、Web server、持久化服务
-- **参数明确**: 动态变量通过参数传入，禁止硬编码
-- **错误处理**: 包含完整的异常处理和验证逻辑
-
-### 文件命名
-- 使用小写字母和下划线（如 `process_data.py`, `validate_input.py`）
-- 避免使用中文名
-
-### 依赖处理
-- 优先使用标准库
-- 第三方库必须在 SKILL.md 的 dependency.python 中声明
-- 禁止在脚本中安装依赖
-
-### 参数设计
-```python
-def process_data(
-    input_file: str,
-    output_file: str,
-    options: Optional[Dict[str, Any]] = None
-) -> Dict[str, Any]:
-    """
-    处理数据
-
-    参数:
-        input_file: 输入文件路径
-        output_file: 输出文件路径
-        options: 可选参数字典
-
-    返回:
-        处理结果字典
-    """
-    pass
-```
-
-### 凭证处理
-如需调用第三方 API，必须：
-1. 通过 `os.getenv()` 从环境变量读取凭证
-2. 使用 `coze_workload_identity.requests` 发起请求
-3. 凭证 Key 格式：`COZE_<credential_name>_<skill_id>`
 
 ## 参考文档规范
 
@@ -200,7 +153,7 @@ def process_data(
 
 ### 内容要求
 - **超过 100 行**: 必须包含目录（TOC）
-- **被脚本依赖**: 必须提供完整的格式定义、示例和验证规则
+- **被依赖时**: 必须提供完整的格式定义、示例和验证规则
 - **文件模板**: 如果需要生成文件，必须提供格式模板
 
 ## 资产管理
@@ -243,13 +196,6 @@ assets/
 - [ ] 仅包含 SKILL.md 和有内容的子目录
 - [ ] 无空目录
 - [ ] 无临时文件（README.md, tmp/, .cache/ 等）
-
-### 脚本
-- [ ] 通过语法检查
-- [ ] 试运行通过
-- [ ] 参数定义清晰
-- [ ] 无硬编码凭证
-- [ ] 依赖已在 dependency 中声明
 
 ### 参考文档
 - [ ] 超过 100 行包含 TOC
