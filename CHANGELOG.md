@@ -5,6 +5,23 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [Unreleased]
+
+### 变更 (Changed)
+
+#### 技能优化
+- **six-layer-architect** 升级到 v2.1.0 版本
+  - 删除冗余的 scripts/generate_code.py 脚本（与 assets/templates/ 功能重复）
+  - 简化 SKILL.md 内容，删除冗余描述
+    - 精简贯穿式修改工作流描述（-60% 内容）
+    - 简化输出格式模板（-70% 内容）
+    - 优化三种修改模式描述（-50% 内容）
+    - 简化跨层一致性校验表格（-40% 内容）
+  - 总行数从 240 行减少到 173 行，保持核心功能不变
+  - 核心能力保持不变：贯穿式修改、六层架构支持、入口层识别、跨层推导、一致性校验
+
+---
+
 ## [4.0.0] - 2026-02-27
 
 ### 新增 (Added)
