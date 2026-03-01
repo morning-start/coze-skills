@@ -1,7 +1,9 @@
 ---
 name: six-layer-architect
-version: 1.0.0
-description: 基于六层架构（前端UI/前端服务/前端API/后端API/后端服务/数据层）生成全栈实现方案，适用于功能需求开发、代码生成、架构校验、安全审查
+version: v2.1.0
+author: skill-manager
+description: 六层架构全栈开发技能，支持从任意层级发起贯穿式修改，自动协调UI层/前端服务层/前端API层/后端API层/后端服务层/数据层六层配合，实现跨层一致性代码生成与重构，适用于Vue3+FastAPI+PostgreSQL技术栈
+tags: [architecture, fullstack, cross-layer, code-generation, vue3, fastapi, refactoring]
 dependency:
   python:
     - jinja2>=3.1.0
@@ -11,264 +13,216 @@ dependency:
 # 六层架构全栈生成器
 
 ## 任务目标
-- 本 Skill 用于：根据用户提供的功能意图（如"支持用户上传头像"），自动生成符合六层架构规范的完整实现方案
-- 能力包含：需求解析与领域识别、逐层代码生成、跨层一致性校验、架构与安全提醒
-- 触发条件：用户提出功能需求（如"允许用户上传头像"、"实现用户登录"、"添加评论功能"等）
 
-## 前置准备
-无特殊依赖，所有模板和参考文档已内置在 Skill 中
+**核心能力**
+- 本 Skill 用于：根据用户提供的功能意图或修改需求，自动生成或修改符合六层架构规范的完整实现方案
+- 能力包含：
+  - **贯穿式修改**：从任意层级发起修改，自动推导并协调其他五层配合
+  - **需求解析与领域识别**：分析用户意图，识别涉及的业务领域和数据实体
+  - **逐层代码生成/修改**：按数据流顺序生成或修改每一层的代码
+  - **跨层一致性校验**：确保字段名、类型、错误处理在各层间保持一致
+- 触发条件：
+  - 用户提出新功能需求（如"添加用户评论功能"）
+  - 用户提出修改需求（如"把用户名字段从可选改为必填"）
+  - 用户从特定层级提出修改（如"后端API需要增加一个字段"）
+
+**可选能力**
+- 类型同步校验（参考 code_patterns.md）
+- 安全审查检查（参考 security_checklist.md）
+- 数据库迁移脚本生成
+
+## 六层架构概览
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│   ┌──────────┐    ┌──────────┐    ┌──────────┐             │
+│   │  UI 层   │───▶│ 前端服务 │───▶│ 前端 API │              │
+│   │(Vue3)    │    │(Pinia)   │    │(Axios)   │              │
+│   └──────────┘    └──────────┘    └────┬─────┘             │
+│                              HTTP Request                   │
+│                                        ▼                    │
+│   ┌──────────┐    ┌──────────┐    ┌──────────┐             │
+│   │ 数据层   │◀───│ 后端服务 │◀───│ 后端 API │              │
+│   │(SQLAlch) │    │(Service) │    │(FastAPI) │              │
+│   └──────────┘    └──────────┘    └──────────┘             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+## 贯穿式修改工作流
+
+### 阶段 1：识别修改入口层
+
+| 用户描述关键词 | 识别为入口层 | 示例 |
+|---------------|-------------|------|
+| "界面显示..."、"页面上..." | **UI 层** | "用户详情页要显示注册时间" |
+| "Store里..."、"状态管理..." | **前端服务层** | "登录状态需要在刷新后保持" |
+| "前端调用..."、"API接口..." | **前端 API 层** | "前端需要调用获取订单列表接口" |
+| "后端接口..."、"API返回..." | **后端 API 层** | "用户列表接口需要支持分页" |
+| "业务逻辑..."、"数据处理..." | **后端服务层** | "订单创建时要检查库存" |
+| "数据库..."、"表结构..."、"字段..." | **数据层** | "用户表需要添加手机号字段" |
+
+### 阶段 2：推导跨层影响
+
+**修改影响推导矩阵**
+
+| 入口层 | 向前推导（→ UI） | 向后推导（→ DB） |
+|--------|-----------------|-----------------|
+| **UI 层** | 无 | UI → 前端服务 → 前端API → 后端API → 后端服务 → 数据层 |
+| **前端服务层** | ← UI | → 前端API → 后端API → 后端服务 → 数据层 |
+| **前端 API 层** | ← 前端服务 ← UI | → 后端API → 后端服务 → 数据层 |
+| **后端 API 层** | ← 前端API ← 前端服务 ← UI | → 后端服务 → 数据层 |
+| **后端服务层** | ← 后端API ← 前端API ← 前端服务 ← UI | → 数据层 |
+| **数据层** | ← 后端服务 ← 后端API ← 前端API ← 前端服务 ← UI | 无 |
+
+### 阶段 3：执行贯穿式修改
+
+1. **修改入口层**：根据用户需求修改入口层代码
+2. **向前推导修改**：从入口层向前（UI方向）逐层推导需要配合的修改
+3. **向后推导修改**：从入口层向后（数据库方向）逐层推导需要配合的修改
+4. **跨层一致性校验**：字段名、类型、接口契约检查
 
 ## 操作步骤
 
-### 步骤 1：需求解析与分层映射
-1. **识别功能领域**
-   - 分析用户描述，识别所属业务领域（用户管理、文件上传、内容发布等）
-   - 确定核心数据实体（如 User、Avatar、Comment）
+### 步骤 1：解析修改需求
 
-2. **追踪数据流向**
-   - 输入：UI 层的字段名和类型（如 `avatarFile: File`）
-   - 处理：前端服务层的状态、API 层的接口定义
-   - 存储：后端服务层的业务逻辑、数据层的持久化字段
-   - 输出：返回给前端的响应格式
+1. **识别入口层**：分析用户描述，使用关键词映射表确定从哪一层开始修改
+2. **分析修改类型**：新增功能 / 字段变更 / 逻辑变更 / 接口变更
+3. **确定影响范围**：简单修改（2-3层）/ 复杂修改（六层全部）
 
-3. **确定涉及的层级**
-   - 简单功能可能只涉及 3-4 层
-   - 复杂功能通常涉及全部六层
+### 步骤 2：执行贯穿式修改
 
-### 步骤 2：逐层生成实现方案
-按数据流顺序（从前端到后端）生成每一层的代码：
+根据入口层选择修改模式：
 
-#### 前端各层
+**模式 A：从 UI 层开始（向后推导）**
+- UI 层 → 前端服务层 → 前端 API 层 → 后端 API 层 → 后端服务层 → 数据层
+- 场景："页面上要显示用户的注册时间"
 
-**UI 层（Vue 3 + Tailwind）**
-- 使用 `<script setup>` 语法和组合式 API
-- 使用 Tailwind CSS 类名进行样式设计
-- 表单使用 `<input type="file">` + `<button>`，配合 `@change` 事件
-- 错误提示使用 SweetAlert2（`Swal.fire()`）
-- 响应式数据使用 `ref` 和 `reactive`
-- 参考：`references/architecture_layers.md` 的 UI 层职责说明
+**模式 B：从数据层开始（向前推导）**
+- 数据层 → 后端服务层 → 后端 API 层 → 前端 API 层 → 前端服务层 → UI 层
+- 场景："用户表需要添加手机号字段"
 
-**前端服务层（Pinia Store）**
-- 使用 `defineStore` 定义状态
-- 决定是否需要持久化（`usePersist` 插件）
-- 封装业务逻辑（如 `uploadAvatar()`）
-- 参考：`references/architecture_layers.md` 的前端服务层职责说明
-
-**前端 API 层（Axios + TypeScript）**
-- 封装 API 函数（如 `uploadAvatar(file: File)`）
-- 定义 TypeScript 接口（`src/types/user.ts`）
-- 使用 `FormData` 处理文件上传
-- 统一错误处理（基于 HTTP 状态码）
-- 参考：`references/architecture_layers.md` 的前端 API 层职责说明
-
-#### 后端各层
-
-**后端 API 层（FastAPI + Pydantic）**
-- 定义路由（如 `@app.post("/users/avatar")`）
-- 使用 Pydantic 模型定义请求/响应结构
-- 使用 `Form()` 和 `File()` 接收表单数据
-- 返回标准化响应（`{ code: 200, data: {...} }`）
-- 参考：`references/architecture_layers.md` 的后端 API 层职责说明
-
-**后端服务层（Service 类）**
-- 验证文件类型/大小
-- 生成唯一文件名（UUID + 原始扩展名）
-- 保存到本地或云存储
-- 更新数据库记录
-- 参考：`references/architecture_layers.md` 的后端服务层职责说明
-
-**数据层（SQLAlchemy + PostgreSQL）**
-- 定义 SQLAlchemy 模型（增加 `avatar_url` 字段）
-- 使用 Alembic 生成迁移命令：
-  ```bash
-  alembic revision --autogenerate -m "Add avatar_url to User model"
-  alembic upgrade head
-  ```
-- 参考：`references/architecture_layers.md` 的数据层职责说明
+**模式 C：从中间层开始（双向推导）**
+- 向后：中间层 → 后端服务层 → 数据层
+- 向前：中间层 ← 前端 API 层 ← 前端服务层 ← UI 层
+- 场景："后端 API 需要增加搜索参数"
 
 ### 步骤 3：跨层一致性校验
-检查以下一致性：
 
 **字段名一致性**
-- UI 层：`avatarFile`
-- 前端服务层：`state.avatarFile`
-- 前端 API 层：`formData.append('avatarFile', file)`
-- 后端 API 层：`file: UploadFile = File(...)`
-- 数据层：`avatar_url: Column(String(256))`
-- ⚠️ 注意：字段名在前后端传输时需要映射（`avatarFile` → `avatar_url`）
 
-**类型匹配**
-- 前端 TypeScript：`avatarUrl: string`
-- 后端 Pydantic：`avatar_url: str`
-- 数据库：`VARCHAR(256)` 或 `TEXT`
+| 层级 | 命名风格 | 示例 |
+|------|---------|------|
+| UI 层 / 前端服务层 | 驼峰命名 | `registrationTime` |
+| 前端 API 层 / 后端层 / 数据层 | 蛇形命名 | `registration_time` |
 
-**错误处理贯通**
-- 后端返回：400 Bad Request（文件类型错误）
-- 前端 API 层：根据 `response.status` 判断
-- UI 层：调用 `Swal.fire({ icon: 'error', ... })` 显示错误
+**类型匹配检查**
 
-**类型一致性（前后端 Schema 同步）**
-确保前端 TypeScript 类型与后端 Pydantic schema 完全一致：
+| TypeScript | Pydantic | SQLAlchemy |
+|-----------|----------|------------|
+| `string` | `str` | `String` |
+| `number` | `int`/`float` | `Integer`/`Float` |
+| `boolean` | `bool` | `Boolean` |
+| `Date`/`string` | `datetime` | `DateTime` |
+| `T \| null` | `Optional[T]` | `nullable=True` |
 
-| TypeScript 类型 | Pydantic 类型 | 说明 |
-|----------------|---------------|------|
-| `string` | `str` | 字符串 |
-| `number` | `int` / `float` | 数字 |
-| `boolean` | `bool` | 布尔值 |
-| `Date` | `datetime` | 日期时间 |
-| `string` (URL) | `HttpUrl` | URL 类型 |
-| `string` (Email) | `EmailStr` | 邮箱类型 |
-| `Array<T>` | `List[T]` | 数组/列表 |
-| `T \| null` | `Optional[T]` | 可选类型 |
-| `T \| U \| V` | `Union[T, U, V]` | 联合类型 |
+**接口契约检查**
+- 前端 API 请求参数 ↔ 后端 API 接收参数
+- 后端 API 响应格式 ↔ 前端 API 期望格式
+- 前端服务层状态 ↔ UI 层显示绑定
 
-**类型同步最佳实践**：
-1. **接口定义同步**：前端 TypeScript 接口与后端 Pydantic 模型字段名和类型必须一一对应
-   ```typescript
-   // 前端 TypeScript
-   export interface User {
-     id: number
-     email: string
-     avatar_url: string | null
-     created_at: string  // ISO 8601 格式
-   }
-   ```
-   ```python
-   # 后端 Pydantic
-   class UserResponse(BaseModel):
-       id: int
-       email: str
-       avatar_url: Optional[str] = None
-       created_at: datetime
-   ```
+### 步骤 4：输出修改方案
 
-2. **字段名映射规则**：
-   - 前端使用蛇形命名（snake_case）与后端保持一致
-   - 避免在 TypeScript 中使用驼峰命名，减少字段转换成本
-   - 前后端共享的字段必须名称相同
+按照以下结构输出：
 
-3. **空值处理**：
-   - 前端 `null` / `undefined` → 后端 `None`
-   - 使用 `Optional[T]` 表示可为空
-   - 前端访问可选字段时使用可选链 `?.`
+```markdown
+## 修改方案：[功能名称]
 
-4. **日期时间格式**：
-   - 前端发送：ISO 8601 格式字符串（如 `2024-01-01T00:00:00Z`）
-   - 后端接收：Pydantic 自动解析为 `datetime` 对象
-   - 后端返回：JSON 序列化为 ISO 8601 格式
-   - 前端显示：使用 `new Date()` 解析或格式化库
+### 修改入口
+- **入口层**：[层级名称]
+- **修改原因**：[用户原始需求]
 
-5. **枚举类型同步**：
-   ```typescript
-   // 前端 TypeScript
-   export enum UserRole {
-     ADMIN = 'admin',
-     USER = 'user',
-     GUEST = 'guest'
-   }
-   ```
-   ```python
-   # 后端 Pydantic
-   from enum import Enum
-   
-   class UserRole(str, Enum):
-       ADMIN = 'admin'
-       USER = 'user'
-       GUEST = 'guest'
-   ```
+### 逐层修改详情
+#### 1. [层级1] 修改
+**变更内容**：[具体修改点]
+**代码变更**：[代码片段]
 
-6. **验证规则同步**：
-   - 前端：HTML 表单验证（`required`, `minlength`, `pattern`）
-   - 后端：Pydantic 验证器（`@validator`, `Field(..., min_length=1)`）
-   - 前后端验证规则保持一致
+### 跨层一致性校验
+- [ ] 字段名一致性
+- [ ] 类型匹配
+- [ ] 接口契约
 
-参考：`references/architecture_layers.md` 的类型映射规则，`references/code_patterns.md` 的类型同步模式
-
-### 步骤 4：架构与安全提醒
-根据功能特点提醒以下事项：
-
-**文件上传安全**
-- 限制 MIME 类型（如 `image/jpeg, image/png`）
-- 限制文件大小（如 5MB）
-- 防路径遍历（使用 `os.path.basename()`）
-- 文件名随机化（UUID + 时间戳）
-
-**权限控制**
-- 使用 JWT 验证当前用户
-- 检查用户是否有权限修改目标资源（只能改自己的头像）
-- 在后端 API 层添加 `@Depends(get_current_user)`
-
-**响应格式规范**
-- 统一使用全局响应模型（`code, data, message`）
-- 成功：200，失败：400/401/403/500
-- 详细错误信息放在 `message` 字段
-
-**数据库迁移**
-- 使用 Alembic 管理数据库变更
-- 不要直接修改生产数据库
-- 迁移脚本需要经过测试
-
-### 步骤 5：输出格式化
-按照以下格式输出：
-
-- 使用 Markdown 格式
-- 每层用 `###` 标题分隔（如 `### UI 层（Vue 3 + Tailwind）`）
-- 代码块标注语言（`vue`、`typescript`、`python`、`bash`）
-- 关键提醒用 `💡` 或 `⚠️` 标注
-- 文件路径使用代码样式（如 `src/components/AvatarUpload.vue`）
-- 不虚构未提供的信息，但可基于最佳实践建议
+### 数据库迁移（如需要）
+```bash
+alembic revision --autogenerate -m "描述"
+```
+```
 
 ## 资源索引
 
-**必要脚本**
-- 见 [scripts/generate_code.py](scripts/generate_code.py)（用途：生成各层代码模板，参数：`--layer` 指定层级，`--context` 提供上下文信息）
-
-**领域参考**
-- 见 [references/architecture_layers.md](references/architecture_layers.md)（何时读取：需要了解每层职责和约束时）
-- 见 [references/code_patterns.md](references/code_patterns.md)（何时读取：需要参考常见代码模式时）
-- 见 [references/security_checklist.md](references/security_checklist.md)（何时读取：进行安全检查时）
-
-**输出资产**
-- 见 [assets/templates/](assets/templates/)（直接用于生成各层代码模板）
+| 资源 | 路径 | 用途 |
+|------|------|------|
+| 贯穿式修改工作流 | [references/cross_layer_workflow.md](references/cross_layer_workflow.md) | 详细的跨层修改流程和示例 |
+| 架构层说明 | [references/architecture_layers.md](references/architecture_layers.md) | 六层架构详细职责与约束 |
+| 代码模式 | [references/code_patterns.md](references/code_patterns.md) | 常见代码模式、类型同步 |
+| 安全检查清单 | [references/security_checklist.md](references/security_checklist.md) | 安全审查要点 |
+| 代码模板 | [assets/templates/](assets/templates/) | 各层代码模板文件 |
 
 ## 注意事项
-- 仅在需要时读取参考文档，保持上下文简洁
-- 生成的代码应可直接复制使用，避免占位符
-- 跨层一致性校验是关键步骤，必须确保字段名和类型匹配
-- 安全提醒应根据功能特点定制，不能泛泛而谈
-- 充分利用智能体的自然语言理解和推理能力，避免过度依赖脚本
+
+- **识别入口层是关键**：准确判断用户从哪一层发起修改，决定推导方向
+- **双向推导**：中间层修改需要同时向前和向后推导影响
+- **保持一致性**：字段命名、类型定义、接口契约必须在各层保持一致
+- **数据库迁移**：数据层变更必须生成 Alembic 迁移脚本
+- **充分利用智能体能力**：让智能体自动推导跨层影响，避免遗漏
 
 ## 使用示例
 
-**示例 1：用户头像上传**
-- 功能说明：允许用户上传头像并在个人页显示
-- 执行方式：混合（智能体解析需求 + 脚本生成代码模板）
-- 关键步骤：
-  1. 智能体识别领域：用户资料管理
-  2. 生成 UI 层：Vue 组件（文件选择 + 预览）
-  3. 生成前端 API 层：`uploadAvatar()` 函数
-  4. 生成后端 API 层：FastAPI 路由 `POST /users/avatar`
-  5. 生成数据层：SQLAlchemy 模型 + Alembic 迁移
-  6. 一致性校验：`avatarFile` → `avatar_url` 映射
+### 示例 1：从 UI 层发起的修改
 
-**示例 2：用户登录**
-- 功能说明：用户使用邮箱和密码登录
-- 执行方式：混合
-- 关键步骤：
-  1. 智能体识别领域：身份认证
-  2. 生成 UI 层：登录表单（邮箱 + 密码）
-  3. 生成前端服务层：Pinia store（`useAuthStore`）
-  4. 生成前端 API 层：`login(email, password)` 函数
-  5. 生成后端服务层：密码哈希 + JWT 生成
-  6. 安全提醒：密码存储使用 bcrypt，JWT 过期时间
+**用户需求**："用户详情页要显示注册时间"
 
-**示例 3：评论功能**
-- 功能说明：用户对文章发表评论
-- 执行方式：混合
-- 关键步骤：
-  1. 智能体识别领域：内容互动
-  2. 生成数据层：Comment 模型（user_id, article_id, content）
-  3. 生成后端服务层：创建评论、验证权限
-  4. 生成前端 API 层：`createComment()` 函数
-  5. 生成 UI 层：评论表单 + 评论列表
-  6. 一致性校验：`commentText` → `content` 字段名映射
+**入口层识别**：UI 层（关键词"页面显示"）
+
+**推导过程**：UI 层需要显示 → 需要 Store 提供 → 需要 API 返回 → 后端需要查询 → 数据库需要字段
+
+**修改方案**：
+1. **数据层**：添加 `registration_time` 字段到 users 表
+2. **后端服务层**：User 模型添加字段
+3. **后端 API 层**：UserResponse 添加 `registration_time` 字段
+4. **前端 API 层**：TypeScript User 接口添加字段
+5. **前端服务层**：userStore 添加 `registrationTime` 状态
+6. **UI 层**：UserProfile 组件添加注册时间显示
+
+### 示例 2：从数据层发起的修改
+
+**用户需求**："用户表需要添加手机号字段，用于短信通知"
+
+**入口层识别**：数据层（关键词"表添加字段"）
+
+**推导过程**：数据库有字段 → 后端可以存取 → API 可以传输 → 前端可以调用 → Store 可以管理 → UI 可以输入/显示
+
+**修改方案**：
+1. **数据层**：添加 `phone_number` 字段到 users 表
+2. **后端服务层**：UserService 添加手机号验证逻辑
+3. **后端 API 层**：添加手机号参数验证
+4. **前端 API 层**：更新 User 接口
+5. **前端服务层**：userStore 添加手机号状态
+6. **UI 层**：用户资料编辑页添加手机号输入框
+
+### 示例 3：从中间层发起的修改
+
+**用户需求**："后端 API 需要增加按状态筛选订单的功能"
+
+**入口层识别**：后端 API 层（关键词"API增加"）
+
+**推导过程**：
+- 向后：API 参数 → 服务层筛选逻辑 → 数据库查询条件
+- 向前：API 参数 ← 前端调用 ← Store 方法 ← UI 组件
+
+**修改方案**：
+1. **后端 API 层**：`GET /orders` 添加 `status` 查询参数
+2. **后端服务层**：OrderService 添加按状态筛选逻辑
+3. **数据层**：确保 orders 表有 `status` 字段索引
+4. **前端 API 层**：`getOrders()` 添加 `status` 参数
+5. **前端服务层**：orderStore 添加筛选状态
+6. **UI 层**：订单列表页添加状态筛选下拉框
