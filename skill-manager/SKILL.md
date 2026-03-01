@@ -88,8 +88,6 @@ tags: [skill-management, integration, decomposition, workflow, optimization]
 
 | 文档                                                     | 用途                    | 何时使用         |
 | -------------------------------------------------------- | ----------------------- | ---------------- |
-| [skill-standards.md](references/skill-standards.md)         | 标准化规范 + 元信息标准 | 所有操作前查阅   |
-
 | [skill-standards.md](references/skill-standards.md)         | 标准化规范 + 检验指南   | 所有操作前查阅   |
 | [scenario-create.md](references/scenario-create.md)         | 场景：创建新技能        | 创建技能时       |
 | [scenario-modify.md](references/scenario-modify.md)         | 场景：修改技能          | 修改技能时       |
@@ -144,17 +142,8 @@ tags: [skill-management, integration, decomposition, workflow, optimization]
    name: data-cleaner
    version: v1.0.0
    author: skill-manager
-   created_at: 2024-03-01
    description: 数据清洗技能，支持缺失值处理、去重和格式标准化
    tags: [data-cleaning, preprocessing, validation]
-   lifecycle:
-     status: active
-     stage: release
-   version_history:
-     - version: v1.0.0
-       date: 2024-03-01
-       type: initial
-       changes: ["初始版本发布"]
    ---
 
 3. 编写正文内容（任务目标、操作步骤、示例、注意事项）
@@ -168,18 +157,14 @@ tags: [skill-management, integration, decomposition, workflow, optimization]
 □ 元信息完整性检查
   - name: data-cleaner（符合规范）
   - version: v1.0.0（格式正确）
-  - lifecycle: stage=release, status=active
-  - version_history: 包含初始版本记录
+  - author: skill-manager（存在）
+  - description: 符合长度要求（100-150字符）
+  - tags: 至少3个标签
 
 □ 内容质量检查
   - 正文体量 < 500行
   - 包含所有必需章节
   - 示例完整可复制
-
-□ 质量指标
-  - completeness: 0.95
-  - consistency: 0.98
-  - usability: 0.92
 
 检验结果: ✅ 通过
 ```

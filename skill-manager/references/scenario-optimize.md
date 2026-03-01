@@ -129,16 +129,9 @@ tags: [scenario, optimize, refactoring, quality-improvement, lifecycle]
    ---
    ```
 
-2. **更新元信息**
+2. **更新版本号**
    ```yaml
    version: v1.1.0  # 优化版本
-   version_history:
-     - version: v1.1.0
-       date: 2024-03-15
-       type: feature
-       changes: 
-         - "应用原子化拆分"
-         - "优化接口标准化"
    ```
 
 **准出条件**:
@@ -229,11 +222,8 @@ tags: [scenario, optimize, refactoring, quality-improvement, lifecycle]
 # 验证质量评分
 grep -A 5 "quality:" SKILL.md
 
-# 验证版本历史
-grep -A 3 "v1.1.0" SKILL.md
-
-# 验证优化报告存在
-ls optimization-report.md
+# 验证版本号更新
+grep "version:" SKILL.md
 ```
 
 ---

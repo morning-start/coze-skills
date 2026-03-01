@@ -132,16 +132,9 @@ current_status:
 **目标**: 发布新版本
 
 **操作步骤**:
-1. **最终确认元信息**
+1. **最终确认版本号**
    ```yaml
-   ---
    version: v1.1.0
-   updated_at: 2024-03-15
-   lifecycle:
-     status: active
-     stage: release
-   version_history:
-     - version: v1.0.0
        date: 2024-03-01
        type: initial
        changes: ["初始版本发布"]
@@ -209,12 +202,8 @@ current_status:
 # 验证版本标签
 git tag | grep v1.1.0
 
-# 验证元信息更新
+# 验证版本号更新
 grep "version:" SKILL.md
-grep "updated_at:" SKILL.md
-
-# 验证版本历史
-grep -A 5 "v1.1.0" SKILL.md
 ```
 
 ---
@@ -233,13 +222,6 @@ grep -A 5 "v1.1.0" SKILL.md
 ```yaml
 # 变更: 修复 description 中的错别字
 version: v1.0.1
-version_history:
-  - version: v1.0.1
-    date: 2024-03-10
-    type: fix
-    changes: ["修复 description 错别字"]
-```
-
 ### Minor 更新 (v1.0.0 → v1.1.0)
 
 **适用场景**:
@@ -252,13 +234,6 @@ version_history:
 ```yaml
 # 变更: 添加数据验证功能
 version: v1.1.0
-version_history:
-  - version: v1.1.0
-    date: 2024-03-15
-    type: feature
-    changes: 
-      - "新增数据验证功能"
-      - "添加验证示例"
 ```
 
 ### Major 更新 (v1.0.0 → v2.0.0)
@@ -273,14 +248,6 @@ version_history:
 ```yaml
 # 变更: 重构接口，不兼容旧版本
 version: v2.0.0
-version_history:
-  - version: v2.0.0
-    date: 2024-04-01
-    type: breaking
-    changes: 
-      - "重构输入接口（不兼容）"
-      - "删除废弃的能力"
-    migration_guide: "详见 migration-v1-to-v2.md"
 ```
 
 ---

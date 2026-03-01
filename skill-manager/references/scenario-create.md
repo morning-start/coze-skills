@@ -275,14 +275,6 @@ tags: [tag1, tag2, tag3]
     - [ ] author: 存在
     - [ ] description: 100-150字符
     - [ ] tags: ≥3个
-  
-  生命周期:
-    - [ ] status: active
-    - [ ] stage: release
-  
-  版本历史:
-    - [ ] version_history 存在
-    - [ ] 包含 v1.0.0 记录
 ```
 
 ### 3.2 内容质量检查
@@ -392,11 +384,9 @@ EOF
 
 # 阶段 3: 测试
 # 执行标准化检验
-# 质量评分: completeness=0.95, consistency=0.98, usability=0.92
 
 # 阶段 4: 发布
 # 更新 version: v0.1.0 → v1.0.0
-# 更新 lifecycle: stage=release, status=active
 git add .
 git commit -m "feat: 添加 data-cleaner 技能"
 git tag -a v1.0.0 -m "Release v1.0.0: 初始版本"
