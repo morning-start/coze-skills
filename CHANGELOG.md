@@ -10,6 +10,27 @@
 ### 变更 (Changed)
 
 #### 技能优化
+- **book-skill-creator** 升级到 v1.2.0 版本
+  - 删除冗余脚本（功能由智能体直接完成）：
+    - scripts/docs_parser.py
+    - scripts/web_searcher.py
+    - scripts/template_manager.py
+    - scripts/batch_create.py
+    - scripts/dependency_analyzer.py
+    - scripts/skill_validator.py
+  - 删除冗余 references 文档：
+    - references/docs-parsing-guide.md
+    - references/template-library.md
+  - 删除冗余 assets：
+    - assets/code-scaffolds/bash-script.sh
+    - assets/code-scaffolds/python-script.py
+  - 重构 SKILL.md：
+    - 完善前言区字段（version、author、tags）
+    - 重新定义核心流程：文档解析 → 网络搜索 → 技能生成 → 质量验证
+    - 强调智能体工具使用（Read/WebFetch/WebSearch）
+    - 更新使用示例：React 文档生成、Go 规范生成、网络搜索补充
+  - 核心能力保持不变：根据官方文档/书籍/规范生成技术技能
+
 - **six-layer-architect** 升级到 v2.1.0 版本
   - 删除冗余的 scripts/generate_code.py 脚本（与 assets/templates/ 功能重复）
   - 简化 SKILL.md 内容，删除冗余描述

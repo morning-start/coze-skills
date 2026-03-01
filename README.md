@@ -160,17 +160,21 @@ Python代码风格优化与Pythonic惯用法指导。
 
 ---
 
-### 9. 技能工厂核心母技能 (book-skill-creator) ⭐ NEW
+### 9. 技能工厂核心母技能 (book-skill-creator) v1.2.0 ⭐ NEW
 
-工厂化批量创建和管理技能包，提供从需求分析到自动化生成的完整流程。
+根据官方文档、技术书籍或规范生成技术技能（如 golang-skill、vue-skill、react-skill），支持网络搜索补充最佳实践。
 
 **核心功能：**
-- 官方文档理解：自动提取 API 和配置信息
-- 网络搜索辅助：查找最佳实践和实现方案
-- 代码框架生成：基于模板快速生成技能结构
-- 子技能自动化构建：批量创建相关技能包
-- 框架使用规范：提供常用框架的使用指南
-- 优秀执行方案库：沉淀最佳实践和代码示例
+- **文档解析**：使用 Read/WebFetch 工具解析官方文档、技术书籍
+- **网络搜索补充**：使用 WebSearch 工具搜索最佳实践和行业经验
+- **技能生成**：生成符合规范的 SKILL.md 及相关参考文档
+- **质量验证**：使用 skill-standards 进行标准化检验
+
+**适用场景：**
+- 从 React 官方文档生成 react-skill
+- 从 Go 语言规范生成 golang-skill
+- 从 Vue 文档生成 vue-skill
+- 从任意技术文档生成对应技能
 
 **适用场景：**
 - 需要创建多个相关技能
@@ -333,7 +337,7 @@ uv run build-skills --version 1.0.0 --skill recruitment-processor
 - **six-layer-architect** - 六层架构生成
 
 ### 技能创建
-- **book-skill-creator** (v1.1.0) ⭐ NEW - 技能工厂核心母技能
+- **book-skill-creator** (v1.2.0) ⭐ NEW - 技能工厂核心母技能
 - **coze-skill-creator** (v1.0.0) ⭐ NEW - Coze 技能创建器
 - **meta-skill-creator** (v1.0.0) ⭐ NEW - 高阶技能创建系统
 - **skill-manager** (v1.0.0) ⭐ NEW - 技能管理系统
