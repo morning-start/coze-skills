@@ -10,26 +10,22 @@
 ### 变更 (Changed)
 
 #### 技能优化
-- **book-skill-creator** 升级到 v1.2.0 版本
-  - 删除冗余脚本（功能由智能体直接完成）：
-    - scripts/docs_parser.py
-    - scripts/web_searcher.py
-    - scripts/template_manager.py
-    - scripts/batch_create.py
-    - scripts/dependency_analyzer.py
-    - scripts/skill_validator.py
-  - 删除冗余 references 文档：
-    - references/docs-parsing-guide.md
-    - references/template-library.md
-  - 删除冗余 assets：
-    - assets/code-scaffolds/bash-script.sh
-    - assets/code-scaffolds/python-script.py
-  - 重构 SKILL.md：
-    - 完善前言区字段（version、author、tags）
-    - 重新定义核心流程：文档解析 → 网络搜索 → 技能生成 → 质量验证
-    - 强调智能体工具使用（Read/WebFetch/WebSearch）
-    - 更新使用示例：React 文档生成、Go 规范生成、网络搜索补充
-  - 核心能力保持不变：根据官方文档/书籍/规范生成技术技能
+- **book-skill-creator** 升级到 v2.0.0 版本（重大更新）
+  - 新增技能拆分和并行生成能力
+    - 阶段 1：分析规划 - 分析文档生成技能拆分计划
+    - 阶段 2：并行生成 - 支持多智能体并行生成多个技能
+    - 阶段 3：质量验证 - 独立验证 + 一致性检查
+  - 核心流程重构：
+    - 文档分析 → 技能拆分规划 → 并行生成执行 → 质量验证
+  - 新增技能拆分计划格式：
+    - 技术模块识别和依赖分析
+    - 并行执行组划分
+    - 技能清单和复杂度评估
+  - 更新使用示例：
+    - React 文档生成技能族（react-core/hooks/router/testing）
+    - Go 语言规范生成技能族（golang-basic/concurrency/stdlib/web）
+    - 大型框架技能拆分示例
+  - 版本：v1.2.0 → v2.0.0（Major 版本，核心功能变更）
 
 - **six-layer-architect** 升级到 v2.1.0 版本
   - 删除冗余的 scripts/generate_code.py 脚本（与 assets/templates/ 功能重复）

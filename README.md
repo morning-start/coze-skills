@@ -160,21 +160,26 @@ Python代码风格优化与Pythonic惯用法指导。
 
 ---
 
-### 9. 技能工厂核心母技能 (book-skill-creator) v1.2.0 ⭐ NEW
+### 9. 技能工厂核心母技能 (book-skill-creator) v2.0.0 ⭐ NEW
 
-根据官方文档、技术书籍或规范生成技术技能（如 golang-skill、vue-skill、react-skill），支持网络搜索补充最佳实践。
+分析官方文档/技术书籍，生成技能拆分计划，支持并行生成多个技术技能（如 react-core-skill、react-hooks-skill、golang-basic-skill、golang-concurrency-skill）。
 
 **核心功能：**
-- **文档解析**：使用 Read/WebFetch 工具解析官方文档、技术书籍
-- **网络搜索补充**：使用 WebSearch 工具搜索最佳实践和行业经验
-- **技能生成**：生成符合规范的 SKILL.md 及相关参考文档
-- **质量验证**：使用 skill-standards 进行标准化检验
+- **文档分析**：使用 Read/WebFetch 工具解析文档，提取技术模块和知识点
+- **网络搜索补充**：使用 WebSearch 工具搜索最佳实践，完善分析结果
+- **技能拆分规划**：根据分析结果生成技能拆分计划（哪些技能、每个技能内容）
+- **并行生成执行**：生成可并行执行的技能生成计划，智能体按步骤执行
+- **质量验证**：各技能独立验证 + 技能间一致性检查
+
+**三阶段工作流程：**
+1. **分析规划**：文档解析 → 模块识别 → 技能拆分计划
+2. **并行生成**：多智能体并行生成各技能
+3. **质量验证**：独立验证 + 一致性检查 + 质量报告
 
 **适用场景：**
-- 从 React 官方文档生成 react-skill
-- 从 Go 语言规范生成 golang-skill
-- 从 Vue 文档生成 vue-skill
-- 从任意技术文档生成对应技能
+- 从 React 文档生成技能族（react-core/hooks/router/testing）
+- 从 Go 规范生成技能族（golang-basic/concurrency/stdlib/web）
+- 从大型框架文档拆分生成多个相关技能
 
 **适用场景：**
 - 需要创建多个相关技能
@@ -337,7 +342,7 @@ uv run build-skills --version 1.0.0 --skill recruitment-processor
 - **six-layer-architect** - 六层架构生成
 
 ### 技能创建
-- **book-skill-creator** (v1.2.0) ⭐ NEW - 技能工厂核心母技能
+- **book-skill-creator** (v2.0.0) ⭐ NEW - 技能工厂核心母技能
 - **coze-skill-creator** (v1.0.0) ⭐ NEW - Coze 技能创建器
 - **meta-skill-creator** (v1.0.0) ⭐ NEW - 高阶技能创建系统
 - **skill-manager** (v1.0.0) ⭐ NEW - 技能管理系统
