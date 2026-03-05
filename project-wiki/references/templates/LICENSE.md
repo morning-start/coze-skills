@@ -4,7 +4,7 @@ Copyright (c) {year} {author_name}
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
+in Software without restriction, including without limitation rights
 to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
@@ -44,7 +44,7 @@ MIT 许可证（MIT License）是一种开源许可证，允许任何人免费�
 Copyright {year} {author_name}
 
 Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
+you may not use this file except in compliance with License.
 ```
 
 ### GPL v3
@@ -71,7 +71,7 @@ are permitted provided that the following conditions are met:
 适合：希望完全放弃版权的项目
 
 ```
-To the extent possible under law, the author has waived all copyright and
+To the extent possible under law, author has waived all copyright and
 related or neighboring rights to this work.
 ```
 

@@ -6,7 +6,7 @@
 
 | 目录 | 说明 |
 |------|------|
-| [document/](document/) | 文档操作指南（生成、检查、生命周期） |
+| [README.md](README.md) | 文档操作指南（生成、检查、生命周期） |
 | [project-types/](project-types/) | 项目类型指南（前端/后端/全栈/移动端/桌面端/CLI/TUI/游戏） |
 | [document-management-guide.md](document-management-guide.md) | 文档管理流程指南（6 阶段生命周期） |
 | [document-health-check-guide.md](document-health-check-guide.md) | 文档健康度检查指南 |
@@ -19,13 +19,13 @@
 
 ## 文档指南
 
-- [文档生成流程指南](document/generation-flow-guide.md)
-- [基础文档清单](document/basic-docs-checklist.md)
-- [文档命名规范](document/naming-conventions.md)
-- [一致性检查指南](document/consistency-check-guide.md)
-- [生命周期管理指南](document/lifecycle-guide.md)
-- [知识搜索指南](document/knowledge-search-guide.md)
-- [Mermaid 语法指南](document/mermaid-syntax.md)
+- [文档生成流程指南](generation-flow-guide.md)
+- [基础文档清单](basic-docs-checklist.md)
+- [文档命名规范](naming-conventions.md)
+- [一致性检查指南](consistency-check-guide.md)
+- [生命周期管理指南](lifecycle-guide.md)
+- [知识搜索指南](knowledge-search-guide.md)
+- [Mermaid 语法指南](mermaid-syntax.md)
 
 ## 架构指南
 

@@ -81,7 +81,6 @@ Player (CharacterBody2D)
 # 玩家信号
 signal player_died
 signal player_scored(points)
-
 # 游戏信号
 signal game_over
 signal level_completed
