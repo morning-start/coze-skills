@@ -12,6 +12,7 @@
 | [extraction.md](extraction.md) | 知识提取：从代码中提取结构化知识 |
 | [knowledge-graph.md](knowledge-graph.md) | 知识图谱：知识关联和图结构管理 |
 | [management.md](management.md) | 知识管理：知识库生命周期管理 |
+| [consistency-rules.md](consistency-rules.md) | 文档一致性规则：一致性检查规则和自动化建议 |
 
 ## 设计模式
 
@@ -62,6 +63,11 @@
 知识库的创建、存储、检索、更新和归档
 
 详见 [management.md](management.md)
+
+### 一致性规则
+文档一致性检查的规则、常见问题和自动化建议
+
+详见 [consistency-rules.md](consistency-rules.md)
 
 ## 使用说明
 
