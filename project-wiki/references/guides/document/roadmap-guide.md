@@ -37,7 +37,7 @@
 **错误示例**：
 - `roadmap.md`（小写）
 - `roadmap.markdown`（扩展名错误）
-- `docs/roadmap.md`（位置错误）
+- `wiki/roadmap.md`（位置错误）
 - `ROADMAP.txt`（格式错误）
 
 **正确示例**：

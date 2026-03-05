@@ -73,13 +73,13 @@ npm run dev
 ```
 project/
 ├── src/
-├── docs/
+├── wiki/
 └── README.md
 ```
 
 ## 参考
 
-- [API 文档](docs/api/)
+- [API 文档](wiki/api/)
 - [架构文档](ARCHITECTURE.md)
 ```
 

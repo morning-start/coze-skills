@@ -14,6 +14,7 @@
 | [management.md](management.md)                             | 知识管理：知识库生命周期管理               |
 | [consistency-rules.md](consistency-rules.md)               | 文档一致性规则：一致性检查规则和自动化建议 |
 | [project-type-recognition.md](project-type-recognition.md) | 项目类型识别：基于项目结构识别项目类型     |
+| [document-management-tools.md](document-management-tools.md) | 文档管理工具链：7 类工具推荐和集成示例 |
 
 ## 设计模式
 

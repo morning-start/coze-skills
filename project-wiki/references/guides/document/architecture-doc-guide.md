@@ -40,7 +40,7 @@
 **错误示例**：
 - `architecture.md`（小写）
 - `architecture.markdown`（扩展名错误）
-- `docs/architecture.md`（位置错误）
+- `wiki/architecture.md`（位置错误）
 - `ARCHITECTURE.txt`（格式错误）
 
 **正确示例**：

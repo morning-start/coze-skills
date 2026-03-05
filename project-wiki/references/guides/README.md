@@ -8,6 +8,9 @@
 |------|------|
 | [document/](document/) | 文档操作指南（生成、检查、生命周期） |
 | [project-types/](project-types/) | 项目类型指南（前端/后端/全栈/移动端/桌面端/CLI/TUI/游戏） |
+| [document-management-guide.md](document-management-guide.md) | 文档管理流程指南（6 阶段生命周期） |
+| [document-health-check-guide.md](document-health-check-guide.md) | 文档健康度检查指南 |
+| [document-management-anti-patterns.md](document-management-anti-patterns.md) | 文档管理反模式指南 |
 | [architecture/](architecture/) | 架构设计指南（架构设计、技术选型） |
 | [database/](database/) | 数据库设计指南（ER 图） |
 | [usecase/](usecase/) | 用例设计指南（用例图） |

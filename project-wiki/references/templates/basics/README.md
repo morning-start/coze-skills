@@ -74,7 +74,7 @@ yarn start
 │   ├── assets/             # 静态资源
 │   └── index.js            # 入口文件
 ├── tests/                  # 测试目录
-├── docs/                   # 文档目录
+├── wiki/                   # 文档目录
 ├── scripts/                # 脚本目录
 ├── config/                 # 配置文件
 ├── .env.example            # 环境变量示例
@@ -92,8 +92,8 @@ yarn start
 
 ## API 文档
 
-- [API 文档](./docs/api.md)
-- [接口规范](./docs/api-spec.md)
+- [API 文档](./wiki/api.md)
+- [接口规范](./wiki/api-spec.md)
 
 ## 配置说明
 
@@ -106,7 +106,7 @@ yarn start
 | DATABASE_URL | 是 | - | 数据库连接地址 |
 | REDIS_URL | 否 | - | Redis 连接地址 |
 
-详细配置说明见 [配置文档](./docs/config.md)。
+详细配置说明见 [配置文档](./wiki/config.md)。
 
 ## 测试
 
@@ -161,7 +161,7 @@ docker-compose up -d
 ## 常见问题
 
 **Q: 如何...？**
-A: 请参考 [FAQ](./docs/faq.md) 或提交 Issue。
+A: 请参考 [FAQ](./wiki/faq.md) 或提交 Issue。
 
 ## 相关链接
 
