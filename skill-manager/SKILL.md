@@ -1,10 +1,18 @@
 ---
 name: skill-manager
-version: v1.4.0
+version: v1.5.0
 author: skill-manager
-description: 高阶技能管理系统，支持技能整合与拆分、工作流编排及技能优化；当需要创建新技能、管理现有技能、整合多个技能能力、拆分复杂技能或优化技能设计时使用
-tags: [skill-management, integration, decomposition, workflow, optimization]
+description: 高阶技能管理系统，支持技能全生命周期管理、文档规范制定、技能整合拆分及工作流编排；提供简单/复杂技能文档编写标准，确保文档质量与可维护性
+tags:
+  [
+    skill-management,
+    documentation-standards,
+    integration,
+    decomposition,
+    workflow,
+  ]
 ---
+
 # Skill Manager
 
 ## 任务目标
@@ -14,6 +22,7 @@ tags: [skill-management, integration, decomposition, workflow, optimization]
 ### 核心能力
 
 - **技能生命周期管理**: 创建新技能、修改现有技能、版本控制
+- **文档规范制定**: 提供简单/复杂技能文档编写标准，指导文档分层组织
 - **技能整合**: 将多个技能合并为一个新技能
 - **技能拆分**: 将复杂技能拆分为多个独立技能
 - **技能优化**: 应用设计模式提升技能质量
@@ -27,8 +36,6 @@ tags: [skill-management, integration, decomposition, workflow, optimization]
 当需要创建、修改、整合、拆分或优化技能时触发。
 
 ---
-
-
 
 ## 三步流程框架
 
@@ -84,17 +91,45 @@ tags: [skill-management, integration, decomposition, workflow, optimization]
 
 ---
 
+## 文档编写规范
+
+### 简单技能 vs 复杂技能
+
+根据技能复杂度选择合适的文档组织方式：
+
+**简单技能**（功能单一、逻辑简单）:
+
+- 直接在 `SKILL.md` 中完整描述所有功能
+- 适用于：工具类技能、正文 < 300 行、无需复杂配置
+
+**复杂技能**（多模块、逻辑复杂）:
+
+- `SKILL.md` 仅作为概览和索引
+- 详细内容拆分到 `references/` 子文件
+- 适用于：多模块协作、需要详细文档、支持多人协作
+
+**判断标准**:
+
+- 功能数量：单一功能 vs 多个子功能
+- 文档体量：< 300 行 vs ≥ 300 行
+- 配置复杂度：简单 vs 复杂
+- 依赖关系：无依赖 vs 需要编排
+
+**详细规范**: 见 [skill-standards.md](references/skill-standards.md#agent-技能文档编写规范)
+
+---
+
 ## 参考文档
 
-| 文档                                                     | 用途                    | 何时使用         |
-| -------------------------------------------------------- | ----------------------- | ---------------- |
-| [skill-standards.md](references/skill-standards.md)         | 标准化规范 + 检验指南   | 所有操作前查阅   |
-| [scenario-create.md](references/scenario-create.md)         | 场景：创建新技能        | 创建技能时       |
-| [scenario-modify.md](references/scenario-modify.md)         | 场景：修改技能          | 修改技能时       |
-| [scenario-optimize.md](references/scenario-optimize.md)     | 场景：优化技能          | 优化技能时       |
-| [scenario-integrate.md](references/scenario-integrate.md)   | 场景：整合技能          | 整合技能时       |
-| [scenario-decompose.md](references/scenario-decompose.md)   | 场景：拆分技能          | 拆分技能时       |
-| [workflow-generation.md](references/workflow-generation.md) | 工作流生成（可选）      | 需要编排工作流时 |
+| 文档                                                        | 用途                                 | 何时使用         |
+| ----------------------------------------------------------- | ------------------------------------ | ---------------- |
+| [skill-standards.md](references/skill-standards.md)         | 标准化规范 + 检验指南 + 文档编写规范 | 所有操作前查阅   |
+| [scenario-create.md](references/scenario-create.md)         | 场景：创建新技能                     | 创建技能时       |
+| [scenario-modify.md](references/scenario-modify.md)         | 场景：修改技能                       | 修改技能时       |
+| [scenario-optimize.md](references/scenario-optimize.md)     | 场景：优化技能                       | 优化技能时       |
+| [scenario-integrate.md](references/scenario-integrate.md)   | 场景：整合技能                       | 整合技能时       |
+| [scenario-decompose.md](references/scenario-decompose.md)   | 场景：拆分技能                       | 拆分技能时       |
+| [workflow-generation.md](references/workflow-generation.md) | 工作流生成（可选）                   | 需要编排工作流时 |
 
 ---
 
