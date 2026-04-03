@@ -137,33 +137,6 @@ fix(skill-manager): 修复版本号解析错误
 docs: 更新 README 技能列表
 ```
 
-## 自动化构建
-
-### 本地构建命令
-
-```bash
-# 构建所有技能
-uv run build-skills --all
-
-# 指定版本号构建
-uv run build-skills --all --version 2.0.0
-
-# 指定输出目录
-uv run build-skills --all --output-dir ./dist
-```
-
-### CI/CD 触发方式
-
-1. **Git Tag 触发**（推荐）
-   ```bash
-   git tag -a v1.0.0 -m "Release 1.0.0"
-   git push origin v1.0.0
-   ```
-
-2. **手动触发**
-   - 访问 GitHub → Actions → "Build and Release Skills"
-   - 点击 "Run workflow"
-
 ## Agent 操作检查清单
 
 ### 新技能创建
@@ -211,20 +184,7 @@ git add skill-b/
 git commit -m "fix(skill-b): xxx"
 ```
 
-### Q3: CI/CD 构建失败？
-
-本地测试构建：
-```bash
-uv run build-skills --all
-```
-
-检查 SKILL.md 格式：
-```bash
-cat skill-name/SKILL.md | head -20
-```
-
 ## 参考文档
 
 - [SKILL.md 规范](./project-wiki/references/guides/document/README.md)
 - [项目规则](./.trae/rules/project_rules.md)
-- [CI/CD 详细指南](./.github/CICD.md)
