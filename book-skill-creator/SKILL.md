@@ -23,20 +23,24 @@ tags:
   - 网站内容读取（WebFetch/Read）
   - 技术特点分析和知识规划
   - 迭代式学习（search 补充）
-  - 技能拆分和并行生成
-  - 质量验证
+  - 技能族规划和子技能生成
+  - 技能族整体打包和发布
+- **技能族概念**：
+  - 技能族（Skill Family）是围绕同一技术栈的多个相关技能的集合
+  - 例如：Vue 技能族 = vue-skills（母技能）+ vue-core-skill + vue-router-skill + vue-pinia-skill（子技能）
+  - 技能族本身也是一个技能，拥有独立的 SKILL.md
+  - 子技能可以独立使用，也可以依赖技能族
 - **触发条件**：
-  - 提供技术网站 URL 需要分析并生成技能
-  - 从大型文档/技术书籍生成多个技能
+  - 提供技术网站 URL 需要分析并生成技能族
+  - 从大型文档/技术书籍生成技能族
   - 从规范文档生成相关技能族
-- **可选能力**：依赖分析、模板复用、版本协调
 
 ## 核心工作流程
 
 ### 模式 A：智能网站分析
 
 ```
-网站 URL → 内容读取 → 技术特点分析 → 知识规划 → 迭代学习 → 技能规划 → 并行生成
+网站 URL → 内容读取 → 技术特点分析 → 知识规划 → 迭代学习 → 技能族规划 → 母技能生成 → 子技能生成 → 打包发布
 ```
 
 **详细流程**：见 [references/web-analysis-flow.md](references/web-analysis-flow.md)
@@ -44,10 +48,20 @@ tags:
 ### 模式 B：文档分析
 
 ```
-文档 → 解析 → 搜索补充 → 模块识别 → 技能拆分 → 并行生成 → 验证
+文档 → 解析 → 搜索补充 → 模块识别 → 技能族规划 → 母技能生成 → 子技能生成 → 打包发布
 ```
 
 **详细流程**：见 [references/document-analysis-flow.md](references/document-analysis-flow.md)
+
+### 技能族创建流程（新增）
+
+当需要创建技能族时，需要同时创建母技能和子技能：
+
+```
+技能族规划 → 母技能创建 → 子技能创建 → 技能族打包
+```
+
+**详细流程**：见 [references/skill-family-flow.md](references/skill-family-flow.md)
 
 ## 操作步骤
 
@@ -60,7 +74,7 @@ tags:
 1. **网站内容读取** - 获取 URL，读取内容，提取技术特点
 2. **知识规划** - 分析缺口，生成优先级清单
 3. **迭代学习** - search 补充，评估完整性，循环学习
-4. **技能规划** - 识别模块，生成拆分计划
+4. **技能族规划** - 识别模块，规划母技能和子技能结构
 
 ### 模式 B：文档分析流程
 
@@ -70,18 +84,31 @@ tags:
 
 1. **文档解析** - 读取文档，识别模块
 2. **搜索补充** - 搜索最佳实践
-3. **技能拆分** - 生成拆分计划
-4. **并行生成** - 多智能体执行
-5. **质量验证** - 独立验证，一致性检查
+3. **技能族规划** - 生成母技能和子技能规划
+4. **母技能创建** - 创建技能族母技能
+5. **子技能创建** - 创建子技能（可并行）
+6. **打包发布** - 技能族整体打包和发布
 
-## 并行生成与质量验证
+### 技能族创建流程
 
-两种模式都支持并行生成和质量验证：
+**详细步骤**：见 [references/skill-family-flow.md](references/skill-family-flow.md)
 
-- **并行生成**：多个智能体同时生成不同技能
-- **质量验证**：每个技能独立验证，然后进行一致性检查
+**核心步骤概览**：
 
-**详细流程**：见 [references/document-analysis-flow.md#步骤-b4 并行生成](references/document-analysis-flow.md) 和 [references/document-analysis-flow.md#步骤-b5 质量验证](references/document-analysis-flow.md)
+1. **技能族规划** - 确定技能族结构和子技能列表
+2. **母技能创建** - 创建技能族母技能（vue-skills）
+3. **子技能创建** - 创建子技能（vue-core-skill 等）
+4. **打包发布** - 技能族整体打包到一个目录
+
+## 技能族生成与打包
+
+两种模式都支持技能族生成和打包：
+
+- **母技能生成**：创建技能族母技能（如 vue-skills）
+- **子技能生成**：创建子技能（如 vue-core-skill）
+- **技能族打包**：将母技能和子技能打包到一个目录
+
+**详细流程**：见 [references/skill-family-flow.md](references/skill-family-flow.md)
 
 ## 资源索引
 
@@ -90,7 +117,8 @@ tags:
 | 技能规范         | [references/skill-specs.md](references/skill-specs.md)                           | SKILL.md 编写规范            |
 | 框架指南         | [references/frameworks-guide.md](references/frameworks-guide.md)                 | 常用框架分类和使用场景       |
 | 最佳实践         | [references/best-practices.md](references/best-practices.md)                     | 方案分类和解决方案           |
-| **网站分析指南** | [references/web-analysis-guide.md](references/web-analysis-guide.md)             | **智能网站分析模式完整指南** |
+| **技能族流程**   | [references/skill-family-flow.md](references/skill-family-flow.md)               | **技能族创建完整流程**       |
+| 网站分析指南     | [references/web-analysis-guide.md](references/web-analysis-guide.md)             | 智能网站分析模式完整指南     |
 | API 技能模板     | [assets/skill-templates/api-skill.md](assets/skill-templates/api-skill.md)       | API 类技能模板               |
 | 数据处理模板     | [assets/skill-templates/data-process.md](assets/skill-templates/data-process.md) | 数据处理类技能模板           |
 | 工作流模板       | [assets/skill-templates/workflow.md](assets/skill-templates/workflow.md)         | 工作流类技能模板             |
@@ -117,32 +145,46 @@ tags:
 
 ## 使用示例
 
-### 示例 1：智能网站分析模式
+### 示例 1：智能网站分析模式 - 创建 Vue 技能族
 
 **输入**：https://vuejs.org
 
-**输出**：生成 5 个相关技能
+**输出**：Vue 技能族
 
-- vue-core-skill（基础）
-- vue-composition-api-skill（核心）
-- vue-router-skill（核心）
-- vue-pinia-skill（核心）
-- vue-testing-skill（高级）
+```
+vue-skills/                          # 母技能
+├── SKILL.md                        # 技能族定义
+├── references/
+│   └── overview.md                 # 技能族概述
+└── skills/                         # 子技能目录
+    ├── vue-core-skill/             # 核心技能
+    ├── vue-composition-api-skill/  # 组合式 API 技能
+    ├── vue-router-skill/           # 路由技能
+    ├── vue-pinia-skill/           # 状态管理技能
+    └── vue-testing-skill/          # 测试技能
+```
 
-**详细流程**：见 [references/web-analysis-flow.md](references/web-analysis-flow.md)
+**详细流程**：见 [references/skill-family-flow.md](references/skill-family-flow.md)
 
-### 示例 2：文档分析模式
+### 示例 2：文档分析模式 - 创建 React 技能族
 
 **输入**：React 官方文档
 
-**输出**：生成 4 个相关技能
+**输出**：React 技能族
 
-- react-core-skill（基础）
-- react-hooks-skill（核心）
-- react-router-skill（核心）
-- react-testing-skill（高级）
+```
+react-skills/                        # 母技能
+├── SKILL.md                        # 技能族定义
+├── references/
+│   └── overview.md                 # 技能族概述
+└── skills/                         # 子技能目录
+    ├── react-core-skill/          # 核心技能
+    ├── react-hooks-skill/         # Hooks 技能
+    ├── react-router-skill/         # 路由技能
+    └── react-testing-skill/        # 测试技能
+```
 
-**详细流程**：见 [references/document-analysis-flow.md](references/document-analysis-flow.md)
+**详细流程**：见 [references/skill-family-flow.md](references/skill-family-flow.md)
 
 ## 质量门槛
 
