@@ -1,7 +1,7 @@
 ---
-name: book-skill-creator
+name: skill-factory
 version: v3.0.0
-author: skill-manager
+author: skill-lifecycle
 description: 技能工厂母技能，分析技术文档和网站生成技能拆分计划，支持智能网站分析、迭代学习、技术特点提取，适用于 Vue、React、Go、Python 等技术栈的文档分析和技能生成
 tags:
   [
@@ -112,16 +112,16 @@ tags:
 
 ## 资源索引
 
-| 资源             | 路径                                                                             | 用途                         |
-| ---------------- | -------------------------------------------------------------------------------- | ---------------------------- |
-| 技能规范         | [references/skill-specs.md](references/skill-specs.md)                           | SKILL.md 编写规范            |
-| 框架指南         | [references/frameworks-guide.md](references/frameworks-guide.md)                 | 常用框架分类和使用场景       |
-| 最佳实践         | [references/best-practices.md](references/best-practices.md)                     | 方案分类和解决方案           |
-| **技能族流程**   | [references/skill-family-flow.md](references/skill-family-flow.md)               | **技能族创建完整流程**       |
-| 网站分析指南     | [references/web-analysis-guide.md](references/web-analysis-guide.md)             | 智能网站分析模式完整指南     |
-| API 技能模板     | [assets/skill-templates/api-skill.md](assets/skill-templates/api-skill.md)       | API 类技能模板               |
-| 数据处理模板     | [assets/skill-templates/data-process.md](assets/skill-templates/data-process.md) | 数据处理类技能模板           |
-| 工作流模板       | [assets/skill-templates/workflow.md](assets/skill-templates/workflow.md)         | 工作流类技能模板             |
+| 资源           | 路径                                                                             | 用途                     |
+| -------------- | -------------------------------------------------------------------------------- | ------------------------ |
+| 技能规范       | [references/skill-specs.md](references/skill-specs.md)                           | SKILL.md 编写规范        |
+| 框架指南       | [references/frameworks-guide.md](references/frameworks-guide.md)                 | 常用框架分类和使用场景   |
+| 最佳实践       | [references/best-practices.md](references/best-practices.md)                     | 方案分类和解决方案       |
+| **技能族流程** | [references/skill-family-flow.md](references/skill-family-flow.md)               | **技能族创建完整流程**   |
+| 网站分析指南   | [references/web-analysis-guide.md](references/web-analysis-guide.md)             | 智能网站分析模式完整指南 |
+| API 技能模板   | [assets/skill-templates/api-skill.md](assets/skill-templates/api-skill.md)       | API 类技能模板           |
+| 数据处理模板   | [assets/skill-templates/data-process.md](assets/skill-templates/data-process.md) | 数据处理类技能模板       |
+| 工作流模板     | [assets/skill-templates/workflow.md](assets/skill-templates/workflow.md)         | 工作流类技能模板         |
 
 ## 注意事项
 
@@ -203,7 +203,7 @@ react-skills/                        # 母技能
 - [ ] 技能拆分合理
 - [ ] 各技能通过独立验证
 
-**详细检验标准**：见 [references/skill-standards.md](../skill-manager/references/skill-standards.md)
+**详细检验标准**：见 [references/skill-standards.md](../skill-lifecycle/references/skill-standards.md)
 
 ## 框架速查
 

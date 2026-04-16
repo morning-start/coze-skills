@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-book-skill-creator 优化版本使用示例
+skill-factory 优化版本使用示例
 演示智能网站分析模式的功能
 """
 
@@ -289,7 +289,7 @@ class BookSkillCreator:
 
 def main():
     """
-    主函数 - 演示如何使用 book-skill-creator
+    主函数 - 演示如何使用 skill-factory
     """
     creator = BookSkillCreator()
     

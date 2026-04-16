@@ -24,6 +24,7 @@ tags: [scenario, integrate, composition, merge, lifecycle]
 ### 1.1 分析源技能
 
 **技能清单模板**:
+
 ```yaml
 源技能分析:
   skill-a:
@@ -32,7 +33,7 @@ tags: [scenario, integrate, composition, merge, lifecycle]
       input: [输入定义]
       output: [输出定义]
     dependencies: [依赖列表]
-  
+
   skill-b:
     capabilities: [能力3, 能力4]
     interface:
@@ -44,17 +45,18 @@ tags: [scenario, integrate, composition, merge, lifecycle]
 ### 1.2 评估兼容性
 
 **兼容性检查清单**:
+
 ```yaml
 兼容性评估:
   命名兼容性:
     - [ ] 无命名冲突
     - [ ] 命名风格一致
-  
+
   接口兼容性:
     - [ ] 输入参数可统一
     - [ ] 输出格式可兼容
     - [ ] 错误处理一致
-  
+
   数据兼容性:
     - [ ] 数据格式可转换
     - [ ] 数据依赖可解决
@@ -64,12 +66,12 @@ tags: [scenario, integrate, composition, merge, lifecycle]
 
 **整合模式对比**:
 
-| 模式 | 说明 | 适用场景 | 示例 |
-|------|------|---------|------|
-| **顺序** | 技能按顺序执行 | 流水线处理 | 清洗→分析→报告 |
-| **并行** | 技能同时执行 | 独立任务 | 同时验证多个条件 |
-| **嵌套** | 一个技能调用另一个 | 分层处理 | 外层控制+内层执行 |
-| **流水线** | 数据流式处理 | 数据处理 | 读取→转换→输出 |
+| 模式       | 说明               | 适用场景   | 示例              |
+| ---------- | ------------------ | ---------- | ----------------- |
+| **顺序**   | 技能按顺序执行     | 流水线处理 | 清洗→分析→报告    |
+| **并行**   | 技能同时执行       | 独立任务   | 同时验证多个条件  |
+| **嵌套**   | 一个技能调用另一个 | 分层处理   | 外层控制+内层执行 |
+| **流水线** | 数据流式处理       | 数据处理   | 读取→转换→输出    |
 
 ---
 
@@ -82,6 +84,7 @@ tags: [scenario, integrate, composition, merge, lifecycle]
 **操作步骤**:
 
 1. **设计整合架构**
+
    ```yaml
    整合设计:
      名称: data-analysis-suite
@@ -90,11 +93,11 @@ tags: [scenario, integrate, composition, merge, lifecycle]
        - data-cleaner
        - data-analyzer
        - report-generator
-     数据流:
-       raw_data → cleaned_data → analysis_result → report
+     数据流: raw_data → cleaned_data → analysis_result → report
    ```
 
 2. **设计统一接口**
+
    ```yaml
    统一接口:
      input:
@@ -117,6 +120,7 @@ tags: [scenario, integrate, composition, merge, lifecycle]
    ```
 
 **准出条件**:
+
 - [ ] 整合架构已设计
 - [ ] 统一接口已定义
 - [ ] 数据映射已设计
@@ -128,6 +132,7 @@ tags: [scenario, integrate, composition, merge, lifecycle]
 **操作步骤**:
 
 1. **创建整合技能**
+
    ```bash
    mkdir data-analysis-suite
    cd data-analysis-suite
@@ -135,27 +140,31 @@ tags: [scenario, integrate, composition, merge, lifecycle]
    ```
 
 2. **编写 SKILL.md**
+
    ```yaml
    ---
    name: data-analysis-suite
    version: v1.0.0
-   author: skill-manager
+   author: skill-lifecycle
    description: 数据分析套件，整合数据清洗、分析和报告生成能力；当需要进行完整数据分析时使用
    tags: [data-analysis, integration, suite]
    ---
    ```
 
 3. **定义整合流程**
+
    ```markdown
    ## 任务目标
+
    - 本 Skill 用于: 执行完整的数据分析流程
-   - 能力包含: 
+   - 能力包含:
      - **数据清洗**: 调用 data-cleaner
      - **数据分析**: 调用 data-analyzer
      - **报告生成**: 调用 report-generator
    - 触发条件: 当需要进行完整数据分析时使用
-   
+
    ## 操作步骤
+
    1. 接收原始数据和配置
    2. 调用 data-cleaner 清洗数据
    3. 调用 data-analyzer 分析数据
@@ -165,6 +174,7 @@ tags: [scenario, integrate, composition, merge, lifecycle]
    ```
 
 **准出条件**:
+
 - [ ] 整合技能已创建
 - [ ] 依赖关系已声明
 - [ ] 整合流程已定义
@@ -191,6 +201,7 @@ tags: [scenario, integrate, composition, merge, lifecycle]
    - [ ] 依赖完整性
 
 **准出条件**:
+
 - [ ] 接口契约验证通过
 - [ ] 整合流程验证通过
 - [ ] 兼容性验证通过
@@ -202,6 +213,7 @@ tags: [scenario, integrate, composition, merge, lifecycle]
 **操作步骤**:
 
 1. **创建版本标签**
+
    ```bash
    git add .
    git commit -m "feat: 添加 data-analysis-suite 整合技能"
@@ -209,26 +221,31 @@ tags: [scenario, integrate, composition, merge, lifecycle]
    ```
 
 2. **创建整合说明文档**
+
    ```markdown
    # 整合说明
-   
+
    ## 整合概览
+
    - **整合技能**: data-analysis-suite
    - **源技能**: data-cleaner, data-analyzer, report-generator
    - **整合模式**: 顺序执行
-   
+
    ## 数据流
    ```
+
    raw_data → [data-cleaner] → cleaned_data
    cleaned_data → [data-analyzer] → analysis_result
    analysis_result → [report-generator] → report
+
    ```
-   
+
    ## 使用方式
    直接调用 data-analysis-suite，自动执行完整流程。
    ```
 
 **准出条件**:
+
 - [ ] 版本标签已创建
 - [ ] 整合说明已编写
 
@@ -244,12 +261,12 @@ tags: [scenario, integrate, composition, merge, lifecycle]
     - [ ] 整合模式选择合理
     - [ ] 数据流设计清晰
     - [ ] 接口契约明确
-  
+
   实现:
     - [ ] 依赖声明完整
     - [ ] 整合流程可执行
     - [ ] 错误处理完善
-  
+
   文档:
     - [ ] 整合说明清晰
     - [ ] 使用示例完整
@@ -278,11 +295,13 @@ git tag | grep v1.0.0
 **适用场景**: 任务有明确的先后顺序
 
 **示例**:
+
 ```
 数据清洗 → 数据分析 → 报告生成
 ```
 
 **特点**:
+
 - 数据单向流动
 - 前一个输出是后一个输入
 - 易于理解和调试
@@ -292,6 +311,7 @@ git tag | grep v1.0.0
 **适用场景**: 多个独立任务可同时执行
 
 **示例**:
+
 ```
           ┌→ 验证A →┐
 输入数据 → ┼→ 验证B →┼→ 汇总结果
@@ -299,6 +319,7 @@ git tag | grep v1.0.0
 ```
 
 **特点**:
+
 - 提高效率
 - 需要结果合并
 - 复杂度较高
@@ -308,6 +329,7 @@ git tag | grep v1.0.0
 **适用场景**: 分层处理，外层控制内层
 
 **示例**:
+
 ```
 数据处理 (外层)
   ├── 数据清洗 (内层)
@@ -316,6 +338,7 @@ git tag | grep v1.0.0
 ```
 
 **特点**:
+
 - 层次清晰
 - 易于扩展
 - 需要良好的接口设计

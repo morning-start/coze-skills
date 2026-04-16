@@ -1,7 +1,7 @@
 ---
-name: skill-manager
+name: skill-lifecycle
 version: v1.5.0
-author: skill-manager
+author: skill-lifecycle
 description: 高阶技能管理系统，支持技能全生命周期管理、文档规范制定、技能整合拆分及工作流编排；提供简单/复杂技能文档编写标准，确保文档质量与可维护性
 tags:
   [
@@ -176,7 +176,7 @@ tags:
    ---
    name: data-cleaner
    version: v1.0.0
-   author: skill-manager
+   author: skill-lifecycle
    description: 数据清洗技能，支持缺失值处理、去重和格式标准化
    tags: [data-cleaning, preprocessing, validation]
    ---
@@ -192,7 +192,7 @@ tags:
 □ 元信息完整性检查
   - name: data-cleaner（符合规范）
   - version: v1.0.0（格式正确）
-  - author: skill-manager（存在）
+  - author: skill-lifecycle（存在）
   - description: 符合长度要求（100-150字符）
   - tags: 至少3个标签
 

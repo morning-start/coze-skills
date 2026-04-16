@@ -24,6 +24,7 @@ tags: [scenario, decompose, split, refactoring, lifecycle]
 ### 1.1 分析原技能
 
 **能力清单提取**:
+
 ```yaml
 原技能分析:
   name: data-processor
@@ -35,25 +36,26 @@ tags: [scenario, decompose, split, refactoring, lifecycle]
     - 数据验证
     - 报告生成
     - 数据导出
-  
+
   dependencies:
     - python
     - pandas
-  
-  complexity: high  # 复杂度过高
+
+  complexity: high # 复杂度过高
 ```
 
 ### 1.2 识别拆分点
 
 **拆分维度**:
 
-| 维度 | 说明 | 示例 |
-|------|------|------|
-| **功能** | 按功能模块拆分 | 读取/清洗/分析 |
-| **场景** | 按使用场景拆分 | 实时处理/批处理 |
-| **复杂度** | 按复杂度拆分 | 简单/复杂任务 |
+| 维度       | 说明           | 示例            |
+| ---------- | -------------- | --------------- |
+| **功能**   | 按功能模块拆分 | 读取/清洗/分析  |
+| **场景**   | 按使用场景拆分 | 实时处理/批处理 |
+| **复杂度** | 按复杂度拆分   | 简单/复杂任务   |
 
 **拆分分析模板**:
+
 ```yaml
 拆分分析:
   拆分维度: 功能
@@ -72,16 +74,17 @@ tags: [scenario, decompose, split, refactoring, lifecycle]
 ### 1.3 评估依赖关系
 
 **依赖分析**:
+
 ```yaml
 依赖关系:
   data-reader:
     depends_on: []
     depended_by: [data-cleaner, data-analyzer]
-  
+
   data-cleaner:
     depends_on: [data-reader]
     depended_by: [data-analyzer]
-  
+
   data-analyzer:
     depends_on: [data-reader, data-cleaner]
     depended_by: []
@@ -98,6 +101,7 @@ tags: [scenario, decompose, split, refactoring, lifecycle]
 **操作步骤**:
 
 1. **设计拆分方案**
+
    ```yaml
    拆分方案:
      原技能: data-processor
@@ -105,26 +109,27 @@ tags: [scenario, decompose, split, refactoring, lifecycle]
        - name: data-reader
          description: 数据读取技能
          capabilities: [数据读取]
-       
+
        - name: data-cleaner
          description: 数据清洗技能
          capabilities: [数据清洗]
-       
+
        - name: data-analyzer
          description: 数据分析技能
          capabilities: [数据分析]
-       
+
        - name: data-exporter
          description: 数据导出技能
          capabilities: [数据导出]
    ```
 
 2. **设计技能协作关系**
+
    ```yaml
    协作关系:
      顺序调用:
        - data-reader → data-cleaner → data-analyzer → data-exporter
-     
+
      接口契约:
        data-reader.output → data-cleaner.input:
          format: cleaned_data_schema
@@ -140,6 +145,7 @@ tags: [scenario, decompose, split, refactoring, lifecycle]
    ```
 
 **准出条件**:
+
 - [ ] 拆分方案已设计
 - [ ] 协作关系已定义
 - [ ] 迁移策略已制定
@@ -151,6 +157,7 @@ tags: [scenario, decompose, split, refactoring, lifecycle]
 **操作步骤**:
 
 1. **创建新技能目录**
+
    ```bash
    mkdir data-reader data-cleaner data-analyzer data-exporter
    ```
@@ -158,22 +165,23 @@ tags: [scenario, decompose, split, refactoring, lifecycle]
 2. **编写新技能 SKILL.md**
 
    **data-reader/SKILL.md**:
+
    ```yaml
    ---
    name: data-reader
    version: v1.0.0
-   author: skill-manager
+   author: skill-lifecycle
    description: 数据读取技能，支持多种数据源读取；当需要从不同来源读取数据时使用
    tags: [data-reading, io, parsing]
    ---
-   
+
    # Data Reader
-   
+
    ## 任务目标
    - 本 Skill 用于: 从多种数据源读取数据
    - 能力包含: CSV读取、JSON读取、数据库读取
    - 触发条件: 当需要读取数据时使用
-   
+
    ## 操作步骤
    1. 识别数据源类型
    2. 配置读取参数
@@ -182,22 +190,23 @@ tags: [scenario, decompose, split, refactoring, lifecycle]
    ```
 
    **data-cleaner/SKILL.md**:
+
    ```yaml
    ---
    name: data-cleaner
    version: v1.0.0
-   author: skill-manager
+   author: skill-lifecycle
    description: 数据清洗技能，支持缺失值处理、去重和格式标准化；当需要清洗数据时使用
    tags: [data-cleaning, preprocessing]
    ---
-   
+
    # Data Cleaner
-   
+
    ## 任务目标
    - 本 Skill 用于: 清洗和预处理数据
    - 能力包含: 缺失值处理、去重、格式标准化
    - 触发条件: 当获得原始数据需要清洗时使用
-   
+
    ## 操作步骤
    1. 接收原始数据
    2. 处理缺失值
@@ -216,6 +225,7 @@ tags: [scenario, decompose, split, refactoring, lifecycle]
    ```
 
 **准出条件**:
+
 - [ ] 新技能已创建
 - [ ] 原技能已标记为 deprecated
 
@@ -241,6 +251,7 @@ tags: [scenario, decompose, split, refactoring, lifecycle]
    - [ ] 无新增不必要能力
 
 **准出条件**:
+
 - [ ] 单一职责验证通过
 - [ ] 协作关系验证通过
 - [ ] 功能等价验证通过
@@ -252,10 +263,11 @@ tags: [scenario, decompose, split, refactoring, lifecycle]
 **操作步骤**:
 
 1. **发布新技能**
+
    ```bash
    git add data-reader data-cleaner data-analyzer data-exporter
    git commit -m "feat: 拆分 data-processor 为独立技能"
-   
+
    git tag -a data-reader-v1.0.0 -m "Release data-reader v1.0.0"
    git tag -a data-cleaner-v1.0.0 -m "Release data-cleaner v1.0.0"
    git tag -a data-analyzer-v1.0.0 -m "Release data-analyzer v1.0.0"
@@ -263,26 +275,31 @@ tags: [scenario, decompose, split, refactoring, lifecycle]
    ```
 
 2. **创建迁移指南**
+
    ```markdown
    # 迁移指南: data-processor v1 → v2
-   
+
    ## 概述
+
    data-processor v1 已拆分为多个独立技能。
-   
+
    ## 替代方案
-   | 原用法 | 新用法 |
-   |--------|--------|
+
+   | 原用法                    | 新用法                   |
+   | ------------------------- | ------------------------ |
    | data-processor (完整流程) | 使用 data-analysis-suite |
-   | data-processor (仅读取) | 使用 data-reader |
-   | data-processor (仅清洗) | 使用 data-cleaner |
-   
+   | data-processor (仅读取)   | 使用 data-reader         |
+   | data-processor (仅清洗)   | 使用 data-cleaner        |
+
    ## 迁移步骤
+
    1. 识别当前使用的 data-processor 功能
    2. 选择对应的新技能
    3. 更新调用代码
    4. 测试验证
-   
+
    ## 时间线
+
    - 2024-03-01: data-processor v1 标记为 deprecated
    - 2024-04-01: data-processor v1 退役
    ```
@@ -298,6 +315,7 @@ tags: [scenario, decompose, split, refactoring, lifecycle]
    ```
 
 **准出条件**:
+
 - [ ] 新技能已发布
 - [ ] 原技能已标记为退役
 
@@ -313,12 +331,12 @@ tags: [scenario, decompose, split, refactoring, lifecycle]
     - [ ] 每个技能职责单一
     - [ ] 技能数量合理（3-5个）
     - [ ] 技能粒度适中
-  
+
   协作关系:
     - [ ] 依赖关系清晰
     - [ ] 无循环依赖
     - [ ] 接口契约明确
-  
+
   迁移友好:
     - [ ] 迁移指南完整
     - [ ] 替代方案明确
@@ -347,6 +365,7 @@ grep "status: deprecated" data-processor/SKILL.md
 **适用场景**: 技能包含多个独立功能模块
 
 **示例**:
+
 ```yaml
 # 拆分前
 data-processor: [读取, 清洗, 分析, 导出]
@@ -363,6 +382,7 @@ data-exporter: [导出]
 **适用场景**: 技能在不同场景下使用不同
 
 **示例**:
+
 ```yaml
 # 拆分前
 data-processor: [实时处理, 批处理]
@@ -377,6 +397,7 @@ data-batch-processor: [批处理]
 **适用场景**: 技能包含简单和复杂任务
 
 **示例**:
+
 ```yaml
 # 拆分前
 data-validator: [简单验证, 复杂验证, 规则引擎]
@@ -408,12 +429,12 @@ Day 30:  退役原技能
     - [ ] 新技能已发布
     - [ ] 原技能已标记 deprecated
     - [ ] 迁移指南已发布
-  
+
   提醒阶段:
     - [ ] Day 7 提醒已发送
     - [ ] Day 14 提醒已发送
     - [ ] Day 21 提醒已发送
-  
+
   退役阶段:
     - [ ] Day 30 退役已执行
     - [ ] 原技能已归档

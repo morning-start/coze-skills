@@ -36,13 +36,13 @@ vue-skills/                          # 技能族目录（母技能）
 
 ### 母技能 vs 子技能
 
-| 特性 | 母技能 | 子技能 |
-|------|--------|--------|
-| **命名** | `vue-skills` | `vue-core-skill` |
-| **定位** | 技能族整体概览 | 单个功能模块 |
-| **依赖** | 无外部依赖 | 可依赖母技能或其他子技能 |
-| **独立性** | 可独立使用 | 可独立使用 |
-| **SKILL.md** | 技能族概述和索引 | 单个技能完整定义 |
+| 特性         | 母技能           | 子技能                   |
+| ------------ | ---------------- | ------------------------ |
+| **命名**     | `vue-skills`     | `vue-core-skill`         |
+| **定位**     | 技能族整体概览   | 单个功能模块             |
+| **依赖**     | 无外部依赖       | 可依赖母技能或其他子技能 |
+| **独立性**   | 可独立使用       | 可独立使用               |
+| **SKILL.md** | 技能族概述和索引 | 单个技能完整定义         |
 
 ---
 
@@ -64,18 +64,19 @@ vue-skills/                          # 技能族目录（母技能）
 
 ## 关键节点速查
 
-| 节点 | 准入条件 | 核心产出 | 准出条件 |
-|------|---------|---------|---------|
-| **① 技能族规划** | 需求明确 | 技能族结构 + 子技能列表 | 规划文档完成 |
-| **② 母技能创建** | 规划通过 | 母技能 SKILL.md | 母技能通过验证 |
-| **③ 子技能创建** | 母技能完成 | 子技能 SKILL.md | 所有子技能通过验证 |
-| **④ 打包** | 子技能完成 | 技能族目录结构 | 打包验证通过 |
+| 节点             | 准入条件   | 核心产出                | 准出条件           |
+| ---------------- | ---------- | ----------------------- | ------------------ |
+| **① 技能族规划** | 需求明确   | 技能族结构 + 子技能列表 | 规划文档完成       |
+| **② 母技能创建** | 规划通过   | 母技能 SKILL.md         | 母技能通过验证     |
+| **③ 子技能创建** | 母技能完成 | 子技能 SKILL.md         | 所有子技能通过验证 |
+| **④ 打包**       | 子技能完成 | 技能族目录结构          | 打包验证通过       |
 
 ---
 
 ## 第一步：技能族规划
 
 ### 准入条件
+
 ✅ 需求已明确（技术栈、应用场景、目标用户）
 
 ### 核心操作
@@ -88,6 +89,7 @@ vue-skills/                          # 技能族目录（母技能）
 ### 技术栈：Vue.js
 
 ### 子技能列表
+
 1. **vue-core-skill**（核心）
    - 对应模块：响应式、组件、模板
    - 依赖：无
@@ -109,6 +111,7 @@ vue-skills/                          # 技能族目录（母技能）
    - 定位：高级技能
 
 ### 技能族命名
+
 - 母技能：`vue-skills`
 - 子技能：`vue-{module}-skill`
 ```
@@ -119,12 +122,13 @@ vue-skills/                          # 技能族目录（母技能）
 ## 依赖关系图
 
 vue-core-skill（基础，无依赖）
-    ├── vue-router-skill
-    ├── vue-pinia-skill
-    └── vue-testing-skill
+├── vue-router-skill
+├── vue-pinia-skill
+└── vue-testing-skill
 ```
 
 ### 准出条件
+
 - [ ] 技能族结构设计完成
 - [ ] 子技能列表明确（名称、定位、依赖）
 - [ ] 依赖关系图清晰
@@ -134,6 +138,7 @@ vue-core-skill（基础，无依赖）
 ## 第二步：母技能创建
 
 ### 准入条件
+
 ✅ 技能族规划准出条件全部满足
 
 ### 核心操作
@@ -150,11 +155,11 @@ mkdir skills
 
 #### 2. 编写母技能 SKILL.md
 
-```yaml
+````yaml
 ---
 name: vue-skills
 version: v1.0.0
-author: book-skill-creator
+author: skill-factory
 description: Vue.js 技术栈技能族，包含核心、路由、状态管理、测试等子技能，适用于 Vue 3 全栈开发
 tags: [vue, javascript, frontend, skill-family]
 ---
@@ -189,7 +194,7 @@ Vue Skills 是 Vue.js 技术栈的完整技能族，包含以下子技能：
 
 # 使用 Vue Router 技能
 / Skill vue-router-skill
-```
+````
 
 ### 使用完整技能族
 
@@ -211,7 +216,8 @@ vue-skills/
     ├── vue-pinia-skill/
     └── vue-testing-skill/
 ```
-```
+
+````
 
 #### 3. 创建技能族概述文档
 
@@ -242,9 +248,10 @@ Vue.js 3.x - 渐进式 JavaScript 框架
 - Vue 3.0+
 - Vue Router 4.0+
 - Pinia 2.0+
-```
+````
 
 ### 准出条件
+
 - [ ] 母技能 SKILL.md 完整
 - [ ] 子技能列表准确
 - [ ] 技能族结构清晰
@@ -255,6 +262,7 @@ Vue.js 3.x - 渐进式 JavaScript 框架
 ## 第三步：子技能创建
 
 ### 准入条件
+
 ✅ 母技能创建准出条件全部满足
 
 ### 核心操作
@@ -283,11 +291,11 @@ mkdir references
 
 **vue-core-skill 示例**：
 
-```yaml
+````yaml
 ---
 name: vue-core-skill
 version: v1.0.0
-author: book-skill-creator
+author: skill-factory
 parent: vue-skills
 description: Vue 3 核心技能，掌握响应式系统、组件开发、模板语法等核心概念，是 Vue 技术栈的基础技能
 tags: [vue, javascript, reactivity, component, template]
@@ -341,7 +349,8 @@ function increment() {
     <button @click="increment">+1</button>
   </div>
 </template>
-```
+````
+
 ```
 
 ## 依赖关系
@@ -357,7 +366,7 @@ function increment() {
 ---
 name: vue-router-skill
 version: v1.0.0
-author: book-skill-creator
+author: skill-factory
 parent: vue-skills
 description: Vue Router 4 路由技能，掌握路由配置、导航守卫、路由动画等，适用于单页应用路由管理
 tags: [vue, vue-router, spa, navigation]
@@ -392,6 +401,7 @@ head -10 vue-skills/skills/vue-router-skill/SKILL.md
 ```
 
 ### 准出条件
+
 - [ ] 所有子技能 SKILL.md 完整
 - [ ] 每个子技能独立通过标准化验证
 - [ ] 依赖关系正确（parent 和 requires 字段）
@@ -402,6 +412,7 @@ head -10 vue-skills/skills/vue-router-skill/SKILL.md
 ## 第四步：打包
 
 ### 准入条件
+
 ✅ 所有子技能创建准出条件全部满足
 
 ### 核心操作
@@ -443,7 +454,7 @@ vue-skills/
 
 #### 3. 创建打包说明
 
-```markdown
+````markdown
 # Vue Skills 打包说明
 
 ## 打包内容
@@ -463,6 +474,7 @@ git clone <repo>/vue-skills
 cd vue-skills
 npm install
 ```
+````
 
 ### 单独使用某个子技能
 
@@ -473,6 +485,7 @@ cd vue-skills/skills/vue-core-skill
 # 使用该技能
 / Skill vue-core-skill
 ```
+
 ```
 
 ### 准出条件
@@ -487,28 +500,30 @@ cd vue-skills/skills/vue-core-skill
 ### 创建技能族时执行
 
 ```
+
 □ 1. 技能族规划
-  □ 明确技术栈
-  □ 设计子技能列表
-  □ 确定依赖关系
+□ 明确技术栈
+□ 设计子技能列表
+□ 确定依赖关系
 
 □ 2. 母技能创建
-  □ 创建母技能目录
-  □ 编写母技能 SKILL.md
-  □ 创建技能族概述文档
-  □ 母技能通过验证
+□ 创建母技能目录
+□ 编写母技能 SKILL.md
+□ 创建技能族概述文档
+□ 母技能通过验证
 
 □ 3. 子技能创建
-  □ 创建所有子技能目录
-  □ 编写每个子技能的 SKILL.md
-  □ 设置正确的 parent 和 requires
-  □ 每个子技能通过验证
+□ 创建所有子技能目录
+□ 编写每个子技能的 SKILL.md
+□ 设置正确的 parent 和 requires
+□ 每个子技能通过验证
 
 □ 4. 打包
-  □ 验证目录结构
-  □ 执行打包验证清单
-  □ 创建打包说明
-```
+□ 验证目录结构
+□ 执行打包验证清单
+□ 创建打包说明
+
+````
 
 ---
 
@@ -537,7 +552,7 @@ dependency:
     - {skill-name-1}
     - {skill-name-2}
 ---
-```
+````
 
 ---
 
@@ -558,6 +573,7 @@ dependency:
 ### Q4: 多个技术栈的技能族？
 
 **答**：每个技术栈对应一个技能族。例如：
+
 - `frontend-skills/`（前端技能族）
   - `react-skills/`
   - `vue-skills/`
