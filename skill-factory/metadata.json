@@ -1,0 +1,55 @@
+{
+  "name": "skill-factory",
+  "version": "v4.0.0",
+  "description": "技能工厂母技能，分析技术文档和网站生成技能拆分计划，支持智能网站分析、迭代学习、技术特点提取，适用于 Vue、React、Go、Python 等技术栈的文档分析和技能族生成",
+  "author": "skill-lifecycle",
+  "tags": [
+    "skill-factory",
+    "skill-family",
+    "documentation",
+    "web-analysis",
+    "iterative-learning",
+    "planning"
+  ],
+  "parent": "skill-lifecycle",
+  "child_skills": [
+    {
+      "name": "skill-factory-analyzer",
+      "version": "v1.0.0",
+      "description": "技术内容分析器，通过智能网站分析和迭代学习提取技术特点、知识结构和核心概念"
+    },
+    {
+      "name": "skill-factory-planner",
+      "version": "v1.0.0",
+      "description": "技能规划器，基于技术分析结果生成技能拆分计划，确定母技能和子技能结构、依赖关系"
+    },
+    {
+      "name": "skill-factory-generator",
+      "version": "v1.0.0",
+      "description": "技能生成器，根据拆分计划创建母技能和子技能的 SKILL.md"
+    },
+    {
+      "name": "skill-factory-packager",
+      "version": "v1.0.0",
+      "description": "技能打包器，验证技能族结构完整性，执行打包验证并输出最终的技能族"
+    }
+  ],
+  "core_modes": [
+    {
+      "name": "智能网站分析",
+      "description": "从技术网站/官方文档分析并生成技能族",
+      "trigger": "提供技术网站 URL"
+    },
+    {
+      "name": "文档分析",
+      "description": "从大型文档/技术书籍生成技能族",
+      "trigger": "提供文档路径或内容"
+    }
+  ],
+  "dependencies": {
+    "tools": ["WebFetch", "WebSearch", "Read", "SearchCodebase", "Task"],
+    "skills": ["skill-lifecycle"]
+  },
+  "structure_version": "v4.0",
+  "last_updated": "2026-04-30"
+}
