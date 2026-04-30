@@ -48,6 +48,6 @@ downloaded_images/
 # 日志
 *.log
 
-**/skills/
-**/specs/
-**/documents/
+.*/skills/
+.trae/specs/
+.trae/documents/
