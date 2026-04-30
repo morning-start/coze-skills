@@ -1,7 +1,7 @@
 {
   "name": "skill-factory",
-  "version": "v4.0.0",
-  "description": "技能工厂母技能，分析技术文档和网站生成技能拆分计划，支持智能网站分析、迭代学习、技术特点提取，适用于 Vue、React、Go、Python 等技术栈的文档分析和技能族生成",
+  "version": "v4.1.0",
+  "description": "技能工厂母技能，分析技术文档或网站生成技能拆分计划与技能族结构。接收 URL 或文档输入，输出完整的技能族包",
   "author": "skill-lifecycle",
   "tags": [
     "skill-factory",
@@ -12,44 +12,50 @@
     "planning"
   ],
   "parent": "skill-lifecycle",
-  "child_skills": [
+  "children": [
     {
       "name": "skill-factory-analyzer",
-      "version": "v1.0.0",
-      "description": "技术内容分析器，通过智能网站分析和迭代学习提取技术特点、知识结构和核心概念"
+      "version": "v1.1.0",
+      "description": "技术内容分析器，从 URL 或文档中提取技术特点、知识结构和核心概念，输出结构化分析报告"
     },
     {
       "name": "skill-factory-planner",
-      "version": "v1.0.0",
-      "description": "技能规划器，基于技术分析结果生成技能拆分计划，确定母技能和子技能结构、依赖关系"
+      "version": "v1.1.0",
+      "description": "技能规划器，基于技术分析报告生成技能拆分计划，确定母技能和子技能结构、依赖关系及优先级"
     },
     {
       "name": "skill-factory-generator",
-      "version": "v1.0.0",
-      "description": "技能生成器，根据拆分计划创建母技能和子技能的 SKILL.md"
+      "version": "v1.1.0",
+      "description": "技能生成器，根据技能拆分计划生成母技能和子技能的 SKILL.md 文件"
     },
     {
       "name": "skill-factory-packager",
-      "version": "v1.0.0",
-      "description": "技能打包器，验证技能族结构完整性，执行打包验证并输出最终的技能族"
+      "version": "v1.1.0",
+      "description": "技能打包器，验证技能族目录结构完整性，执行质量检查并输出打包报告"
     }
   ],
   "core_modes": [
     {
-      "name": "智能网站分析",
-      "description": "从技术网站/官方文档分析并生成技能族",
-      "trigger": "提供技术网站 URL"
+      "name": "网站分析",
+      "description": "从技术网站 URL 分析并生成技能族",
+      "trigger": "用户提供技术网站 URL"
     },
     {
       "name": "文档分析",
-      "description": "从大型文档/技术书籍生成技能族",
-      "trigger": "提供文档路径或内容"
+      "description": "从本地文档或技术书籍生成技能族",
+      "trigger": "用户提供文档路径或内容"
     }
+  ],
+  "pipeline": [
+    "skill-factory-analyzer",
+    "skill-factory-planner",
+    "skill-factory-generator",
+    "skill-factory-packager"
   ],
   "dependencies": {
     "tools": ["WebFetch", "WebSearch", "Read", "SearchCodebase", "Task"],
     "skills": ["skill-lifecycle"]
   },
-  "structure_version": "v4.0",
+  "structure_version": "v4.1",
   "last_updated": "2026-04-30"
 }
