@@ -1,5 +1,7 @@
 ---
 name: scenario-decompose
+version: v1.0.0
+author: skill-lifecycle
 description: 拆分技能场景指南，定义将复杂技能拆分为多个独立技能的完整流程，包含拆分策略和迁移指南
 tags: [scenario, decompose, split, refactoring, lifecycle]
 ---
@@ -444,6 +446,5 @@ Day 30:  退役原技能
 
 ## 参考文档
 
-- [skill-standards.md](skill-standards.md) - 标准化规范
-
-- [scenario-create.md](scenario-create.md) - 创建新技能
+- [skill-standards](../skill-standards/SKILL.md) - 标准化规范
+- [scenario-create](../scenario-create/SKILL.md) - 创建新技能

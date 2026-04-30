@@ -1,3 +1,11 @@
+---
+name: workflow-generation
+version: v1.0.0
+author: skill-lifecycle
+description: 工作流生成技能，根据技能组合生成标准化工作流文档，实现复杂目标自动化
+tags: [workflow, generation, orchestration, automation, skill-composition]
+---
+
 # 工作流生成
 
 ## 目录
@@ -362,8 +370,8 @@ target: <目标说明>
 skills_required: [skill-1, skill-2, skill-3]
 metadata:
   version: "1.0.0"
-  estimated_time: "预计执行时间"
-  complexity: "简单/中等/复杂"
+  estimated_time: <预计执行时间>
+  complexity: <简单/中等/复杂>
   tags: [标签列表]
 ---
 
@@ -463,7 +471,7 @@ metadata:
 ```markdown
 ### 步骤 2: 数据清洗
 - **使用技能**: data-cleaner
-- **输入**: 
+- **输入**:
   - 来源: 步骤1的输出
   - 格式: JSON
   - 必需字段:
@@ -472,14 +480,14 @@ metadata:
   - 可选字段:
     - cleaning_level: "清洗级别（basic/standard/advanced）"
       默认值: "standard"
-- **操作**: 
+- **操作**:
   1. 接收原始数据
   2. 根据 cleaning_level 执行对应清洗规则
   3. 处理缺失值（根据策略：drop/fill/mean）
   4. 去除重复数据
   5. 标准化数据格式
   6. 生成清洗报告
-- **输出**: 
+- **输出**:
   - 格式: JSON
   - 字段:
     - cleaned_data: "清洗后的数据数组"

@@ -1,5 +1,7 @@
 ---
 name: scenario-create
+version: v1.0.0
+author: skill-lifecycle
 description: 创建新技能场景指南，定义从设计到发布的完整流程，突出关键节点和验收标准
 tags: [scenario, create, lifecycle, design, develop, test, release, checkpoint]
 ---
@@ -154,7 +156,6 @@ tags: [tag1, tag2, tag3]
 [预期输出]
 
 ```
-
 ```
 
 ### 准出条件
@@ -315,6 +316,6 @@ git status
 
 ## 参考文档
 
-- [skill-standards.md](skill-standards.md) - SKILL.md 编写规范
-- [skill-standards.md#标准化检验流程](skill-standards.md#标准化检验流程) - 详细检验流程
-- [skill-standards.md#质量检查清单](skill-standards.md#质量检查清单) - 完整检查清单
+- [skill-standards](../skill-standards/SKILL.md) - SKILL.md 编写规范
+- [skill-standards](../skill-standards/SKILL.md#标准化检验流程) - 详细检验流程
+- [skill-standards](../skill-standards/SKILL.md#质量检查清单) - 完整检查清单

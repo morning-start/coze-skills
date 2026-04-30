@@ -1,5 +1,7 @@
 ---
 name: scenario-integrate
+version: v1.0.0
+author: skill-lifecycle
 description: 整合技能场景指南，定义将多个技能整合为一个新技能的完整流程，包含整合模式和接口设计
 tags: [scenario, integrate, composition, merge, lifecycle]
 ---
@@ -347,6 +349,5 @@ git tag | grep v1.0.0
 
 ## 参考文档
 
-- [skill-standards.md](skill-standards.md) - 标准化规范
-
-- [scenario-create.md](scenario-create.md) - 创建新技能
+- [skill-standards](../skill-standards/SKILL.md) - 标准化规范
+- [scenario-create](../scenario-create/SKILL.md) - 创建新技能

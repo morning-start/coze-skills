@@ -1,5 +1,7 @@
 ---
 name: scenario-modify
+version: v1.0.0
+author: skill-lifecycle
 description: 修改技能场景指南，定义技能修改的完整流程，嵌入生命周期管理，包含版本更新策略
 tags: [scenario, modify, lifecycle, maintenance, version-control]
 ---
@@ -89,7 +91,7 @@ current_status:
    - 保持格式一致性
 
 3. **自动更新元信息**
-   
+
    **版本号更新**:
    ```yaml
    # 原版本: v1.0.0
@@ -97,7 +99,7 @@ current_status:
    # 新版本: v1.1.0
    version: v1.1.0
    ```
-   
+
 **准出条件**:
 - [ ] 修改内容完成
 - [ ] 版本号已更新
@@ -117,7 +119,7 @@ current_status:
    ```bash
    # 检查前言区字段完整性
    head -10 SKILL.md
-   
+
    # 验证版本号格式
    grep "version:" SKILL.md
    ```
@@ -155,11 +157,11 @@ current_status:
 3. **更新 CHANGELOG.md**
    ```markdown
    ## v1.1.0 (2024-03-15)
-   
+
    ### 新增
    - 新增数据验证功能
    - 优化示例说明
-   
+
    ### 修改
    - 更新使用示例
    ```
@@ -190,7 +192,7 @@ current_status:
     - [ ] 接口变更已说明（如有）
     - [ ] 破坏性变更已标记（如有）
     - [ ] 迁移指南已提供（如需要）
-  
+
   依赖关系:
     - [ ] 依赖版本已更新（如需要）
     - [ ] 无循环依赖
@@ -222,6 +224,8 @@ grep "version:" SKILL.md
 ```yaml
 # 变更: 修复 description 中的错别字
 version: v1.0.1
+```
+
 ### Minor 更新 (v1.0.0 → v1.1.0)
 
 **适用场景**:
@@ -321,6 +325,5 @@ EOF
 
 ## 参考文档
 
-- [skill-standards.md](skill-standards.md) - 了解 SKILL.md 格式规范和元信息标准
-
-- [skill-standards.md](skill-standards.md) - 标准化检验流程（详见"标准化检验流程"和"修改后专项检验"章节）
+- [skill-standards](../skill-standards/SKILL.md) - 了解 SKILL.md 格式规范和元信息标准
+- [skill-standards](../skill-standards/SKILL.md#标准化检验流程) - 标准化检验流程

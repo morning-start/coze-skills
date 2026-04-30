@@ -1,5 +1,7 @@
 ---
 name: scenario-optimize
+version: v1.0.0
+author: skill-lifecycle
 description: 优化技能场景指南，定义技能优化的完整流程，包含优化策略选择和质量提升方法
 tags: [scenario, optimize, refactoring, quality-improvement, lifecycle]
 ---
@@ -110,7 +112,7 @@ tags: [scenario, optimize, refactoring, quality-improvement, lifecycle]
    input_schema:
      data: [数据内容]
      options: [配置选项]
-   
+
    # 统一输出格式
    output_schema:
      result: [处理结果]
@@ -172,17 +174,17 @@ tags: [scenario, optimize, refactoring, quality-improvement, lifecycle]
 1. **生成优化报告**
    ```markdown
    ## 优化报告
-   
+
    ### 优化措施
    1. 原子化拆分: 将7个能力拆分为5个独立技能
    2. 标准化接口: 统一输入输出格式
    3. 描述优化: 完善description和tags
-   
+
    ### 优化效果
    - 描述清晰度: 一般 → 良好 (+20%)
    - 示例完整性: 不足 → 完整 (+30%)
    - 结构合理性: 一般 → 良好 (+15%)
-   
+
    ### 结论
    ✅ 优化目标达成，技能质量显著提升
    ```
@@ -210,7 +212,7 @@ tags: [scenario, optimize, refactoring, quality-improvement, lifecycle]
     - [ ] 描述符合规范（100-150字符）
     - [ ] 示例完整可执行
     - [ ] 结构清晰合理
-  
+
   优化措施:
     - [ ] 优化策略已应用
     - [ ] 无引入新问题
@@ -276,6 +278,5 @@ data-validator: [验证]
 
 ## 参考文档
 
-- [skill-standards.md](skill-standards.md) - 标准化规范
-
-- [skill-standards.md](skill-standards.md) - 质量评估（详见"质量检查清单"章节）
+- [skill-standards](../skill-standards/SKILL.md) - 标准化规范
+- [skill-standards](../skill-standards/SKILL.md#质量检查清单) - 质量评估
