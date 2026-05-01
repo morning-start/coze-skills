@@ -15,14 +15,30 @@ dependency:
 ## 四维分类法
 
 ```mermaid
-quadrantChart
-    title 轻重薄厚四维判定
-    x-axis 轻（单一功能） --> 重（多模块）
-    y-axis 厚（内容丰富） --> 薄（内容精简）
-    quadrant-1 重+厚：技能族(混合)
-    quadrant-2 轻+厚：复杂单技能
-    quadrant-3 轻+薄：简单技能
-    quadrant-4 重+薄：技能族(薄)
+flowchart TB
+    subgraph 四维分类法
+        direction LR
+        L1["功能维度: 轻 单一功能 / 重 多模块"]
+        L2["内容维度: 厚 内容丰富 / 薄 内容精简"]
+    end
+    
+    subgraph Q1["轻+薄 简单技能"]
+        D1["单文件 SKILL.md"]
+    end
+    subgraph Q2["重+薄 技能族-薄"]
+        D2["skills 子目录"]
+    end
+    subgraph Q3["轻+厚 复杂单技能"]
+        D3["SKILL.md + refs"]
+    end
+    subgraph Q4["重+厚 技能族-厚"]
+        D4["混合模式"]
+    end
+
+    style Q1 fill:#e8f5e9,stroke:#4caf50,color:#1b5e20
+    style Q2 fill:#e3f2fd,stroke:#2196f3,color:#0d47a1
+    style Q3 fill:#fff3e0,stroke:#ff9800,color:#e65100
+    style Q4 fill:#f3e5f5,stroke:#9c27b0,color:#4a148c
 ```
 
 ### 维度定义与判断标准
