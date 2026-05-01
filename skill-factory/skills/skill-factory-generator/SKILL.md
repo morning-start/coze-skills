@@ -1,10 +1,10 @@
 ---
 name: skill-factory-generator
-version: v1.1.0
+version: v5.0.0
 author: skill-factory
 parent: skill-factory
-description: 技能生成器，根据技能拆分计划生成母技能和子技能的 SKILL.md 文件
-tags: [skill-factory, generator, skill-creation, documentation, template]
+description: 技能生成器，基于"轻/重/薄/厚"四维分类生成对应结构的技能文件，支持四种输出模式
+tags: [skill-factory, generator, skill-classification]
 dependency:
   parent: skill-factory
   requires: skill-factory-planner
@@ -12,296 +12,340 @@ dependency:
 
 # Skill Factory Generator - 技能生成器
 
-## 技能职责边界
+## 职责边界
 
-**本技能负责**：
-- 根据拆分计划创建目录结构
-- 生成母技能 SKILL.md
-- 生成子技能 SKILL.md
-- 填充标准化的技能内容
-
-**本技能不负责**：
-- 分析原始技术内容（由 analyzer 负责）
-- 设计技能拆分方案（由 planner 负责）
-- 验证打包结果（由 packager 负责）
-- 创建技能引用的参考文件（由用户后续添加）
+**负责**：根据拆分计划的类型（轻/重/薄/厚），生成对应目录结构和文件
+**不负责**：分析内容（analyzer）、判定类型（planner）、验证打包（packager）
 
 ---
 
-## 输入判断
+## 四种输出模式
 
-### 有效输入
-
-planner 输出的技能拆分计划，必须包含：
-- 母技能命名
-- 至少 1 个子技能的完整设计
-- 依赖关系图
-- 执行计划
-
-### 无效输入处理
-
-- 缺少必填字段 → 返回错误："拆分计划不完整，缺少 {字段名}，请返回 planner 重新规划"
-- 子技能数量为 0 → 返回错误："拆分计划中没有任何子技能，请返回 planner 重新规划"
-- 依赖关系图不完整 → 返回错误："依赖关系图不完整，请返回 planner 补充"
+```mermaid
+flowchart LR
+    A[📋 拆分计划] --> B{识别类型}
+    
+    B -->|"轻+薄"| T1["🟢 类型1<br/>单文件"]
+    B -->|"重+薄"| T2["🔵 类型2<br/>子技能族"]
+    B -->|"轻+厚"| T3["🟠 类型3<br/>单技能+refs"]
+    B -->|"重+厚"| T4["🟣 类型4<br/>混合模式"]
+    
+    T1 --> G1[生成文件]
+    T2 --> G2[生成文件]
+    T3 --> G3[生成文件]
+    T4 --> G4[生成文件]
+    
+    G1 --> Check[✅ 自检]
+    G2 --> Check
+    G3 --> Check
+    G4 --> Check
+    
+    Check --> Output[📦 输出]
+    
+    style T1 fill:#e8f5e9,stroke:#4caf50
+    style T2 fill:#e3f2fd,stroke:#2196f3
+    style T3 fill:#fff3e0,stroke:#ff9800
+    style T4 fill:#f3e5f5,stroke:#9c27b0
+```
 
 ---
 
-## 核心逻辑
+## 类型 1：轻+薄（简单技能）
 
-### 工作流程
+**适用**：单一功能 + 内容精简 (<300行)
 
-```
-拆分计划 → 目录创建 → 母技能生成 → 子技能生成 → 自检 → 输出
-                    ↓
-              目录是否已存在？
-               ↓         ↓
-              是        否
-           询问        创建
-```
+### 输出结构
 
-### 步骤详解
-
-#### 步骤 1：目录创建
-
-**目录结构规范**：
-
-```
-{技术名}-family/
-├── SKILL.md                    # 母技能
-├── metadata.json               # 元数据
-└── skills/
-    ├── {子技能1}/
-    │   └── SKILL.md
-    ├── {子技能2}/
-    │   └── SKILL.md
-    └── ...
+```mermaid
+graph LR
+    A["📁 {name}/"] --> B["📄 SKILL.md ✅<br/><br/>全部内容 <300行<br/>无子目录"]
+    
+    style A fill:#e8f5e9,stroke:#4caf50,stroke-width:2px
+    style B fill:#c8e6c9,stroke:#388e3c
 ```
 
-**操作规则**：
-1. 如果目录已存在 → 询问是否覆盖或创建新版本目录
-2. 如果目录不存在 → 直接创建
-3. 每个子技能目录下只创建 SKILL.md，references/ 由用户后续添加
-
-#### 步骤 2：母技能生成
-
-**母技能 SKILL.md 结构**：
+### SKILL.md 模板
 
 ```markdown
 ---
-name: {母技能名}
+name: {name}
 version: v1.0.0
 author: {author}
-description: {从拆分计划中的定位提取，限 100 字内}
-tags: [{技术名}, skill-family, ...]
-dependency:
-  parent: {父技能名}
-  children:
-    - {子技能1名}
-    - {子技能2名}
+description: {100-150字符}
+tags: [{tag1}, {tag2}, {tag3}]
 ---
 
-# {技术名} Family - 技能族
+# {标题}
 
-## 技能定位
+## 任务目标
+- 本 Skill 用于: <一句话>
+- 核心能力: <能力列表>
+- 触发条件: <何时使用>
 
-{技能族的核心价值描述，2-3 句话}
-
-## 工作流程
-
-| 模式 | 输入 | 输出 |
-|------|------|------|
-| {模式1} | {输入} | {输出} |
-| {模式2} | {输入} | {输出} |
-
-## 触发条件
-
-**启用本技能的条件**：
-- {条件1}
-- {条件2}
-
-**不启用本技能的条件**：
-- {条件}
-
-## 子技能概览
-
-| 子技能 | 定位 | 核心职责 |
-|--------|------|----------|
-| {子技能1} | {定位} | {职责} |
-| {子技能2} | {定位} | {职责} |
-
-## 完整使用
-
-\`\`\`bash
-/Skill {母技能名}
-\`\`\`
-```
-
-#### 步骤 3：子技能生成
-
-**子技能 SKILL.md 结构**：
-
-```markdown
----
-name: {子技能名}
-version: v1.0.0
-author: {author}
-parent: {母技能名}
-description: {核心职责描述，限 80 字内}
-tags: [{技术名}, {定位}, ...]
-dependency:
-  parent: {母技能名}
-  requires: {依赖技能名}  # 无则省略
----
-
-# {子技能名} - {技能定位}
-
-## 技能职责
-
-**本技能负责**：{核心职责列表}
-
-**本技能不负责**：{明确边界}
-
-## 触发条件
-
-- {条件1}
-- {条件2}
-
-## 核心逻辑
-
-{具体处理流程}
-
-## 输出标准
-
-{合格输出的判断标准}
+## 操作步骤
+1. <步骤1>
+2. <步骤2>
+3. ...
 
 ## 使用示例
+<完整示例>
 
-**输入**：{示例输入}
-
-**输出**：{示例输出}
+## 注意事项
+<注意点>
 ```
 
-#### 步骤 4：自检
+### 生成规则
 
-生成完成后，执行以下检查：
-
-| 检查项 | 合格标准 | 不合格处理 |
-|--------|----------|------------|
-| 文件数量 | 母技能 + N 个子技能 = 计划数量 | 补充缺失文件 |
-| 前言区完整性 | 7 个标准字段都存在 | 补充缺失字段 |
-| parent 指向 | 所有子技能的 parent 指向母技能 | 修正指向 |
-| 依赖关系 | 有依赖的子技能正确标注 requires | 补充或修正 |
-| 内容非空 | 每个 SKILL.md 正文 > 200 字符 | 补充内容 |
-
----
-
-## 输出标准
-
-### 合格输出
-
-- 母技能 SKILL.md 存在且前言区完整
-- 每个子技能 SKILL.md 存在且前言区完整
-- 目录结构符合规范
-- 自检全部通过
-
-### 输出格式
-
-```markdown
-## 技能生成报告
-
-### 生成结果
-- **母技能**：{母技能名}
-- **子技能数量**：N 个
-- **生成目录**：{路径}
-
-### 文件清单
-
-| 文件 | 状态 | 前言区 |
-|------|------|--------|
-| SKILL.md (母) | ✅ | 完整 |
-| skills/{子技能1}/SKILL.md | ✅ | 完整 |
-| skills/{子技能2}/SKILL.md | ✅ | 完整 |
-
-### 自检结果
-- [x] 目录结构正确
-- [x] 文件数量正确
-- [x] 前言区完整
-- [x] parent 指向正确
-- [x] 依赖关系正确
-
-### 下一步
-生成的技能族已就绪，请使用 `skill-factory-packager` 进行打包验证。
+```mermaid
+graph TD
+    R1["✅ 文件数量: 仅 1 个 SKILL.md"] 
+    R2["✅ 正文行数: < 300 行"]
+    R3["✅ 无子目录: 不创建 skills/、references/ 等"]
+    
+    style R1 fill:#c8e6c9,stroke:#388e3c
+    style R2 fill:#c8e6c9,stroke:#388e3c
+    style R3 fill:#c8e6c9,stroke:#388e3c
 ```
 
 ---
 
-## 失败处理
+## 类型 2：重+薄（技能族-薄）
 
-| 失败场景 | 处理方式 |
-|----------|----------|
-| 目录已存在 | 询问用户：覆盖 / 创建新版本目录 / 取消 |
-| 文件写入失败（权限等） | 返回错误，提示检查目录权限 |
-| 前言区字段缺失 | 补充标准字段，内容部分留空待用户填充 |
-| parent 指向错误 | 自动修正，无法修正时返回 planner |
-| 子技能内容生成失败 | 生成基础框架，内容部分标注"TODO" |
+**适用**：多模块可独立 + 每个模块都精简
 
----
+### 输出结构
 
-## 模板参考
-
-### 母技能模板变量
-
-| 变量 | 来源 | 示例 |
-|------|------|------|
-| `{母技能名}` | planner 输出 | vue-family |
-| `{技术名}` | analyzer 输出 | Vue.js |
-| `{author}` | 固定值或用户指定 | skill-factory |
-| `{父技能名}` | 依赖关系 | skill-lifecycle |
-| `{子技能名}` | planner 输出 | vue-core |
-| `{模式}` | 根据技术类型推断 | 网站分析 / 文档分析 |
-
-### 子技能模板变量
-
-| 变量 | 来源 | 示例 |
-|------|------|------|
-| `{子技能名}` | planner 输出 | vue-router |
-| `{技能定位}` | planner 输出 | 基础 / 核心 / 高级 |
-| `{核心职责}` | planner 输出 | 路由配置、导航守卫 |
-| `{依赖技能名}` | planner 输出 | vue-core / 无 |
-| `{母技能名}` | planner 输出 | vue-family |
-
----
-
-## 使用示例
-
-**输入**：Vue.js 技能拆分计划
-
-**输出**：
-```markdown
-## 技能生成报告
-
-### 生成结果
-- **母技能**：vue-family
-- **子技能数量**：4 个
-- **生成目录**：./vue-family/
-
-### 文件清单
-
-| 文件 | 状态 | 前言区 |
-|------|------|--------|
-| SKILL.md (母) | ✅ | 完整 |
-| skills/vue-core/SKILL.md | ✅ | 完整 |
-| skills/vue-composition/SKILL.md | ✅ | 完整 |
-| skills/vue-router/SKILL.md | ✅ | 完整 |
-| skills/vue-state/SKILL.md | ✅ | 完整 |
-
-### 自检结果
-- [x] 目录结构正确
-- [x] 文件数量正确（1 母 + 4 子 = 5）
-- [x] 前言区完整
-- [x] parent 指向正确
-- [x] 依赖关系正确
-
-### 下一步
-生成的技能族已就绪，请使用 `skill-factory-packager` 进行打包验证。
+```mermaid
+graph TD
+    A["📁 {name}-family/"] --> B["📄 SKILL.md 🎯<br/>母技能（编排器）"]
+    A --> C["📁 skills/"]
+    C --> D["📁 {子技能1}/SKILL.md"]
+    C --> E["📁 {子技能2}/SKILL.md"]
+    C --> F["📁 {子技能N}/SKILL.md"]
+    
+    style A fill:#e3f2fd,stroke:#2196f3,stroke-width:2px
+    style B fill:#bbdefb,stroke:#1976d2
+    style C fill:#90caf9,stroke:#1565c0
 ```
+
+### 模板关系
+
+```mermaid
+flowchart TB
+    subgraph 母技能 SKILL.md
+        M1["---<br/>name: {name}-family<br/>dependency:<br/>  children: [子1, 子2]<br/>---"]
+        M2["# {名称} Family"]
+        M3["| 子技能 | 职责 |"]
+    end
+    
+    subgraph 子技能 SKILL.md
+        S1["---<br/>name: {子技能}<br/>parent: {母技能}<br/>requires: {依赖}<br/>---"]
+        S2["# {子技能名}"]
+        S3["## 职责<br/>**负责**: ..."]
+    end
+    
+    M1 -.-> S1
+    
+    style M1 fill:#bbdefb,stroke:#1976d2
+    style S1 fill:#90caf9,stroke:#1565c0
+```
+
+### 生成规则
+
+```mermaid
+graph TD
+    R1["✅ 母技能必须有 children 列表"]
+    R2["✅ 每个子技能 <200 行（薄）"]
+    R3["❌ 无 references/"]
+    R4["❌ 无 scripts/ (除非特别需要)"]
+    
+    style R1 fill:#bbdefb,stroke:#1976d2
+    style R2 fill:#90caf9,stroke:#1565c0
+    style R3 fill:#ffcdd2,stroke:#d32f2f
+    style R4 fill:#ffcdd2,stroke:#d32f2f
+```
+
+---
+
+## 类型 3：轻+厚（复杂单技能）
+
+**适用**：单一功能 + 内容丰富 (>300行)
+
+### 输出结构
+
+```mermaid
+graph TD
+    A["📁 {name}/"] --> B["📄 SKILL.md 📋<br/>概览+索引 ~150行"]
+    A --> C["📁 references/ 📚"]
+    A --> D["📁 scripts/ 🔧 可选"]
+    A --> E["📁 templates/ 📄 可选"]
+    
+    C --> C1["implementation.md"]
+    C --> C2["api-reference.md"]
+    C --> C3["examples.md"]
+    C --> C4["..."]
+    
+    style A fill:#fff3e0,stroke:#ff9800,stroke-width:2px
+    style B fill:#ffe0b2,stroke:#f57c00
+    style C fill:#ffcc80,stroke:#ef6c00
+```
+
+### 文档层次关系
+
+```mermaid
+flowchart TB
+    subgraph "SKILL.md (~150行)"
+        M1["## 任务目标"]
+        M2["## 快速开始"]
+        M3["## 内容索引 → references/"]
+    end
+    
+    subgraph "references/"
+        R1["implementation.md<br/>实现细节"]
+        R2["api-reference.md<br/>API 参数"]
+        R3["examples.md<br/>使用示例"]
+    end
+    
+    M3 --> R1
+    M3 --> R2
+    M3 --> R3
+    
+    style M1 fill:#ffe0b2,stroke:#f57c00
+    style R1 fill:#ffcc80,stroke:#ef6c00
+```
+
+### 生成规则
+
+```mermaid
+graph TD
+    R1["✅ SKILL.md ~150行（仅概览+索引）"]
+    R2["✅ references/ 至少 2 个 .md 文件"]
+    R3["✅ 索引完整性：所有链接指向存在的文件"]
+    R4["⚠️ scripts/ 仅当有自动化操作时"]
+    R5["⚠️ templates/ 仅当有初始化模板时"]
+    
+    style R1 fill:#ffe0b2,stroke:#f57c00
+    style R2 fill:#ffe0b2,stroke:#f57c00
+    style R3 fill:#ffe0b2,stroke:#f57c00
+    style R4 fill:#fff9c4,stroke:#fbc02d
+    style R5 fill:#fff9c4,stroke:#fbc02d
+```
+
+---
+
+## 类型 4：重+厚（技能族-厚）⭐
+
+**适用**：多模块可独立 + 部分模块内容丰富
+
+### 输出结构
+
+```mermaid
+graph TD
+    A["📁 {name}-family/"] --> B["📄 SKILL.md 🎯<br/>母技能"]
+    A --> C["📄 metadata.json"]
+    A --> D["📁 templates/ 可选"]
+    A --> E["📁 skills/"]
+    
+    E --> F["📁 {薄子技能}/ 📝"]
+    E --> G["📁 {厚子技能}/ 📚"]
+    
+    F --> F1["📄 SKILL.md 单文件"]
+    
+    G --> G1["📄 SKILL.md 概览"]
+    G --> G2["📁 references/ 详细文档"]
+    G --> G3["📁 scripts/ 可选"]
+    G --> G4["📁 templates/ 可选"]
+    
+    G2 --> G2a["topic1.md"]
+    G2 --> G2b["topic2.md"]
+    
+    style A fill:#f3e5f5,stroke:#9c27b0,stroke-width:2px
+    style B fill:#e1bee7,stroke:#7b1fa2
+    style F fill:#e1bee7,stroke:#7b1fa2
+    style G fill:#ce93d8,stroke:#8e24aa
+```
+
+### 混合模式说明
+
+```mermaid
+flowchart TB
+    subgraph "母技能"
+        P["SKILL.md 🎯<br/>children 列表<br/>含 thin/thick 标注"]
+    end
+    
+    subgraph "薄子技能 (thin)"
+        Thin["SKILL.md only<br/>简单直接"]
+    end
+    
+    subgraph "厚子技能 (thick)"
+        Thick["SKILL.md + references/<br/>内容分层"]
+    end
+    
+    P --> Thin
+    P --> Thick
+    
+    style P fill:#e1bee7,stroke:#7b1fa2
+    style Thin fill:#f3e5f5,stroke:#9c27b0
+    style Thick fill:#ce93d8,stroke:#8e24aa
+```
+
+### 生成规则
+
+```mermaid
+graph TD
+    R1["✅ 分类明确：每个子技能标注 thin 或 thick"]
+    R2["✅ 薄子技能：单文件，无额外目录"]
+    R3["✅ 厚子技能：有 SKILL.md + references/"]
+    R4["✅ 共享资源：templates/ 放在母级或各子技能内"]
+    
+    style R1 fill:#e1bee7,stroke:#7b1fa2
+    style R2 fill:#f3e5f5,stroke:#9c27b0
+    style R3 fill:#ce93d8,stroke:#8e24aa
+    style R4 fill:#f3e5f5,stroke:#9c27b0
+```
+
+---
+
+## 通用自检清单
+
+```mermaid
+flowchart TD
+    Start([生成完成]) --> Check{自检}
+    
+    Check --> All["检查项"]
+    
+    All --> A1["✅ 前言区字段完整<br/>(name/version/description/tags)"]
+    All --> A2["✅ 文件数量与计划一致"]
+    All --> A3["✅ parent/requires 指向正确"]
+    
+    Check --> Type2or4{"类型2或4？"}
+    Type2or4 -->|Yes| B1["✅ children 列表匹配"]
+    Type2or4 -->|No| Skip1[跳过]
+    
+    Check --> Type3or4{"类型3或4？"}
+    Type3or4 -->|Yes| C1["✅ 索引链接有效"]
+    Type3or4 -->|No| Skip2[跳过]
+    
+    Type3or4 --> D1["✅ references/ 存在且非空"]
+    
+    A1 & A2 & A3 & B1 & C1 & D1 & Skip1 & Skip2 --> Pass([✅ 通过])
+    
+    style All fill:#e3f2fd,stroke:#2196f3
+    style Pass fill:#e8f5e9,stroke:#4caf50
+```
+
+| 类型 | 必检项 |
+|------|--------|
+| **全部** | 前言区字段完整 (name/version/description/tags) |
+| **全部** | 文件数量与计划一致 |
+| **全部** | parent/requires 指向正确 |
+| **类型2/4** | children 列表与实际匹配 |
+| **类型3/4** | 索引链接有效 |
+| **类型3/4** | references/ 文件存在且非空 |
+
+---
+
+## 参考
+
+- [skill-factory](../SKILL.md) - 母技能（四维分类说明）
+- [skill-factory-packager](../skills/skill-factory-packager/SKILL.md) - 下游验证
