@@ -1,12 +1,64 @@
 ---
 name: skill-standards
-version: v2.0.0
+version: v3.0.0
 author: skill-lifecycle
-description: Skill 和 Workflow 标准化规范，定义格式标准、检验流程和质量要求
-tags: [standards, skill-format, workflow-format, naming, validation]
+description: 技能标准化规范，基于轻/重/薄/厚四维分类定义格式、结构和质量要求
+tags: [standards, four-dimensions, skill-format, workflow-format, validation]
 ---
 
 # Skill 标准规范
+
+## 四维分类与目录结构
+
+```mermaid
+flowchart TB
+    subgraph Q1["轻+薄 简单技能"]
+        D1["SKILL.md 单文件"]
+    end
+    subgraph Q2["重+薄 技能族-薄"]
+        D2["skills 子目录<br/>各子独立 SKILL.md"]
+    end
+    subgraph Q3["轻+厚 复杂单技能"]
+        D3["SKILL.md + references/"]
+    end
+    subgraph Q4["重+厚 技能族-厚"]
+        D4["混合模式<br/>skills/ + 部分references/"]
+    end
+
+    style Q1 fill:#e8f5e9,stroke:#4caf50,color:#1b5e20
+    style Q2 fill:#e3f2fd,stroke:#2196f3,color:#0d47a1
+    style Q3 fill:#fff3e0,stroke:#ff9800,color:#e65100
+    style Q4 fill:#f3e5f5,stroke:#9c27b0,color:#4a148c
+```
+
+### 四种类型结构定义
+
+| 类型 | 判定条件 | 目录结构 |
+|------|---------|---------|
+| **轻+薄** | 单一功能 + 内容<300行 | `{name}/SKILL.md` |
+| **重+薄** | 多模块 + 各子内容精简 | `{name}-family/SKILL.md` + `skills/{子}/SKILL.md` |
+| **轻+厚** | 单一功能 + 内容丰富需补充 | `{name}/SKILL.md` + `references/*.md` |
+| **重+厚** | 多模块 + 部分子需要详细说明 | `{name}-family/SKILL.md` + `skills/{子}/`(部分有`references/`) |
+
+### 组织方式优先级
+
+```
+┌──────────────────────────────────────┐
+│  优先级决策                            │
+├──────────────────────────────────────┤
+│                                      │
+│  1. 能否拆分为独立子技能？             │
+│     是 → skills/ (解耦模式)           │
+│                                      │
+│  2. 内容是否超过300行？               │
+│     是 → references/ (内聚分层)       │
+│                                      │
+│  3. 两者可共存（混合模式）              │
+│                                      │
+└──────────────────────────────────────┘
+```
+
+---
 
 ## SKILL.md 格式
 
@@ -56,24 +108,47 @@ tags: [tag1, tag2, tag3]       # 至少3个标签
 |------|------|------|
 | 目录名 | 小写字母+连字符 | `data-cleaner` |
 | 禁止 | 不以 -skill 结尾 | ❌ `data-cleaner-skill` |
+| 子技能名 | {父名}-{功能} | `factory-planner`, `factory-generator` |
 
 ---
 
-## 目录结构
+## 质量检查清单
 
-```
-<skill-name>/
-├── SKILL.md              # 必需
-├── references/           # 可选：参考文档
-│   └── *.md
-├── scripts/              # 可选：可执行代码
-└── assets/               # 可选：静态资源
-```
+### 通用检查（所有类型）
 
-**规则**:
-- 最多两层目录
-- 不包含 README.md、tmp/、__pycache__/
-- 空目录不创建
+- [ ] name: 小写+连字符，无 -skill 后缀
+- [ ] version: v主.次.补丁 格式
+- [ ] author: 存在且非空
+- [ ] description: 100-150 字符
+- [ ] tags: ≥ 3 个标签
+- [ ] 包含必需章节（任务目标、操作步骤、示例）
+- [ ] 示例完整可执行
+
+### 轻+薄 专项检查
+
+- [ ] 正文 < 300 行
+- [ ] 无额外文件依赖
+- [ ] 单一核心能力
+
+### 重+薄 专项检查
+
+- [ ] 主 SKILL.md 作为索引/协调器
+- [ ] 每个子技能可独立使用
+- [ ] 子技能间通过接口交互
+- [ ] 无循环依赖
+
+### 轻+厚 专项检查
+
+- [ ] SKILL.md 作为概览（<200行）
+- [ ] references/ 文档完整
+- [ ] 内部链接引用正确
+- [ ] 详细内容不重复
+
+### 重+厚 专项检查
+
+- [ ] 外层解耦合理
+- [ ] 内层 references/ 仅用于必要子技能
+- [ ] 整体层次不超过两层
 
 ---
 
@@ -119,63 +194,6 @@ skills_required: [skill-1, skill-2]
 
 ---
 
-## 质量检查清单
-
-### 前言区检查
-
-- [ ] name: 小写+连字符，无 -skill 后缀
-- [ ] version: v主.次.补丁 格式
-- [ ] author: 存在且非空
-- [ ] description: 100-150 字符
-- [ ] tags: ≥ 3 个标签
-
-### 正文检查
-
-- [ ] 包含必需章节（任务目标、操作步骤、示例）
-- [ ] 正文 < 500 行
-- [ ] 示例完整可执行
-- [ ] 正文内链接为一层引用
-
-### WORKFLOW.md 特定检查
-
-- [ ] 包含目标、前置条件、技能清单
-- [ ] 执行流程步骤包含完整信息
-- [ ] 包含异常处理
-
----
-
-## 标准化检验流程
-
-### 步骤 1: 自动化检查
-
-```bash
-# 检查前言区
-head -10 SKILL.md
-
-# 检查描述长度（应为100-150字符）
-grep "description:" SKILL.md | wc -c
-
-# 统计正文行数
-tail -n +6 SKILL.md | wc -l
-
-# 检查标签数量
-grep "tags:" SKILL.md
-```
-
-### 步骤 2: 内容审核
-
-- 阅读全文验证逻辑一致性
-- 检查示例可行性
-- 确认触发条件合理性
-
-### 步骤 3: 交叉验证
-
-- 对比参考文档链接
-- 验证能力描述完整性
-- 确认与规范一致性
-
----
-
 ## 版本管理
 
 ### 版本号规则
@@ -183,13 +201,14 @@ grep "tags:" SKILL.md
 | 变更类型 | 版本递增 | 示例 |
 |---------|---------|------|
 | 破坏性变更 | major +1 | v1.0.0 → v2.0.0 |
+| 类型升级（如 薄→厚） | minor +1 | v1.0.0 → v1.1.0 |
 | 新增功能 | minor +1 | v1.0.0 → v1.1.0 |
 | 错误修复 | patch +1 | v1.0.0 → v1.0.1 |
 
-### 变更记录
+### 类型升级场景
 
-每次版本更新应记录：
-- 版本号
-- 变更类型
-- 变更内容
-- 影响范围
+| 升级路径 | 触发条件 | 版本变更 |
+|---------|---------|---------|
+| 轻→重 | 功能拆分为多模块 | minor +1 |
+| 薄→厚 | 内容超出单文件容量 | minor +1 |
+| 重+薄→重+厚 | 子技能需要详细文档 | minor +1 |

@@ -1,9 +1,9 @@
 ---
 name: workflow-generation
-version: v2.0.0
+version: v3.0.0
 author: skill-lifecycle
-description: 工作流生成指南，根据技能组合生成标准化工作流文档
-tags: [workflow, generation, orchestration, automation]
+description: 工作流生成指南，基于五阶段流程编排技能组合为标准化工作流
+tags: [workflow, generation, orchestration, automation, five-stages]
 ---
 
 # 工作流生成
@@ -12,31 +12,68 @@ tags: [workflow, generation, orchestration, automation]
 
 编排多个技能为标准化流程，实现复杂目标自动化。
 
----
-
-## 快速决策
-
-```
-工作流复杂度？
-│
-├─ 固定流程，无分支
-│   └─ 用线性模式
-│
-├─ 需要条件分支
-│   └─ 用分支模式
-│
-├─ 多任务同时执行
-│   └─ 用并行模式
-│
-└─ 重复执行
-    └─ 用循环模式
-```
+工作流本身通常是 **重+薄** 类型（协调器模式）。
 
 ---
 
-## 第一步：理解目标
+## 工作流定位
 
-### 操作
+```mermaid
+flowchart TB
+    subgraph skill-lifecycle["skill-lifecycle 生命周期管理"]
+        SL[场景操作]
+        ST[标准化规范]
+    end
+    
+    subgraph skill-factory["skill-factory 技能工厂"]
+        R[研究阶段]
+    end
+    
+    subgraph workflow["工作流 WORKFLOW.md"]
+        W[协调器<br/>重+薄类型]
+        W1[技能A]
+        W2[技能B]
+        W3[技能C]
+    end
+    
+    SL -->|指导| W
+    ST -->|遵循| W
+    R -->|前置研究| W
+    W --> W1
+    W --> W2
+    W --> W3
+    
+    style SL fill:#e8eaf6,stroke:#3f51b5,color:#1a237e
+    style ST fill:#e8eaf6,stroke:#3f51b5,color:#1a237e
+    style R fill:#e8eaf6,stroke:#3f51b5,color:#1a237e
+    style W fill:#fff3e0,stroke:#ff9800,color:#e65100
+```
+
+### 工作流的四维特征
+
+| 维度 | 特征 | 原因 |
+|------|------|------|
+| **重** | 多技能编排 | 工作流本质是协调器 |
+| **薄** | 流程描述为主 | 步骤说明不需要太详细 |
+
+---
+
+## 完整流程
+
+### 阶段 0：前置研究（可选）
+
+当工作流需求不明确时，先进入研究阶段：
+
+| 步骤 | 操作 |
+|------|------|
+| 1 | 接收用户的工作流目标描述 |
+| 2 | 明确输入输出约束 |
+| 3 | 识别可用技能 |
+| 4 | 如信息不足，交互确认或搜索补充 |
+
+---
+
+### 阶段 1：理解目标
 
 **1. 明确工作流目标**
 - 最终结果是什么？
@@ -53,16 +90,18 @@ tags: [workflow, generation, orchestration, automation]
 
 ---
 
-## 第二步：分析技能
-
-### 操作
+### 阶段 2：分析技能
 
 **1. 列出可用技能**
 
 ```yaml
 可用技能:
-  - skill-a: <能力>
-  - skill-b: <能力>
+  - skill-a:
+      type: <轻+薄 / 其他>
+      capability: <能力>
+  - skill-b:
+      type: <轻+薄 / 其他>
+      capability: <能力>
 ```
 
 **2. 匹配技能与目标**
@@ -76,25 +115,40 @@ tags: [workflow, generation, orchestration, automation]
 
 ```
 skill-a → skill-b（依赖：xxx）
-skill-b → skill-c（依赖：yyy）
+skill-c 独立执行
 ```
 
 ---
 
-## 第三步：选择模式
+### 阶段 3：选择模式
 
 ### 模式对比
 
-| 模式 | 执行方式 | 适用场景 |
-|------|---------|---------|
-| 线性 | 顺序执行 | 标准化流程 |
-| 分支 | 条件选择 | 多场景处理 |
-| 并行 | 同时执行 | 多维度处理 |
-| 循环 | 重复执行 | 批量处理 |
+```mermaid
+flowchart TD
+    Start[选择执行模式] --> Q{流程特点?}
+    
+    Q -->|固定顺序| LIN[线性模式]
+    Q -->|条件分支| BRN[分支模式]
+    Q -->|独立任务| PRL[并行模式]
+    Q -->|重复执行| LOOP[循环模式]
+    
+    style LIN fill:#e8f5e9,stroke:#4caf50,color:#1b5e20
+    style BRN fill:#e3f2fd,stroke:#2196f3,color:#0d47a1
+    style PRL fill:#fff3e0,stroke:#ff9800,color:#e65100
+    style LOOP fill:#f3e5f5,stroke:#9c27b0,color:#4a148c
+```
+
+| 模式 | 执行方式 | 适用场景 | WORKFLOW 写法 |
+|------|---------|---------|---------------|
+| **线性** | 顺序执行 | 标准化流水线 | 步骤1→2→3→4 |
+| **分支** | 条件选择 | 多场景处理 | if/else 步骤 |
+| **并行** | 同时执行 | 多维度处理 | fork→join |
+| **循环** | 重复执行 | 批量处理 | for each 步骤 |
 
 ---
 
-## 第四步：生成文档
+### 阶段 4：生成文档
 
 ### WORKFLOW.md 结构
 
@@ -105,7 +159,11 @@ description: <描述>
 target: <目标>
 skills_required: [skill-1, skill-2]
 ---
+```
 
+### 正文模板
+
+```markdown
 # <工作流名称>
 
 ## 目标
@@ -173,4 +231,41 @@ skills_required: [skill-1, skill-2]
 - [ ] 步骤顺序合理
 - [ ] 每个步骤信息完整
 - [ ] 异常处理覆盖主要情况
-- [ ] 示例完整可执行
+- [ ] 符合重+薄型结构规范
+
+---
+
+## 快速参考
+
+### 生成速查
+
+```
+工作流需求
+  ↓
+明确目标和交付物
+  ↓
+列出可用技能 + 分析依赖
+  ↓
+选择执行模式（线性/分支/并行/循环）
+  ↓
+生成 WORKFLOW.md
+  ↓
+验证完整性
+```
+
+### 与五阶段流程的关系
+
+| 工作流阶段 | 对应 skill-factory 阶段 |
+|-----------|------------------------|
+| 前置研究 | researcher（如需求不明确） |
+| 理解目标 | analyzer（简化版） |
+| 分析技能 | planner（选择技能组合） |
+| 选择模式 | planner（确定执行模式） |
+| 生成文档 | generator（生成 WORKFLOW.md） |
+
+---
+
+## 参考文档
+
+- [skill-standards](../skill-standards/SKILL.md) - WORKFLOW.md 格式规范
+- [scenario-integrate](../scenario-integrate/SKILL.md) - 技能整合方法
