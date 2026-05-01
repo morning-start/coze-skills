@@ -1,1 +1,110 @@
-{"name": "skill-factory", "version": "v7.0.0", "description": "技能工厂，基于'轻/重/薄/厚'四维分类生成技能；轻=单一功能、重=多模块拆分、薄=单文件够用、厚=需补充资料", "author": "skill-lifecycle", "tags": ["skill-factory", "skill-family", "skill-classification"], "parent": "skill-lifecycle", "children": [{"name": "skill-factory-analyzer", "version": "v2.0.0", "description": "技术内容分析器"}, {"name": "skill-factory-planner", "version": "v4.0.0", "description": "技能规划器，基于轻重薄厚四维分类判定类型"}, {"name": "skill-factory-generator", "version": "v4.0.0", "description": "技能生成器，支持四种输出模式"}, {"name": "skill-factory-packager", "version": "v4.0.0", "description": "技能打包器，支持四种结构验证"}], "classification_system": {"dimensions": ["light_heavy (功能维度)", "thin_thick (内容维度)"], "types": {"light_thin": {"name": "简单技能", "structure": "{name}/SKILL.md", "criteria": "单一功能 + <300行"}, "heavy_thin": {"name": "技能族(薄)", "structure": "{name}-family/SKILL.md + skills/{子}/SKILL.md", "criteria": "多模块 + 每个都精简"}, "light_thick": {"name": "复杂单技能", "structure": "{name}/SKILL.md + references/ + scripts/ + templates/", "criteria": "单一功能 + 需要详细说明"}, "heavy_thick": {"name": "技能族(厚)", "structure": "{name}-family/SKILL.md + skills/(部分有references/)", "criteria": "多模块 + 部分内容丰富"}}, "supplementary_resources": ["references/ - 参考文档(.md)", "scripts/ - 可执行脚本", "templates/ - 模板文件", "assets/ - 静态资源"]}, "pipeline": ["skill-factory-analyzer", "skill-factory-planner", "skill-factory-generator", "skill-factory-packager"], "structure_version": "v7.0", "last_updated": "2026-04-30"}
+{
+  "name": "skill-factory",
+  "version": "v9.0.0",
+  "description": "技能工厂，基于'轻/重/薄/厚'四维分类生成技能；包含研究、分析、规划、生成、验证五个阶段",
+  "author": "skill-lifecycle",
+  "tags": ["skill-factory", "skill-family", "skill-classification"],
+  "parent": "skill-lifecycle",
+  "children": [
+    {
+      "name": "skill-factory-researcher",
+      "version": "v1.0.0",
+      "description": "信息研究员，负责接收输入、交互确认、补充缺失信息"
+    },
+    {
+      "name": "skill-factory-analyzer",
+      "version": "v2.0.0",
+      "description": "技术内容分析器"
+    },
+    {
+      "name": "skill-factory-planner",
+      "version": "v5.0.0",
+      "description": "技能规划器，基于轻重薄厚四维分类判定类型"
+    },
+    {
+      "name": "skill-factory-generator",
+      "version": "v5.0.0",
+      "description": "技能生成器，支持四种输出模式"
+    },
+    {
+      "name": "skill-factory-packager",
+      "version": "v5.0.0",
+      "description": "技能打包器，支持四种结构验证"
+    }
+  ],
+  "pipeline": [
+    {
+      "step": 1,
+      "skill": "skill-factory-researcher",
+      "phase": "研究",
+      "capabilities": [
+        "接收输入(URL/文件夹)",
+        "初步浏览内容",
+        "用户交互确认需求",
+        "网络搜索补充资源",
+        "输出完整需求文档"
+      ]
+    },
+    {
+      "step": 2,
+      "skill": "skill-factory-analyzer",
+      "phase": "分析",
+      "capabilities": ["提取技术信息", "评估功能数量和内容体量"]
+    },
+    {
+      "step": 3,
+      "skill": "skill-factory-planner",
+      "phase": "规划",
+      "capabilities": ["判定轻重薄厚四维分类", "选择输出结构"]
+    },
+    {
+      "step": 4,
+      "skill": "skill-factory-generator",
+      "phase": "生成",
+      "capabilities": ["按四种类型生成文件"]
+    },
+    {
+      "step": 5,
+      "skill": "skill-factory-packager",
+      "phase": "验证",
+      "capabilities": ["验证结构完整性"]
+    }
+  ],
+  "classification_system": {
+    "dimensions": ["light_heavy (功能维度)", "thin_thick (内容维度)"],
+    "types": {
+      "light_thin": {
+        "name": "简单技能",
+        "structure": "{name}/SKILL.md",
+        "criteria": "单一功能 + <300行"
+      },
+      "heavy_thin": {
+        "name": "技能族(薄)",
+        "structure": "{name}-family/SKILL.md + skills/{子}/SKILL.md",
+        "criteria": "多模块 + 每个都精简"
+      },
+      "light_thick": {
+        "name": "复杂单技能",
+        "structure": "{name}/SKILL.md + references/ + scripts/ + templates/",
+        "criteria": "单一功能 + 需要详细说明"
+      },
+      "heavy_thick": {
+        "name": "技能族(厚)",
+        "structure": "{name}-family/SKILL.md + skills/(部分有references/)",
+        "criteria": "多模块 + 部分内容丰富"
+      }
+    },
+    "callback_mechanism": {
+      "enabled": true,
+      "description": "后续阶段发现信息不足时可回调 researcher 补充",
+      "trigger_conditions": [
+        "analyzer: 技术细节不清楚",
+        "planner: 无法判断轻重薄厚",
+        "generator: 缺少具体示例",
+        "packager: 格式规范有歧义"
+      ]
+    }
+  },
+  "structure_version": "v9.0",
+  "last_updated": "2026-04-30"
+}
